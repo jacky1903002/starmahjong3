@@ -40,21 +40,22 @@
             border-color: #fbbf24;
         }
 
-        /* 經典《明星三缺一》鋪平式海底牌河：中型擬真麻將 */
+        /* 《明星三缺一》完全展開鋪平式海底牌河 (取消下拉與捲軸，全面展開) */
         .mahjong-tile-river {
-            width: 48px;
-            height: 66px;
-            font-size: 1.45rem;
+            width: 44px;
+            height: 60px;
+            font-size: 1.3rem;
             background: linear-gradient(135deg, #ffffff 0%, #fef3c7 100%);
             border: 2px solid #f59e0b;
-            border-bottom: 5px solid #d97706;
-            border-radius: 10px;
+            border-bottom: 4px solid #d97706;
+            border-radius: 8px;
             font-weight: 900;
             color: #0f172a;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.4);
+            box-shadow: 0 3px 6px rgba(0,0,0,0.4);
+            margin: 2px;
         }
 
         /* 滿版特寫真人頭貼 (128px) */
@@ -106,7 +107,7 @@
                     <i class="fa-solid fa-dice-one"></i>
                 </div>
                 <h2 class="text-3xl font-black text-slate-900 tracking-tight">明星三缺一 4人爆笑版</h2>
-                <p class="text-sm text-slate-500 mt-1 font-bold">真人語音，隨時開桌！</p>
+                <p class="text-sm text-slate-500 mt-1 font-bold">真人語音，完全展開海底！</p>
             </div>
             <form id="login-form" class="space-y-4">
                 <div id="nickname-field" class="hidden">
@@ -153,7 +154,7 @@
                     <i class="fa-solid fa-coins mr-1.5 text-yellow-400"></i>籌碼: <span id="header-chips" class="text-white ml-1 text-sm font-black">100,000</span>
                 </div>
                 <button onclick="toggleAudio()" id="audio-toggle-btn" class="bg-slate-800 hover:bg-slate-700 text-amber-400 px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center">
-                    <i class="fa-solid fa-volume-high mr-1"></i>真實人聲: 開
+                    <i class="fa-solid fa-volume-high mr-1"></i>真人語音: 開
                 </button>
                 <button onclick="toggleFullScreen()" class="bg-amber-500 hover:bg-amber-600 text-slate-950 px-3 py-1.5 rounded-xl text-xs font-black transition flex items-center shadow">
                     <i class="fa-solid fa-expand mr-1"></i>全螢幕 (ESC還原)
@@ -212,7 +213,7 @@
             </div>
         </div>
 
-        <!-- 滿版 4 人對戰麻將桌介面 (含特寫頭貼與特大鋪平海底) -->
+        <!-- 滿版 4 人對戰麻將桌介面 (完全展開海底牌河) -->
         <div id="game-view" class="hidden flex-1 relative p-2 sm:p-4 flex flex-col justify-between select-none table-felt-bg overflow-hidden">
             
             <!-- 上方對手 (對家 AI) -->
@@ -232,7 +233,7 @@
                 <div id="ai-top-tiles" class="flex space-x-1.5 mt-1.5"></div>
             </div>
 
-            <!-- 左右對手與中央超大鋪平海底牌河區 -->
+            <!-- 左右對手與中央完全展開的海底牌河區 -->
             <div class="flex justify-between items-center my-auto px-6 z-10">
                 <!-- 左方對手 (上家 AI) -->
                 <div class="flex flex-col items-center bg-slate-900/95 p-4 rounded-3xl border-4 border-amber-400 shadow-2xl relative">
@@ -246,16 +247,16 @@
                     <span class="text-sm text-amber-400 font-extrabold">105,000 籌碼</span>
                 </div>
 
-                <!-- 中央牌桌資訊與經典鋪平式海底牌河 (加大面積) -->
+                <!-- 中央牌桌資訊與完全展開的海底牌河 (無捲軸) -->
                 <div class="glass-panel p-5 rounded-3xl text-center shadow-2xl max-w-3xl w-full mx-4 flex flex-col items-center border-4 border-amber-500/50">
                     <div class="flex justify-between w-full text-amber-300 text-base font-black mb-1">
                         <span id="table-stakes-info">底台: 100 / 30</span>
                         <span>剩餘牌數: <span id="tiles-left" class="text-white font-black text-lg">56</span> 張</span>
                     </div>
                     <div class="text-2xl font-black text-amber-200 my-1 animate-pulse" id="game-status-text">牌局開始！請摸牌或出牌</div>
-                    <!-- 海底牌河：全面鋪平展開 -->
-                    <div class="w-full bg-slate-950/85 h-36 rounded-2xl p-3 border-2 border-amber-500/40 overflow-y-auto flex flex-wrap gap-2 justify-center items-center shadow-inner" id="discards-river">
-                        <span class="text-sm text-slate-400 font-bold">海底牌河尚無打出之牌</span>
+                    <!-- 海底牌河：完全展開鋪平，不使用下拉捲軸 -->
+                    <div class="w-full bg-slate-950/85 h-40 rounded-2xl p-3 border-2 border-amber-500/40 flex flex-wrap gap-1.5 justify-center items-start shadow-inner overflow-hidden" id="discards-river">
+                        <span class="text-sm text-slate-400 font-bold self-center">海底牌河尚無打出之牌</span>
                     </div>
                 </div>
 
@@ -364,15 +365,15 @@
             selfDrawCount: 0
         };
 
-        // --- 真人語音合成引擎 (Web Speech API + Web Audio 雙效支援) ---
+        // --- 真人語音發音引擎 (最佳化真人語氣與高音調) ---
         function speakVoice(text) {
             if (!soundEnabled) return;
             if ('speechSynthesis' in window) {
-                window.speechSynthesis.cancel(); // 立即中斷前一句
+                window.speechSynthesis.cancel();
                 const utterance = new SpeechSynthesisUtterance(text);
                 utterance.lang = 'zh-TW';
-                utterance.pitch = 1.2; // 調整生動高音
-                utterance.rate = 1.1;  // 語速明快
+                utterance.pitch = 1.25; // 更有活力與真人情感
+                utterance.rate = 1.15;  // 語速明快
                 window.speechSynthesis.speak(utterance);
             }
         }
@@ -407,7 +408,7 @@
 
         window.toggleAudio = function() {
             soundEnabled = !soundEnabled;
-            document.getElementById("audio-toggle-btn").innerHTML = `<i class="fa-solid fa-volume-${soundEnabled ? 'high' : 'xmark'} mr-1"></i>真實人聲: ${soundEnabled ? '開' : '關'}`;
+            document.getElementById("audio-toggle-btn").innerHTML = `<i class="fa-solid fa-volume-${soundEnabled ? 'high' : 'xmark'} mr-1"></i>真人語音: ${soundEnabled ? '開' : '關'}`;
         };
 
         window.toggleFullScreen = function() {
@@ -601,6 +602,7 @@
             }
             document.getElementById("game-status-text").textContent = `摸了一張【${formatTileName(drawn)}】，請點擊手牌打出一張`;
             renderGameTable();
+            speakVoice(formatTileName(drawn));
         };
 
         function playerDiscardTile(index) {
@@ -612,9 +614,9 @@
             mahjongGame.discards[0].push(discarded);
             updateDiscardsRiver();
 
-            document.getElementById("game-status-text").textContent = `你打出了【${formatTileName(discarded)}】，等待其他 3 位對手反應...`;
+            document.getElementById("game-status-text").textContent = `你打出了【${formatTileName(discarded)}】，等待其他對手反應...`;
             renderGameTable();
-            speakVoice(formatTileName(discarded));
+            speakVoice(formatTileName(discarded)); // 喊出打出的牌
 
             setTimeout(() => {
                 aiTurnAction();
@@ -625,7 +627,7 @@
             const river = document.getElementById("discards-river");
             const allDiscards = mahjongGame.discards.flat();
             if (allDiscards.length === 0) {
-                river.innerHTML = `<span class="text-sm text-slate-400 font-bold">海底牌河尚無打出之牌</span>`;
+                river.innerHTML = `<span class="text-sm text-slate-400 font-bold self-center">海底牌河尚無打出之牌</span>`;
                 return;
             }
             river.innerHTML = allDiscards.map(t => `<div class="mahjong-tile-river">${formatTileName(t)}</div>`).join('');
@@ -641,7 +643,7 @@
                 
                 const names = ["", "上家 ➔ 雀后小莉", "對家 ➔ 賭俠阿強", "下家 ➔ 賭神大飛"];
                 document.getElementById("game-status-text").textContent = `${names[aiIdx]} 打出了【${formatTileName(aiDiscard)}】`;
-                speakVoice(formatTileName(aiDiscard));
+                speakVoice(formatTileName(aiDiscard)); // 喊出 AI 打出的牌
                 triggerAiSpeech(aiIdx);
             }
         }
@@ -654,7 +656,6 @@
             if (el) {
                 el.textContent = chosenMsg;
                 el.classList.remove("hidden");
-                speakVoice(chosenMsg);
                 setTimeout(() => el.classList.add("hidden"), 2500);
             }
         }
@@ -740,7 +741,7 @@
 
             if (!mahjongGame.canWin(playerHand, lastDisc)) {
                 speakVoice("牌型不符");
-                alert("❌ 牌型未符合胡牌條件，無法胡牌！請繼續湊牌。");
+                alert("❌ 牌型未符合胡牌條件（需要4組面子+1組眼牌），目前無法胡牌！請繼續湊牌。");
                 return;
             }
 
