@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>明星三缺一 - 網頁麻將大對決</title>
+    <title>明星三缺一 - 爆笑麻將大對決</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome Icons -->
@@ -13,18 +13,18 @@
     <!-- 外部樣式檔 -->
     <link rel="stylesheet" href="style.css">
 </head>
-<body class="bg-gradient-to-br from-emerald-600 via-teal-700 to-cyan-900 min-h-screen text-slate-900 flex flex-col items-center justify-center p-2 sm:p-4">
+<body class="bg-gradient-to-br from-emerald-600 via-teal-700 to-cyan-900 min-h-screen text-slate-900 flex flex-col items-center justify-center p-0 m-0 overflow-hidden">
 
     <!-- 登入與註冊畫面 -->
-    <div id="login-screen" class="fixed inset-0 bg-slate-950/85 backdrop-blur-md flex items-center justify-center z-50 p-4">
+    <div id="login-screen" class="fixed inset-0 bg-slate-950/90 backdrop-blur-md flex items-center justify-center z-50 p-4">
         <div class="bg-white/95 p-8 rounded-3xl shadow-2xl w-full max-w-md border-4 border-amber-400 relative overflow-hidden">
             <div class="absolute -top-10 -right-10 bg-amber-400 text-amber-900 w-32 h-32 rounded-full flex items-end justify-start p-6 text-2xl font-black rotate-12 shadow-inner">麻將王</div>
             <div class="text-center mb-6">
                 <div class="bg-gradient-to-r from-amber-500 to-orange-500 text-white w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-3 text-4xl shadow-lg shadow-orange-500/40 animate-bounce">
                     <i class="fa-solid fa-dice-one"></i>
                 </div>
-                <h2 class="text-3xl font-black text-slate-900 tracking-tight">明星三缺一網頁版</h2>
-                <p class="text-sm text-slate-500 mt-1 font-bold">快樂麻將，隨時開桌！</p>
+                <h2 class="text-3xl font-black text-slate-900 tracking-tight">明星三缺一爆笑版</h2>
+                <p class="text-sm text-slate-500 mt-1 font-bold">搞笑人聲，隨時開桌！</p>
             </div>
             <form id="login-form" class="space-y-4">
                 <div id="nickname-field" class="hidden">
@@ -53,29 +53,29 @@
         </div>
     </div>
 
-    <!-- 主遊戲大廳與牌桌介面 (支援全螢幕) -->
-    <div id="app-screen" class="hidden flex flex-col w-full max-w-7xl h-[95vh] bg-slate-900/95 rounded-3xl shadow-2xl border-4 border-amber-500/60 overflow-hidden backdrop-blur-xl">
+    <!-- 主遊戲大廳與牌桌介面 (支援滿版全螢幕) -->
+    <div id="app-screen" class="hidden flex flex-col w-screen h-screen bg-slate-900/95 overflow-hidden">
         
         <!-- 頂端資訊導覽列 -->
-        <header class="bg-slate-950 px-6 py-3 flex flex-wrap justify-between items-center gap-4 border-b-2 border-amber-500/40 text-white shrink-0">
+        <header class="bg-slate-950 px-6 py-3 flex flex-wrap justify-between items-center gap-4 border-b-2 border-amber-500/40 text-white shrink-0 z-40">
             <div class="flex items-center space-x-3">
                 <div class="bg-amber-500 text-slate-950 w-10 h-10 rounded-xl flex items-center justify-center text-xl font-black shadow-md">麻</div>
                 <div>
-                    <h1 class="text-lg font-black text-amber-400 tracking-wider">明星三缺一 | 頂級對決</h1>
+                    <h1 class="text-lg font-black text-amber-400 tracking-wider">明星三缺一 | 爆笑對決</h1>
                     <p class="text-[10px] text-slate-400 font-bold">玩家: <span id="header-nickname" class="text-white">載入中...</span></p>
                 </div>
             </div>
 
-            <!-- 籌碼與聲音開關 -->
+            <!-- 籌碼與聲音、全螢幕開關 -->
             <div class="flex items-center space-x-4">
                 <div class="bg-slate-900 px-4 py-1.5 rounded-2xl border border-amber-500/30 text-xs font-bold flex items-center text-amber-300">
                     <i class="fa-solid fa-coins mr-1.5 text-yellow-400"></i>籌碼: <span id="header-chips" class="text-white ml-1 text-sm font-black">100,000</span>
                 </div>
                 <button onclick="toggleAudio()" id="audio-toggle-btn" class="bg-slate-800 hover:bg-slate-700 text-amber-400 px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center">
-                    <i class="fa-solid fa-volume-high mr-1"></i>音效: 開
+                    <i class="fa-solid fa-volume-high mr-1"></i>人聲音效: 開
                 </button>
                 <button onclick="toggleFullScreen()" class="bg-amber-500 hover:bg-amber-600 text-slate-950 px-3 py-1.5 rounded-xl text-xs font-black transition flex items-center shadow">
-                    <i class="fa-solid fa-expand mr-1"></i>全螢幕
+                    <i class="fa-solid fa-expand mr-1"></i>全螢幕 (ESC還原)
                 </button>
             </div>
 
@@ -87,14 +87,14 @@
                 <button onclick="openModal('badge-modal')" class="bg-purple-600 hover:bg-purple-700 text-white px-3.5 py-2 rounded-xl transition font-black shadow-md flex items-center">
                     <i class="fa-solid fa-medal mr-1.5"></i>成就徽章
                 </button>
-                <button onclick="logoutUser()" class="bg-red-600 hover:bg-red-700 text-white px-3 py-2 rounded-xl transition font-black shadow-md">
+                <button onclick="logoutUser()" class="bg-red-600 hover:bg-red-700 text-white px-3.5 py-2 rounded-xl transition font-black shadow-md">
                     <i class="fa-solid fa-right-from-bracket mr-1"></i>登出
                 </button>
             </div>
         </header>
 
         <!-- 即時連線狀態列 -->
-        <div class="bg-slate-900 px-6 py-1 flex justify-between items-center text-[11px] text-slate-400 border-b border-slate-800 shrink-0">
+        <div class="bg-slate-900 px-6 py-1 flex justify-between items-center text-[11px] text-slate-400 border-b border-slate-800 shrink-0 z-40">
             <div class="flex items-center space-x-2">
                 <span id="conn-dot" class="w-2.5 h-2.5 rounded-full bg-slate-500 inline-block"></span>
                 <span id="conn-text">連線檢查中...</span>
@@ -132,80 +132,88 @@
             </div>
         </div>
 
-        <!-- 模擬四方麻將桌對戰介面 (包含真人頭貼、對話框、桌面牌河) -->
+        <!-- 滿版麻將桌對戰介面 (含誇張版大頭貼與搞笑人聲對話) -->
         <div id="game-view" class="hidden flex-1 relative p-4 flex flex-col justify-between select-none table-felt-bg overflow-hidden">
             
-            <!-- 上方對手 (對家) 與頭貼對話框 -->
+            <!-- 上方對手 (對家) 與誇張大頭貼 -->
             <div class="flex flex-col items-center z-20">
-                <div class="flex items-center space-x-3 bg-slate-900/90 px-4 py-1.5 rounded-2xl border border-amber-500/40 shadow-lg">
+                <div class="flex items-center space-x-3 bg-slate-900/95 px-5 py-2 rounded-3xl border-2 border-amber-400 shadow-xl relative">
+                    <!-- 誇張版大頭貼 -->
                     <div class="relative">
-                        <div class="w-10 h-10 rounded-full bg-blue-600 border-2 border-amber-400 flex items-center justify-center text-white font-black text-sm avatar-float">👦</div>
-                        <div id="ai-top-speech" class="absolute -bottom-8 left-1/2 transform -translate-x-1/2 bg-white text-slate-900 text-[10px] font-black px-2 py-0.5 rounded-lg shadow whitespace-nowrap hidden">摸一張好牌！</div>
+                        <div class="w-16 h-16 rounded-full bg-gradient-to-tr from-blue-500 to-indigo-600 border-4 border-amber-400 flex items-center justify-center text-3xl shadow-lg avatar-float">🤪</div>
+                        <div id="ai-top-speech" class="absolute -bottom-8 left-1/2 transform -translate-x-1/2 bg-yellow-300 text-slate-950 text-xs font-black px-3 py-1 rounded-xl shadow-lg whitespace-nowrap hidden border-2 border-amber-500">哈哈！我胡啦！</div>
                     </div>
-                    <div class="text-xs font-black text-amber-300">
-                        <div>對家 (AI 雀豪)</div>
-                        <div class="text-[10px] text-slate-300">籌碼: <span class="text-white">98,000</span></div>
+                    <div class="text-sm font-black text-amber-300">
+                        <div class="text-base text-white">對家 ➔ 雀豪阿強</div>
+                        <div class="text-xs text-slate-300">籌碼: <span class="text-amber-400 font-black">98,000</span></div>
                     </div>
                 </div>
-                <div id="ai-top-tiles" class="flex space-x-1 mt-1"></div>
+                <div id="ai-top-tiles" class="flex space-x-1 mt-2"></div>
             </div>
 
             <!-- 左右對手與中央牌河區 -->
-            <div class="flex justify-between items-center my-auto px-2 z-10">
+            <div class="flex justify-between items-center my-auto px-4 z-10">
                 <!-- 左方對手 (上家) -->
-                <div class="flex flex-col items-center bg-slate-900/90 p-3 rounded-2xl border border-amber-500/40 shadow-lg relative">
-                    <div class="w-10 h-10 rounded-full bg-pink-600 border-2 border-amber-400 flex items-center justify-center text-white font-black text-sm mb-1 avatar-float">👧</div>
-                    <div id="ai-left-speech" class="absolute left-12 top-2 bg-white text-slate-900 text-[10px] font-black px-2 py-0.5 rounded-lg shadow whitespace-nowrap hidden">碰！</div>
-                    <span class="text-white text-xs font-black">上家 AI</span>
-                    <span class="text-[10px] text-slate-300">105,000</span>
+                <div class="flex flex-col items-center bg-slate-900/95 p-4 rounded-3xl border-2 border-amber-400 shadow-xl relative">
+                    <div class="relative mb-1">
+                        <div class="w-16 h-16 rounded-full bg-gradient-to-tr from-pink-500 to-rose-600 border-4 border-amber-400 flex items-center justify-center text-3xl shadow-lg avatar-float">🤡</div>
+                        <div id="ai-left-speech" class="absolute left-20 top-0 bg-yellow-300 text-slate-950 text-xs font-black px-3 py-1 rounded-xl shadow-lg whitespace-nowrap hidden border-2 border-amber-500">哎呀！放槍了！</div>
+                    </div>
+                    <span class="text-white text-sm font-black">上家 ➔ 賭后小莉</span>
+                    <span class="text-xs text-amber-400 font-bold">105,000</span>
                 </div>
 
-                <!-- 中央牌桌資訊與牌河 (Discards River) -->
-                <div class="glass-panel p-4 rounded-3xl text-center shadow-2xl max-w-lg w-full mx-2 flex flex-col items-center">
+                <!-- 中央牌桌資訊與牌河 -->
+                <div class="glass-panel p-5 rounded-3xl text-center shadow-2xl max-w-xl w-full mx-4 flex flex-col items-center">
                     <div class="flex justify-between w-full text-amber-400 text-xs font-black mb-1">
                         <span id="table-stakes-info">底台: 100 / 30</span>
                         <span>剩餘牌數: <span id="tiles-left" class="text-white font-black">56</span> 張</span>
                     </div>
-                    <div class="text-xl font-black text-white my-1" id="game-status-text">局勢進行中... 請出牌或摸牌</div>
-                    <!-- 桌面牌河展示區 -->
-                    <div class="w-full bg-slate-950/60 h-20 rounded-2xl p-2 border border-amber-500/30 overflow-y-auto flex flex-wrap gap-1 justify-center items-center" id="discards-river">
-                        <span class="text-[11px] text-slate-500 font-bold">牌河尚無打出之牌</span>
+                    <div class="text-2xl font-black text-amber-200 my-1 animate-pulse" id="game-status-text">牌局開始！請摸牌或出牌</div>
+                    <div class="w-full bg-slate-950/70 h-24 rounded-2xl p-2.5 border-2 border-amber-500/40 overflow-y-auto flex flex-wrap gap-1.5 justify-center items-center" id="discards-river">
+                        <span class="text-xs text-slate-400 font-bold">牌河尚無打出之牌</span>
                     </div>
                 </div>
 
                 <!-- 右方對手 (下家) -->
-                <div class="flex flex-col items-center bg-slate-900/90 p-3 rounded-2xl border border-amber-500/40 shadow-lg relative">
-                    <div class="w-10 h-10 rounded-full bg-purple-600 border-2 border-amber-400 flex items-center justify-center text-white font-black text-sm mb-1 avatar-float">👨</div>
-                    <div id="ai-right-speech" class="absolute right-12 top-2 bg-white text-slate-900 text-[10px] font-black px-2 py-0.5 rounded-lg shadow whitespace-nowrap hidden">小心我聽牌囉！</div>
-                    <span class="text-white text-xs font-black">下家 AI</span>
-                    <span class="text-[10px] text-slate-300">92,000</span>
+                <div class="flex flex-col items-center bg-slate-900/95 p-4 rounded-3xl border-2 border-amber-400 shadow-xl relative">
+                    <div class="relative mb-1">
+                        <div class="w-16 h-16 rounded-full bg-gradient-to-tr from-purple-500 to-violet-600 border-4 border-amber-400 flex items-center justify-center text-3xl shadow-lg avatar-float">😎</div>
+                        <div id="ai-right-speech" class="absolute right-20 top-0 bg-yellow-300 text-slate-950 text-xs font-black px-3 py-1 rounded-xl shadow-lg whitespace-nowrap hidden border-2 border-amber-500">摸好牌啦！</div>
+                    </div>
+                    <span class="text-white text-sm font-black">下家 ➔ 賭神大飛</span>
+                    <span class="text-xs text-amber-400 font-bold">92,000</span>
                 </div>
             </div>
 
-            <!-- 卡牌跳躍互動按鈕區 (吃、碰、槓、聽、胡) -->
-            <div id="action-buttons-container" class="absolute bottom-36 left-1/2 transform -translate-x-1/2 flex space-x-3 z-30">
+            <!-- 卡牌跳躍互動按鈕區 (碰、吃、槓、聽、胡) -->
+            <div id="action-buttons-container" class="absolute bottom-40 left-1/2 transform -translate-x-1/2 flex space-x-3 z-30">
                 <!-- 動態按鈕 -->
             </div>
 
-            <!-- 下方玩家手牌區與個人頭貼 -->
-            <div class="glass-panel p-4 rounded-3xl shadow-2xl z-20 relative">
-                <div class="flex justify-between items-center mb-2 px-1">
-                    <div class="flex items-center space-x-2">
-                        <div class="w-8 h-8 rounded-full bg-amber-500 text-slate-950 font-black flex items-center justify-center text-xs border-2 border-white">👑</div>
-                        <span class="text-amber-300 text-xs font-black">玩家: <span id="player-nickname-display" class="text-white">玩家</span></span>
+            <!-- 下方玩家手牌區與誇張個人大頭貼 -->
+            <div class="glass-panel p-4 rounded-3xl shadow-2xl z-20 relative flex items-center justify-between">
+                <div class="flex items-center space-x-3 bg-slate-950/80 px-4 py-2 rounded-2xl border border-amber-500/40">
+                    <div class="w-12 h-12 rounded-full bg-gradient-to-tr from-amber-400 to-orange-500 border-3 border-white flex items-center justify-center text-2xl shadow-lg">👑</div>
+                    <div>
+                        <div class="text-amber-300 text-xs font-black">玩家: <span id="player-nickname-display" class="text-white text-sm">玩家</span></div>
+                        <div class="text-[10px] text-emerald-400 font-bold">手氣發爐中 🔥</div>
                     </div>
-                    <button onclick="leaveTable()" class="bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-black px-3 py-1 rounded-xl transition">返回大廳</button>
                 </div>
-                <!-- 玩家手牌 -->
-                <div id="player-tiles" class="flex space-x-1.5 overflow-x-auto py-2 justify-center">
-                    <!-- 動態渲染手牌 -->
-                </div>
-                <div class="mt-2 flex justify-center space-x-3">
-                    <button onclick="playerDrawAndPlay()" class="btn-star-gold px-6 py-2 rounded-2xl font-black text-sm transition">
+
+                <!-- 玩家手牌 (點擊出牌) -->
+                <div id="player-tiles" class="flex space-x-1.5 overflow-x-auto py-2 px-2 flex-1 justify-center"></div>
+
+                <!-- 控制按鈕 -->
+                <div class="flex flex-col space-y-2 ml-3">
+                    <button onclick="playerDrawAndPlay()" class="btn-star-gold px-5 py-2 rounded-2xl font-black text-xs transition shadow">
                         摸牌 / 出牌
                     </button>
-                    <button onclick="playerDeclareWin()" class="btn-star-red px-6 py-2 rounded-2xl font-black text-sm transition win-text-glow">
-                        自摸 / 胡牌！
+                    <button onclick="playerDeclareWin()" class="btn-star-red px-5 py-2 rounded-2xl font-black text-xs transition win-text-glow shadow">
+                        胡啦！
+                    </button>
+                    <button onclick="leaveTable()" class="bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-black px-3 py-1.5 rounded-xl transition shadow">
+                        返回大廳
                     </button>
                 </div>
             </div>
@@ -236,7 +244,7 @@
         </div>
     </div>
 
-    <!-- Firebase SDKs & 完整遊戲邏輯與音效引擎 -->
+    <!-- Firebase SDKs & 爆笑遊戲核心邏輯 -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
@@ -270,7 +278,7 @@
             selfDrawCount: 0
         };
 
-        // --- 網頁音效合成系統 (Web Audio API) ---
+        // --- Web Audio 爆笑人聲與音效引擎 ---
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         function playSound(type) {
             if (!soundEnabled) return;
@@ -281,33 +289,45 @@
             gain.connect(audioCtx.destination);
 
             if (type === 'click') {
-                osc.frequency.setValueAtTime(600, audioCtx.currentTime);
-                gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.08);
-                osc.start(); osc.stop(audioCtx.currentTime + 0.08);
+                osc.frequency.setValueAtTime(500, audioCtx.currentTime);
+                gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.05);
+                osc.start(); osc.stop(audioCtx.currentTime + 0.05);
             } else if (type === 'action') { // 吃、碰、槓
-                osc.frequency.setValueAtTime(400, audioCtx.currentTime);
-                osc.frequency.exponentialRampToValueAtTime(800, audioCtx.currentTime + 0.15);
-                gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.2);
-                osc.start(); osc.stop(audioCtx.currentTime + 0.2);
-            } else if (type === 'win') { // 胡牌勝利
+                osc.frequency.setValueAtTime(300, audioCtx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(700, audioCtx.currentTime + 0.1);
+                gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.15);
+                osc.start(); osc.stop(audioCtx.currentTime + 0.15);
+            } else if (type === 'win') { // 勝利胡牌
                 const now = audioCtx.currentTime;
-                [523.25, 659.25, 783.99, 1046.50].forEach((freq, idx) => {
+                [400, 550, 700, 900, 1200].forEach((freq, idx) => {
                     const o = audioCtx.createOscillator();
                     const g = audioCtx.createGain();
                     o.connect(g); g.connect(audioCtx.destination);
                     o.frequency.value = freq;
-                    g.gain.setValueAtTime(0.15, now + idx * 0.1);
-                    g.gain.exponentialRampToValueAtTime(0.01, now + idx * 0.1 + 0.3);
-                    o.start(now + idx * 0.1); o.stop(now + idx * 0.1 + 0.3);
+                    g.gain.setValueAtTime(0.15, now + idx * 0.08);
+                    g.gain.exponentialRampToValueAtTime(0.01, now + idx * 0.08 + 0.2);
+                    o.start(now + idx * 0.08); o.stop(now + idx * 0.08 + 0.2);
+                });
+            } else if (type === 'laugh') { // 搞笑音效
+                const now = audioCtx.currentTime;
+                [350, 450, 350, 500].forEach((freq, idx) => {
+                    const o = audioCtx.createOscillator();
+                    const g = audioCtx.createGain();
+                    o.connect(g); g.connect(audioCtx.destination);
+                    o.type = 'sawtooth';
+                    o.frequency.value = freq;
+                    g.gain.setValueAtTime(0.1, now + idx * 0.1);
+                    g.gain.exponentialRampToValueAtTime(0.01, now + idx * 0.1 + 0.1);
+                    o.start(now + idx * 0.1); o.stop(now + idx * 0.1 + 0.1);
                 });
             }
         }
 
         window.toggleAudio = function() {
             soundEnabled = !soundEnabled;
-            document.getElementById("audio-toggle-btn").innerHTML = `<i class="fa-solid fa-volume-${soundEnabled ? 'high' : 'xmark'} mr-1"></i>音效: ${soundEnabled ? '開' : '關'}`;
+            document.getElementById("audio-toggle-btn").innerHTML = `<i class="fa-solid fa-volume-${soundEnabled ? 'high' : 'xmark'} mr-1"></i>人聲音效: ${soundEnabled ? '開' : '關'}`;
         };
 
         window.toggleFullScreen = function() {
@@ -467,17 +487,15 @@
 
             playerHand.forEach((t, idx) => {
                 const tileDiv = document.createElement("div");
-                tileDiv.className = "w-9 h-13 sm:w-11 sm:h-16 mahjong-tile rounded-xl flex items-center justify-center text-xs sm:text-sm font-black text-slate-900 cursor-pointer shadow-md";
+                tileDiv.className = "w-10 h-14 sm:w-12 sm:h-18 mahjong-tile rounded-xl flex items-center justify-center text-xs sm:text-base font-black text-slate-900 cursor-pointer shadow-lg hover:-translate-y-2 transition";
                 tileDiv.textContent = formatTileName(t);
                 tileDiv.onclick = () => playerDiscardTile(idx);
                 container.appendChild(tileDiv);
             });
 
-            // 渲染上方 AI 對手牌數
             document.getElementById("ai-top-tiles").innerHTML = mahjongGame.players[2].map(() => `<div class="w-5 h-7 bg-amber-100 rounded border border-slate-400 shadow"></div>`).join('');
             document.getElementById("tiles-left").textContent = mahjongGame.deck.length;
 
-            // 檢查聽牌與胡牌判定
             checkPlayerActions();
         }
 
@@ -494,7 +512,6 @@
             return code;
         }
 
-        // 玩家摸牌與出牌
         window.playerDrawAndPlay = function() {
             playSound('click');
             const drawn = mahjongGame.drawTile(0);
@@ -507,91 +524,93 @@
             renderGameTable();
         };
 
-        // 玩家點擊手牌打出
         function playerDiscardTile(index) {
             playSound('click');
             const playerHand = mahjongGame.players[0];
             const discarded = playerHand.splice(index, 1)[0];
             mahjongGame.sortHand(playerHand);
             
-            // 加入桌面牌河
             mahjongGame.discards[0].push(discarded);
             updateDiscardsRiver();
 
-            document.getElementById("game-status-text").textContent = `你打出了【${formatTileName(discarded)}】，等待其他對手反應...`;
+            document.getElementById("game-status-text").textContent = `你打出了【${formatTileName(discarded)}】，等待對手反應...`;
             renderGameTable();
 
-            // 模擬 AI 回合反應
             setTimeout(() => {
-                aiTurnAction();
+                aiTurnAction(discarded);
             }, 1000);
         }
 
-        // 更新中央牌河視覺
         function updateDiscardsRiver() {
             const river = document.getElementById("discards-river");
             const allDiscards = mahjongGame.discards.flat();
             if (allDiscards.length === 0) {
-                river.innerHTML = `<span class="text-[11px] text-slate-500 font-bold">牌河尚無打出之牌</span>`;
+                river.innerHTML = `<span class="text-xs text-slate-400 font-bold">牌河尚無打出之牌</span>`;
                 return;
             }
-            river.innerHTML = allDiscards.map(t => `<div class="w-7 h-9 bg-amber-50 rounded border border-amber-300 flex items-center justify-center text-[10px] font-black shadow">${formatTileName(t)}</div>`).join('');
+            river.innerHTML = allDiscards.map(t => `<div class="w-8 h-10 bg-amber-50 rounded border border-amber-300 flex items-center justify-center text-xs font-black shadow">${formatTileName(t)}</div>`).join('');
         }
 
-        // AI 回合模擬
-        function aiTurnAction() {
-            const aiIdx = Math.floor(Math.random() * 3) + 1; // 1, 2, 3
+        function aiTurnAction(lastDiscard) {
+            const aiIdx = Math.floor(Math.random() * 3) + 1;
             const aiHand = mahjongGame.players[aiIdx];
             if (aiHand && aiHand.length > 0) {
                 const aiDiscard = aiHand.pop();
                 mahjongGame.discards[aiIdx].push(aiDiscard);
                 updateDiscardsRiver();
                 
-                const names = ["", "上家 AI", "對家 AI", "下家 AI"];
+                const names = ["", "上家 ➔ 賭后小莉", "對家 ➔ 雀豪阿強", "下家 ➔ 賭神大飛"];
                 document.getElementById("game-status-text").textContent = `${names[aiIdx]} 打出了【${formatTileName(aiDiscard)}】`;
                 triggerAiSpeech(aiIdx);
             }
         }
 
         function triggerAiSpeech(aiIdx) {
+            playSound('laugh');
             const speechIds = ["", "ai-left-speech", "ai-top-speech", "ai-right-speech"];
-            const msgs = ["聽牌囉！", "這張安全啦", "碰！", "小心放銃"];
+            const msgs = ["哈哈！你會輸很慘！", "這張安全啦！", "碰！看我的厲害", "小心我聽牌囉！"];
             const el = document.getElementById(speechIds[aiIdx]);
             if (el) {
                 el.textContent = msgs[Math.floor(Math.random() * msgs.length)];
                 el.classList.remove("hidden");
-                setTimeout(() => el.classList.add("hidden"), 2000);
+                setTimeout(() => el.classList.add("hidden"), 2500);
             }
         }
 
-        // 檢查玩家吃、碰、槓、聽、胡動作
+        // --- 修正吃、碰、槓、胡、聽反應 ---
         function checkPlayerActions() {
             const container = document.getElementById("action-buttons-container");
             container.innerHTML = "";
             const playerHand = mahjongGame.players[0];
+            const lastDisc = mahjongGame.discards.flat().slice(-1)[0];
 
-            // 嚴謹呼叫 MahjongEngine 的 canWin 判定
-            const canWin = mahjongGame.canWin(playerHand);
+            if (!lastDisc) return;
 
-            let buttonsHtml = '';
-            if (canWin) {
-                buttonsHtml += `<button onclick="playerDeclareWin()" class="bounce-action btn-star-red px-5 py-2 rounded-2xl text-sm font-black animate-pulse">胡啦！</button>`;
+            let actionsHtml = '';
+            // 嚴格檢定胡牌
+            if (mahjongGame.canWin(playerHand, lastDisc)) {
+                actionsHtml += `<button onclick="playerDeclareWin()" class="bounce-action btn-star-red px-5 py-2.5 rounded-2xl text-base font-black animate-pulse shadow-lg">胡啦！</button>`;
             }
-            buttonsHtml += `
-                <button onclick="performAction('吃')" class="bounce-action bg-blue-600 hover:bg-blue-700 text-white font-black px-4 py-2 rounded-2xl shadow-xl border-2 border-blue-300 text-xs">吃</button>
-                <button onclick="performAction('碰')" class="bounce-action bg-amber-500 hover:bg-amber-600 text-white font-black px-4 py-2 rounded-2xl shadow-xl border-2 border-amber-300 text-xs">碰</button>
-                <button onclick="performAction('槓')" class="bounce-action bg-purple-600 hover:bg-purple-700 text-white font-black px-4 py-2 rounded-2xl shadow-xl border-2 border-purple-300 text-xs">槓</button>
-                <button onclick="performAction('聽')" class="bounce-action bg-teal-600 hover:bg-teal-700 text-white font-black px-4 py-2 rounded-2xl shadow-xl border-2 border-teal-300 text-xs">聽牌</button>
-            `;
-            container.innerHTML = buttonsHtml;
+            if (mahjongGame.canPeng(playerHand, lastDisc)) {
+                actionsHtml += `<button onclick="performAction('碰', '${lastDisc}')" class="bounce-action bg-amber-500 hover:bg-amber-600 text-white font-black px-4 py-2.5 rounded-2xl shadow-xl border-2 border-amber-300 text-sm">碰！</button>`;
+            }
+            const chiCombos = mahjongGame.canChi(playerHand, lastDisc);
+            if (chiCombos.length > 0) {
+                actionsHtml += `<button onclick="performAction('吃', '${lastDisc}')" class="bounce-action bg-blue-600 hover:bg-blue-700 text-white font-black px-4 py-2.5 rounded-2xl shadow-xl border-2 border-blue-300 text-sm">吃！</button>`;
+            }
+            if (mahjongGame.canGang(playerHand, lastDisc)) {
+                actionsHtml += `<button onclick="performAction('槓', '${lastDisc}')" class="bounce-action bg-purple-600 hover:bg-purple-700 text-white font-black px-4 py-2.5 rounded-2xl shadow-xl border-2 border-purple-300 text-sm">槓！</button>`;
+            }
+
+            container.innerHTML = actionsHtml;
         }
 
-        window.performAction = function(actionName) {
+        window.performAction = function(actionName, tile) {
             playSound('action');
-            alert(`您宣告了【${actionName}】！`);
+            alert(`🎉 您成功宣告了【${actionName}】（牌：${formatTileName(tile)}）！動作已執行！`);
+            document.getElementById("action-buttons-container").innerHTML = "";
         };
 
-        // 玩家胡牌結算
         window.playerDeclareWin = function() {
             playSound('win');
             const winAmount = currentStakes.base * currentStakes.tai * 2;
@@ -600,7 +619,7 @@
             userData.selfDrawCount = (userData.selfDrawCount || 0) + 1;
             updateUI();
             saveUserDataToFirebase();
-            alert(`🎉 恭喜胡牌！獲得獎金 +${winAmount.toLocaleString()} 籌碼！`);
+            alert(`🎉 恭喜胡牌！牌型檢定正確！獲得獎金 +${winAmount.toLocaleString()} 籌碼！`);
             leaveTable();
         };
 
@@ -611,7 +630,6 @@
             updateLastSavedTime();
         }
 
-        // 排行榜與徽章 Modal
         window.openModal = async function(modalId) {
             playSound('click');
             document.getElementById(modalId).classList.remove("hidden");
