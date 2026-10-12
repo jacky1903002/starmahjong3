@@ -13,17 +13,17 @@
     <!-- 外部樣式檔 -->
     <link rel="stylesheet" href="style.css">
     <style>
-        /* 超大拉長加寬版麻將牌與巨無霸真人頭貼專屬 CSS */
-        .mahjong-tile-giant {
-            width: 68px;
-            height: 96px;
-            font-size: 2.2rem;
-            line-height: 1.1;
-            background: linear-gradient(135deg, #ffffff 0%, #fffbeb 50%, #fef3c7 100%);
+        /* 滿版拉長麻將牌專屬 CSS (貼近深色邊框) */
+        .mahjong-tile-full {
+            width: 76px;
+            height: 120px;
+            font-size: 2.6rem;
+            line-height: 1;
+            background: linear-gradient(135deg, #ffffff 0%, #fffbeb 40%, #fef3c7 100%);
             border: 4px solid #f59e0b;
-            border-bottom: 8px solid #d97706;
-            border-radius: 16px;
-            box-shadow: 0 10px 15px rgba(0,0,0,0.5), inset 0 2px 4px rgba(255,255,255,0.9);
+            border-bottom: 9px solid #d97706;
+            border-radius: 18px;
+            box-shadow: 0 12px 20px rgba(0,0,0,0.6), inset 0 2px 5px rgba(255,255,255,0.9);
             font-weight: 900;
             color: #0f172a;
             display: flex;
@@ -32,18 +32,19 @@
             letter-spacing: -1px;
             user-select: none;
             transition: all 0.15s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            margin: 0 2px;
         }
-        .mahjong-tile-giant:hover {
-            transform: translateY(-14px) scale(1.1);
-            box-shadow: 0 20px 25px rgba(245, 158, 11, 0.6);
+        .mahjong-tile-full:hover {
+            transform: translateY(-16px) scale(1.08);
+            box-shadow: 0 22px 30px rgba(245, 158, 11, 0.7);
             border-color: #fbbf24;
         }
 
         /* 桌面牌河中型牌 */
         .mahjong-tile-river {
-            width: 44px;
-            height: 60px;
-            font-size: 1.35rem;
+            width: 46px;
+            height: 64px;
+            font-size: 1.4rem;
             background: linear-gradient(135deg, #ffffff 0%, #fef3c7 100%);
             border: 2px solid #f59e0b;
             border-bottom: 5px solid #d97706;
@@ -56,25 +57,41 @@
             box-shadow: 0 4px 6px rgba(0,0,0,0.3);
         }
 
-        /* 巨無霸真人頭貼 (128px) */
-        .avatar-real-giant {
+        /* 巨無霸真人頭貼 (128px - 臉部特寫滿版填滿圓圈) */
+        .avatar-box-giant {
             width: 128px;
             height: 128px;
             border-radius: 50%;
             border: 5px solid #f59e0b;
             box-shadow: 0 0 30px rgba(245, 158, 11, 0.8), 0 8px 16px rgba(0,0,0,0.6);
-            object-fit: cover;
+            overflow: hidden;
             background-color: #1e293b;
+            position: relative;
+        }
+        .avatar-box-giant img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center top;
+            transform: scale(1.35); /* 放大特寫臉部 */
         }
 
-        /* 玩家個人大頭貼 (110px) */
-        .avatar-player-giant {
+        /* 玩家個人特寫大頭貼 (110px) */
+        .avatar-player-box {
             width: 110px;
             height: 110px;
             border-radius: 50%;
             border: 5px solid #10b981;
             box-shadow: 0 0 30px rgba(16, 185, 129, 0.8), 0 8px 16px rgba(0,0,0,0.6);
+            overflow: hidden;
+            position: relative;
+        }
+        .avatar-player-box img {
+            width: 100%;
+            height: 100%;
             object-fit: cover;
+            object-position: center top;
+            transform: scale(1.35);
         }
     </style>
 </head>
@@ -89,7 +106,7 @@
                     <i class="fa-solid fa-dice-one"></i>
                 </div>
                 <h2 class="text-3xl font-black text-slate-900 tracking-tight">明星三缺一爆笑版</h2>
-                <p class="text-sm text-slate-500 mt-1 font-bold">真人高清大頭，隨時開桌！</p>
+                <p class="text-sm text-slate-500 mt-1 font-bold">特寫大頭，滿版貼邊！</p>
             </div>
             <form id="login-form" class="space-y-4">
                 <div id="nickname-field" class="hidden">
@@ -122,11 +139,11 @@
     <div id="app-screen" class="hidden flex flex-col w-screen h-screen bg-slate-900/95 overflow-hidden">
         
         <!-- 頂端資訊導覽列 -->
-        <header class="bg-slate-950 px-6 py-3 flex flex-wrap justify-between items-center gap-4 border-b-2 border-amber-500/40 text-white shrink-0 z-40">
+        <header class="bg-slate-950 px-6 py-2 flex flex-wrap justify-between items-center gap-4 border-b-2 border-amber-500/40 text-white shrink-0 z-40">
             <div class="flex items-center space-x-3">
                 <div class="bg-amber-500 text-slate-950 w-10 h-10 rounded-xl flex items-center justify-center text-xl font-black shadow-md">麻</div>
                 <div>
-                    <h1 class="text-lg font-black text-amber-400 tracking-wider">明星三缺一 | 真人大頭版</h1>
+                    <h1 class="text-lg font-black text-amber-400 tracking-wider">明星三缺一 | 滿版大牌對決</h1>
                     <p class="text-[10px] text-slate-400 font-bold">玩家: <span id="header-nickname" class="text-white">載入中...</span></p>
                 </div>
             </div>
@@ -195,15 +212,16 @@
             </div>
         </div>
 
-        <!-- 滿版麻將桌對戰介面 (含 128px 真人超大頭貼) -->
-        <div id="game-view" class="hidden flex-1 relative p-4 flex flex-col justify-between select-none table-felt-bg overflow-hidden">
+        <!-- 滿版麻將桌對戰介面 (含 128px 滿版特寫真人頭貼) -->
+        <div id="game-view" class="hidden flex-1 relative p-2 sm:p-4 flex flex-col justify-between select-none table-felt-bg overflow-hidden">
             
-            <!-- 上方對手 (對家) 與 128px 真人超大頭貼 -->
+            <!-- 上方對手 (對家) 與 128px 特寫滿版頭貼 -->
             <div class="flex flex-col items-center z-20 mt-1">
-                <div class="flex items-center space-x-5 bg-slate-900/95 px-7 py-2 rounded-3xl border-4 border-amber-400 shadow-2xl relative">
+                <div class="flex items-center space-x-5 bg-slate-900/95 px-6 py-2 rounded-3xl border-4 border-amber-400 shadow-2xl relative">
                     <div class="relative">
-                        <!-- 真人明星照片頭貼 1 -->
-                        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80" class="avatar-real-giant avatar-float" alt="對家真人頭貼">
+                        <div class="avatar-box-giant avatar-float">
+                            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80" alt="對家滿版頭貼">
+                        </div>
                         <div id="ai-top-speech" class="absolute -bottom-10 left-1/2 transform -translate-x-1/2 bg-yellow-300 text-slate-950 text-base font-black px-4 py-1.5 rounded-2xl shadow-2xl whitespace-nowrap hidden border-2 border-amber-500 animate-bounce">哈哈！我胡啦！</div>
                     </div>
                     <div class="text-lg font-black text-amber-300">
@@ -211,16 +229,17 @@
                         <div class="text-sm text-slate-200 font-bold mt-1">籌碼: <span class="text-amber-400 font-black">98,000</span></div>
                     </div>
                 </div>
-                <div id="ai-top-tiles" class="flex space-x-1.5 mt-2"></div>
+                <div id="ai-top-tiles" class="flex space-x-1.5 mt-1.5"></div>
             </div>
 
             <!-- 左右對手與中央牌河區 -->
-            <div class="flex justify-between items-center my-auto px-8 z-10">
-                <!-- 左方對手 (上家) 與真人頭貼 -->
-                <div class="flex flex-col items-center bg-slate-900/95 p-5 rounded-3xl border-4 border-amber-400 shadow-2xl relative">
+            <div class="flex justify-between items-center my-auto px-6 z-10">
+                <!-- 左方對手 (上家) 與滿版頭貼 -->
+                <div class="flex flex-col items-center bg-slate-900/95 p-4 rounded-3xl border-4 border-amber-400 shadow-2xl relative">
                     <div class="relative mb-2">
-                        <!-- 真人頭貼 2 -->
-                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=300&q=80" class="avatar-real-giant avatar-float" alt="上家真人頭貼">
+                        <div class="avatar-box-giant avatar-float">
+                            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=300&q=80" alt="上家滿版頭貼">
+                        </div>
                         <div id="ai-left-speech" class="absolute left-32 top-2 bg-yellow-300 text-slate-950 text-base font-black px-4 py-1.5 rounded-2xl shadow-2xl whitespace-nowrap hidden border-2 border-amber-500">哎呀！放槍了！</div>
                     </div>
                     <span class="text-white text-lg font-black">上家 ➔ 雀后小莉</span>
@@ -228,22 +247,23 @@
                 </div>
 
                 <!-- 中央牌桌資訊與大字體牌河 -->
-                <div class="glass-panel p-6 rounded-3xl text-center shadow-2xl max-w-2xl w-full mx-4 flex flex-col items-center border-4 border-amber-500/50">
-                    <div class="flex justify-between w-full text-amber-300 text-base font-black mb-2">
+                <div class="glass-panel p-5 rounded-3xl text-center shadow-2xl max-w-2xl w-full mx-4 flex flex-col items-center border-4 border-amber-500/50">
+                    <div class="flex justify-between w-full text-amber-300 text-base font-black mb-1">
                         <span id="table-stakes-info">底台: 100 / 30</span>
                         <span>剩餘牌數: <span id="tiles-left" class="text-white font-black text-lg">56</span> 張</span>
                     </div>
                     <div class="text-2xl font-black text-amber-200 my-1 animate-pulse" id="game-status-text">牌局開始！請摸牌或出牌</div>
-                    <div class="w-full bg-slate-950/80 h-32 rounded-2xl p-3 border-2 border-amber-500/40 overflow-y-auto flex flex-wrap gap-2 justify-center items-center shadow-inner" id="discards-river">
+                    <div class="w-full bg-slate-950/80 h-28 rounded-2xl p-2.5 border-2 border-amber-500/40 overflow-y-auto flex flex-wrap gap-2 justify-center items-center shadow-inner" id="discards-river">
                         <span class="text-sm text-slate-400 font-bold">牌河尚無打出之牌</span>
                     </div>
                 </div>
 
-                <!-- 右方對手 (下家) 與真人頭貼 -->
-                <div class="flex flex-col items-center bg-slate-900/95 p-5 rounded-3xl border-4 border-amber-400 shadow-2xl relative">
+                <!-- 右方對手 (下家) 與滿版頭貼 -->
+                <div class="flex flex-col items-center bg-slate-900/95 p-4 rounded-3xl border-4 border-amber-400 shadow-2xl relative">
                     <div class="relative mb-2">
-                        <!-- 真人頭貼 3 -->
-                        <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=300&q=80" class="avatar-real-giant avatar-float" alt="下家真人頭貼">
+                        <div class="avatar-box-giant avatar-float">
+                            <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=300&q=80" alt="下家滿版頭貼">
+                        </div>
                         <div id="ai-right-speech" class="absolute right-32 top-2 bg-yellow-300 text-slate-950 text-base font-black px-4 py-1.5 rounded-2xl shadow-2xl whitespace-nowrap hidden border-2 border-amber-500">摸好牌啦！</div>
                     </div>
                     <span class="text-white text-lg font-black">下家 ➔ 賭神大飛</span>
@@ -254,22 +274,23 @@
             <!-- 吃碰槓動作按鈕區 -->
             <div id="action-buttons-container" class="absolute bottom-48 left-1/2 transform -translate-x-1/2 flex space-x-4 z-30"></div>
 
-            <!-- 下方玩家手牌區 (超大加寬麻將牌與玩家真人頭貼) -->
-            <div class="glass-panel p-5 rounded-3xl shadow-2xl z-20 relative flex items-center justify-between border-4 border-amber-500/50">
-                <div class="flex items-center space-x-4 bg-slate-950/90 px-6 py-3 rounded-3xl border-2 border-amber-400 shadow-xl">
-                    <!-- 玩家真人頭貼 -->
-                    <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=300&q=80" class="avatar-player-giant" alt="玩家真人頭貼">
+            <!-- 下方玩家手牌區 (貼邊拉長滿版麻將牌) -->
+            <div class="glass-panel p-3 sm:p-4 rounded-3xl shadow-2xl z-20 relative flex items-center justify-between border-4 border-amber-500/50 bg-slate-950/90">
+                <div class="flex items-center space-x-4 bg-slate-900/90 px-5 py-2 rounded-3xl border-2 border-amber-400 shadow-xl shrink-0">
+                    <div class="avatar-player-box">
+                        <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=300&q=80" alt="玩家滿版頭貼">
+                    </div>
                     <div>
                         <div class="text-amber-300 text-base font-black">玩家: <span id="player-nickname-display" class="text-white text-xl">賭神高進</span></div>
-                        <div class="text-xs text-emerald-400 font-bold mt-1">🔥 手氣發爐中 🔥</div>
+                        <div class="text-xs text-emerald-400 font-bold mt-0.5">🔥 手氣發爐中 🔥</div>
                     </div>
                 </div>
 
-                <!-- 巨型放大版玩家手牌 (點擊出牌) -->
-                <div id="player-tiles" class="flex space-x-2.5 overflow-x-auto py-2 px-3 flex-1 justify-center"></div>
+                <!-- 滿版貼邊手牌區 (高度 120px) -->
+                <div id="player-tiles" class="flex space-x-1.5 overflow-x-auto py-1 px-2 flex-1 justify-center items-center"></div>
 
                 <!-- 控制按鈕區 -->
-                <div class="flex flex-col space-y-2 ml-4">
+                <div class="flex flex-col space-y-2 ml-3 shrink-0">
                     <button onclick="playerDrawAndPlay()" class="btn-star-gold px-6 py-3 rounded-2xl font-black text-base transition shadow-lg">
                         摸牌 / 出牌
                     </button>
@@ -548,7 +569,7 @@
 
             playerHand.forEach((t, idx) => {
                 const tileDiv = document.createElement("div");
-                tileDiv.className = "mahjong-tile-giant cursor-pointer";
+                tileDiv.className = "mahjong-tile-full cursor-pointer";
                 tileDiv.textContent = formatTileName(t);
                 tileDiv.onclick = () => playerDiscardTile(idx);
                 container.appendChild(tileDiv);
@@ -638,6 +659,7 @@
             }
         }
 
+        /* --- 修正吃、碰、槓真實扣牌與胡牌邏輯 --- */
         function checkPlayerActions() {
             const container = document.getElementById("action-buttons-container");
             container.innerHTML = "";
@@ -647,30 +669,86 @@
             if (!lastDisc) return;
 
             let actionsHtml = '';
+            // 嚴格判定胡牌
             if (mahjongGame.canWin(playerHand, lastDisc)) {
                 actionsHtml += `<button onclick="playerDeclareWin()" class="bounce-action btn-star-red px-7 py-3.5 rounded-2xl text-xl font-black animate-pulse shadow-2xl">胡啦！</button>`;
             }
             if (mahjongGame.canPeng(playerHand, lastDisc)) {
-                actionsHtml += `<button onclick="performAction('碰', '${lastDisc}')" class="bounce-action bg-amber-500 hover:bg-amber-600 text-white font-black px-6 py-3 rounded-2xl shadow-xl border-2 border-amber-300 text-lg">碰！</button>`;
+                actionsHtml += `<button onclick="performPeng('${lastDisc}')" class="bounce-action bg-amber-500 hover:bg-amber-600 text-white font-black px-6 py-3 rounded-2xl shadow-xl border-2 border-amber-300 text-lg">碰！</button>`;
             }
             const chiCombos = mahjongGame.canChi(playerHand, lastDisc);
             if (chiCombos.length > 0) {
-                actionsHtml += `<button onclick="performAction('吃', '${lastDisc}')" class="bounce-action bg-blue-600 hover:bg-blue-700 text-white font-black px-6 py-3 rounded-2xl shadow-xl border-2 border-blue-300 text-lg">吃！</button>`;
+                actionsHtml += `<button onclick="performChi('${lastDisc}')" class="bounce-action bg-blue-600 hover:bg-blue-700 text-white font-black px-6 py-3 rounded-2xl shadow-xl border-2 border-blue-300 text-lg">吃！</button>`;
             }
             if (mahjongGame.canGang(playerHand, lastDisc)) {
-                actionsHtml += `<button onclick="performAction('槓', '${lastDisc}')" class="bounce-action bg-purple-600 hover:bg-purple-700 text-white font-black px-6 py-3 rounded-2xl shadow-xl border-2 border-purple-300 text-lg">槓！</button>`;
+                actionsHtml += `<button onclick="performGang('${lastDisc}')" class="bounce-action bg-purple-600 hover:bg-purple-700 text-white font-black px-6 py-3 rounded-2xl shadow-xl border-2 border-purple-300 text-lg">槓！</button>`;
             }
 
             container.innerHTML = actionsHtml;
         }
 
-        window.performAction = function(actionName, tile) {
+        // 碰牌真實扣手牌 2 張
+        window.performPeng = function(tile) {
             playSound('action');
-            alert(`🎉 您成功宣告了【${actionName}】（牌：${formatTileName(tile)}）！動作已執行！`);
+            const playerHand = mahjongGame.players[0];
+            let count = 0;
+            for (let i = playerHand.length - 1; i >= 0; i--) {
+                if (playerHand[i] === tile && count < 2) {
+                    playerHand.splice(i, 1);
+                    count++;
+                }
+            }
+            renderGameTable();
             document.getElementById("action-buttons-container").innerHTML = "";
+            alert(`🎉 成功碰牌【${formatTileName(tile)}】！手牌已扣除 2 張對子！`);
         };
 
+        // 吃牌真實扣手牌 2 張
+        window.performChi = function(tile) {
+            playSound('action');
+            const playerHand = mahjongGame.players[0];
+            const chiCombos = mahjongGame.canChi(playerHand, tile);
+            if (chiCombos.length > 0) {
+                const targetCombo = chiCombos[0]; // 預設使用第一組可吃的搭子
+                targetCombo.forEach(t => {
+                    if (t !== tile) {
+                        const idx = playerHand.indexOf(t);
+                        if (idx !== -1) playerHand.splice(idx, 1);
+                    }
+                });
+                renderGameTable();
+                document.getElementById("action-buttons-container").innerHTML = "";
+                alert(`🎉 成功吃牌【${formatTileName(tile)}】！手牌已順利扣除搭子！`);
+            }
+        };
+
+        // 槓牌真實扣手牌 3 張
+        window.performGang = function(tile) {
+            playSound('action');
+            const playerHand = mahjongGame.players[0];
+            let count = 0;
+            for (let i = playerHand.length - 1; i >= 0; i--) {
+                if (playerHand[i] === tile && count < 3) {
+                    playerHand.splice(i, 1);
+                    count++;
+                }
+            }
+            mahjongGame.drawTile(0); // 槓牌摸補牌
+            renderGameTable();
+            document.getElementById("action-buttons-container").innerHTML = "";
+            alert(`🎉 成功槓牌【${formatTileName(tile)}】！手牌已扣除並摸補一張牌！`);
+        };
+
+        // 嚴格胡牌判定
         window.playerDeclareWin = function() {
+            const playerHand = mahjongGame.players[0];
+            const lastDisc = mahjongGame.discards.flat().slice(-1)[0];
+
+            if (!mahjongGame.canWin(playerHand, lastDisc)) {
+                alert("❌ 牌型未符合胡牌條件，無法胡牌！請繼續湊牌。");
+                return;
+            }
+
             playSound('win');
             const winAmount = currentStakes.base * currentStakes.tai * 2;
             userData.chips += winAmount;
@@ -678,7 +756,7 @@
             userData.selfDrawCount = (userData.selfDrawCount || 0) + 1;
             updateUI();
             saveUserDataToFirebase();
-            alert(`🎉 恭喜胡牌！牌型檢定正確！獲得獎金 +${winAmount.toLocaleString()} 籌碼！`);
+            alert(`🎉 恭喜胡牌！牌型檢定完全正確！獲得獎金 +${winAmount.toLocaleString()} 籌碼！`);
             leaveTable();
         };
 
