@@ -183,7 +183,7 @@
                     <i class="fa-solid fa-dice-one"></i>
                 </div>
                 <h2 class="text-3xl font-black text-slate-900 tracking-tight">明星三缺一 4人台語爆笑版</h2>
-                <p class="text-sm text-slate-500 mt-1 font-bold">道地台語發音，標準傳統麻將！</p>
+                <p class="text-sm text-slate-500 mt-1 font-bold">強效台語拼音發音引擎！</p>
             </div>
             <form id="login-form" class="space-y-4">
                 <div id="nickname-field" class="hidden">
@@ -308,7 +308,7 @@
                         <div class="avatar-box-giant avatar-float">
                             <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80" alt="對家頭貼">
                         </div>
-                        <div id="ai-top-speech" class="absolute -bottom-10 left-1/2 transform -translate-x-1/2 bg-yellow-300 text-slate-950 text-base font-black px-4 py-1.5 rounded-2xl shadow-2xl whitespace-nowrap hidden border-2 border-amber-500 animate-bounce">哇胡矣啦！</div>
+                        <div id="ai-top-speech" class="absolute -bottom-10 left-1/2 transform -translate-x-1/2 bg-yellow-300 text-slate-950 text-base font-black px-4 py-1.5 rounded-2xl shadow-2xl whitespace-nowrap hidden border-2 border-amber-500 animate-bounce">哇胡矣！發財！</div>
                     </div>
                     <div class="text-lg font-black text-amber-300 flex items-center space-x-3">
                         <div>
@@ -342,7 +342,7 @@
                         <span id="table-stakes-info">底台: 100 / 30</span>
                         <span>剩餘牌數: <span id="tiles-left" class="text-white font-black text-lg">56</span> 張</span>
                     </div>
-                    <div class="text-2xl font-black text-amber-200 my-1 animate-pulse" id="game-status-text">牌局開始！請點擊右側摸牌</div>
+                    <div class="text-2xl font-black text-amber-200 my-1 animate-pulse" id="game-status-text">牌局開始！請開牌</div>
                     <div class="w-full bg-slate-950/85 h-48 rounded-2xl p-4 border-2 border-amber-500/40 flex flex-wrap gap-2.5 justify-center items-start shadow-inner overflow-y-auto" id="discards-river">
                         <span class="text-sm text-slate-400 font-bold self-center">海底牌河尚無打出之牌</span>
                     </div>
@@ -384,7 +384,7 @@
 
                 <div class="flex flex-col space-y-2 ml-3 shrink-0">
                     <button id="draw-btn" onclick="playerDrawAndPlay()" class="btn-star-gold px-6 py-3 rounded-2xl font-black text-base transition shadow-lg animate-pulse">
-                        摸牌 / 出牌
+                        開牌 / 出牌
                     </button>
                     <button onclick="playerDeclareWin()" class="btn-star-red px-6 py-3 rounded-2xl font-black text-base transition win-text-glow shadow-lg">
                         胡矣！
@@ -421,7 +421,7 @@
         </div>
     </div>
 
-    <!-- Firebase SDKs & 台語真人語音與標準麻將邏輯 -->
+    <!-- Firebase SDKs & 強效台語發音轉譯引擎 -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
@@ -473,13 +473,13 @@
             }
         };
 
-        // --- 台灣台語真人語音轉譯與發音引擎 ---
+        // --- 台語語音合成引擎 ---
         let taiwaneseVoice = null;
         function initVoices() {
             if ('speechSynthesis' in window) {
                 const voices = window.speechSynthesis.getVoices();
-                // 優先尋找台灣台語、臺灣腔或華語語音進行台語語調轉譯
-                taiwaneseVoice = voices.find(v => v.lang === 'zh-TW' || v.lang.includes('TW')) || voices[0];
+                // 挑選適合的中文/台語語音通道
+                taiwaneseVoice = voices.find(v => v.lang.includes('zh') || v.lang.includes('TW')) || voices[0];
             }
         }
         if ('speechSynthesis' in window) {
@@ -487,32 +487,30 @@
             initVoices();
         }
 
-        // 將牌名與動作轉譯為地道台語口語發音
+        // 強效台語口語直譯轉換器 (精準對應台語發音字彙)
         function translateToTaiwanese(text) {
             if (!text) return "";
             let t = text;
-            // 萬子
-            t = t.replace(/(\d)萬/g, (match, p1) => {
-                const map = {'1':'一萬','2':'二萬','3':'三萬','4':'四萬','5':'五萬','6':'六萬','7':'七萬','8':'八萬','9':'九萬'};
-                return map[p1] || match;
-            });
-            // 筒子
-            t = t.replace(/(\d)筒/g, (match, p1) => {
-                const map = {'1':'一餅','2':'二餅','3':'三餅','4':'四餅','5':'五餅','6':'六餅','7':'七餅','8':'八餅','9':'九餅'};
-                return map[p1] || match;
-            });
-            // 條子
-            t = t.replace(/(\d)條/g, (match, p1) => {
-                const map = {'1':'一索','2':'二索','3':'三索','4':'四索','5':'五索','6':'六索','7':'七索','8':'八索','9':'九索'};
-                return map[p1] || match;
-            });
-            // 字牌與專有名詞台語化
+            
+            // 萬子台語發音模擬
+            const wanMap = {'1':'一萬','2':'二萬','3':'三萬','4':'四萬','5':'五萬','6':'六萬','7':'七萬','8':'八萬','9':'九萬'};
+            // 筒子 (餅) 台語發音模擬
+            const tongMap = {'1':'一餅','2':'二餅','3':'三餅','4':'四餅','5':'五餅','6':'六餅','7':'七餅','8':'八餅','9':'九餅'};
+            // 條子 (索) 台語發音模擬
+            const tiaoMap = {'1':'一索','2':'二索','3':'三索','4':'四索','5':'五索','6':'六索','7':'七索','8':'八索','9':'九索'};
+
+            t = t.replace(/(\d)萬/g, (m, p) => wanMap[p] || m);
+            t = t.replace(/(\d)筒/g, (m, p) => tongMap[p] || m);
+            t = t.replace(/(\d)條/g, (m, p) => tiaoMap[p] || m);
+
             t = t.replace("東", "東風").replace("南", "南風").replace("西", "西風").replace("北", "北風");
-            t = t.replace("摸牌", "開牌").replace("牌局開始", "牌局開展，請開牌！");
-            t = t.replace("胡啦", "胡矣！恭喜發財！");
+            t = t.replace("牌局開始，請點擊摸牌", "牌局開展，緊來開牌！");
+            t = t.replace("胡啦", "胡矣！大吉大利！");
             t = t.replace("碰", "碰！");
             t = t.replace("吃", "吃！");
             t = t.replace("槓", "槓！開花！");
+            t = t.replace("摸了一張", "摸著");
+            t = t.replace("你打出了", "你打");
             return t;
         }
 
@@ -520,12 +518,12 @@
             if (!soundEnabled) return;
             if ('speechSynthesis' in window) {
                 window.speechSynthesis.cancel();
-                const taiwaneseText = translateToTaiwanese(text);
-                const utterance = new SpeechSynthesisUtterance(taiwaneseText);
+                const spokenText = translateToTaiwanese(text);
+                const utterance = new SpeechSynthesisUtterance(spokenText);
                 if (taiwaneseVoice) utterance.voice = taiwaneseVoice;
                 utterance.lang = 'zh-TW';
-                utterance.pitch = 1.1; // 稍微拉高語調增加趣味感
-                utterance.rate = 1.15; // 順暢的語速
+                utterance.pitch = 0.95; // 稍微降低音調營造台語男子漢博弈氣口
+                utterance.rate = 1.1;  // 俐落的語速
                 window.speechSynthesis.speak(utterance);
             }
         }
