@@ -51,58 +51,62 @@
         .tile-blue { color: #2563eb !important; }
         .tile-dark { color: #0f172a !important; }
 
-        /* 正確的筒子圓點陣列圖示 */
-        .mahjong-dots-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 2px;
-            padding: 3px;
-            background: #dbeafe;
-            border: 2px solid #2563eb;
+        /* 經典傳統筒子 (餅) 繪製樣式 */
+        .mahjong-dot-container {
+            width: 44px;
+            height: 52px;
+            background: #eff6ff;
+            border: 2px solid #3b82f6;
             border-radius: 8px;
-            width: 40px;
-            height: 48px;
-            align-items: center;
-            justify-items: center;
-        }
-        .mahjong-dot {
-            width: 9px;
-            height: 9px;
-            background: #dc2626;
-            border-radius: 50%;
-            box-shadow: 0 1px 2px rgba(0,0,0,0.3);
-        }
-        .mahjong-dot.green { background: #16a34a; }
-        .mahjong-dot.blue { background: #2563eb; }
-
-        /* 正確的條子竹節陣列圖示 */
-        .mahjong-bamboo-box {
             display: flex;
-            flex-direction: row;
-            gap: 3px;
-            padding: 3px 4px;
-            background: #dcfce7;
-            border: 2px solid #16a34a;
-            border-radius: 8px;
-            height: 48px;
+            flex-wrap: wrap;
             align-items: center;
             justify-content: center;
+            gap: 3px;
+            padding: 3px;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.15);
         }
-        .mahjong-bamboo-stick {
-            width: 6px;
-            height: 36px;
+        .m-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #dc2626;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.3);
+        }
+        .m-dot.green { background: #16a34a; }
+        .m-dot.blue { background: #2563eb; }
+
+        /* 經典傳統條子 (索) 繪製樣式 */
+        .mahjong-bamboo-container {
+            width: 44px;
+            height: 52px;
+            background: #f0fdf4;
+            border: 2px solid #22c55e;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            gap: 2px;
+            padding: 3px;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.15);
+        }
+        .m-stick {
+            width: 5px;
+            height: 38px;
             background: #16a34a;
             border-radius: 3px;
-            box-shadow: inset 0 1px 2px rgba(255,255,255,0.6), 0 1px 2px rgba(0,0,0,0.3);
+            box-shadow: 0 1px 2px rgba(0,0,0,0.3);
         }
 
+        /* 白板與花牌 */
         .mahjong-white-board {
-            width: 36px;
-            height: 48px;
+            width: 38px;
+            height: 50px;
             background: #ffffff;
             border: 3px solid #94a3b8;
             border-radius: 6px;
-            box-shadow: inset 0 0 8px rgba(37, 99, 235, 0.4);
+            box-shadow: inset 0 0 10px rgba(37, 99, 235, 0.4);
         }
 
         /* 海底牌河極致寬大專用精緻麻將 */
@@ -179,7 +183,7 @@
                     <i class="fa-solid fa-dice-one"></i>
                 </div>
                 <h2 class="text-3xl font-black text-slate-900 tracking-tight">明星三缺一 4人爆笑版</h2>
-                <p class="text-sm text-slate-500 mt-1 font-bold">正確筒條圖示，密碼送籌碼！</p>
+                <p class="text-sm text-slate-500 mt-1 font-bold">完美依據標準圖表修復筒條花色！</p>
             </div>
             <form id="login-form" class="space-y-4">
                 <div id="nickname-field" class="hidden">
@@ -216,7 +220,7 @@
             <div class="flex items-center space-x-3">
                 <div class="bg-amber-500 text-slate-950 w-10 h-10 rounded-xl flex items-center justify-center text-xl font-black shadow-md">麻</div>
                 <div>
-                    <h1 class="text-lg font-black text-amber-400 tracking-wider">明星三缺一 | 4人正統花色對決</h1>
+                    <h1 class="text-lg font-black text-amber-400 tracking-wider">明星三缺一 | 4人標準花色對決</h1>
                     <p class="text-[10px] text-slate-400 font-bold">玩家: <span id="header-nickname" class="text-white">載入中...</span></p>
                 </div>
             </div>
@@ -224,7 +228,7 @@
             <!-- CODE 密碼輸入送籌碼區 -->
             <div class="flex items-center space-x-2 bg-slate-900 px-3 py-1.5 rounded-2xl border border-amber-500/40">
                 <span class="text-xs text-amber-300 font-black"><i class="fa-solid fa-key mr-1"></i>CODE:</span>
-                <input type="text" id="cheat-code-input" class="px-2.5 py-1 text-xs rounded-xl bg-slate-950 text-white font-bold border border-slate-700 focus:outline-none focus:border-amber-400 w-28" placeholder="輸入解鎖碼">
+                <input type="text" id="cheat-code-input" class="px-2.5 py-1 text-xs rounded-xl bg-slate-950 text-white font-bold border border-slate-700 focus:outline-none focus:border-amber-400 w-28" placeholder="輸入 jacky">
                 <button onclick="submitCheatCode()" class="bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-slate-950 font-black px-3 py-1 rounded-xl text-xs transition shadow">
                     領取籌碼
                 </button>
@@ -417,7 +421,7 @@
         </div>
     </div>
 
-    <!-- Firebase SDKs & 真人語音與正統麻將花色邏輯 -->
+    <!-- Firebase SDKs & 標準傳統麻將圖示邏輯 -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
@@ -726,7 +730,7 @@
             checkPlayerActions();
         }
 
-        // --- 正確的傳統麻將圖示產生器 (萬、筒、條、字牌) ---
+        // --- 依照標準對照圖 (圖2) 精確繪製傳統麻將圖示 ---
         function createTileHtml(code) {
             const num = code[0];
             const type = code[1];
@@ -738,19 +742,21 @@
                 const n = parseInt(num);
                 let dotsHtml = '';
                 for (let i = 0; i < n; i++) {
-                    dotsHtml += `<div class="mahjong-dot ${i % 3 === 1 ? 'green' : (i % 3 === 2 ? 'blue' : '')}"></div>`;
+                    let dotColor = '';
+                    if (i % 3 === 1) dotColor = 'green';
+                    else if (i % 3 === 2) dotColor = 'blue';
+                    dotsHtml += `<div class="m-dot ${dotColor}"></div>`;
                 }
-                return `<div class="mahjong-dots-grid">${dotsHtml}</div><span class="tile-suit tile-blue" style="font-size:0.65rem; margin-top:2px;">${num}筒</span>`;
+                return `<div class="mahjong-dot-container">${dotsHtml}</div><span class="tile-suit tile-blue" style="font-size:0.65rem; margin-top:2px;">${num}筒</span>`;
             } else if (type === 's') {
                 const n = parseInt(num);
                 let sticksHtml = '';
                 for (let i = 0; i < n; i++) {
-                    sticksHtml += `<div class="mahjong-bamboo-stick"></div>`;
+                    sticksHtml += `<div class="m-stick"></div>`;
                 }
-                return `<div class="mahjong-bamboo-box">${sticksHtml}</div><span class="tile-suit tile-green" style="font-size:0.65rem; margin-top:2px;">${num}條</span>`;
+                return `<div class="mahjong-bamboo-container">${sticksHtml}</div><span class="tile-suit tile-green" style="font-size:0.65rem; margin-top:2px;">${num}條</span>`;
             } else if (type === 'z') {
                 if (num === '7') {
-                    // 白板
                     return `<div class="mahjong-white-board"></div>`;
                 }
                 const winds = ['東', '南', '西', '北', '中', '發', '白'];
@@ -842,9 +848,9 @@
                     const chineseNums = {'1':'一','2':'二','3':'三','4':'四','5':'五','6':'六','7':'七','8':'八','9':'九'};
                     innerHtml = `<span class="river-num tile-red">${chineseNums[num] || num}</span><span class="river-suit tile-red">萬</span>`;
                 } else if (type === 'p') {
-                    innerHtml = `<div class="mahjong-dots-grid" style="width:26px;height:32px;padding:1px;"><div class="mahjong-dot" style="width:5px;height:5px;"></div></div><span class="river-suit tile-blue" style="font-size:0.55rem;">${num}筒</span>`;
+                    innerHtml = `<div class="mahjong-dot-container" style="width:26px;height:32px;padding:1px;"><div class="m-dot" style="width:5px;height:5px;"></div></div><span class="river-suit tile-blue" style="font-size:0.55rem;">${num}筒</span>`;
                 } else if (type === 's') {
-                    innerHtml = `<div class="mahjong-bamboo-box" style="height:32px;padding:1px 2px;gap:1px;"><div class="mahjong-bamboo-stick" style="width:4px;height:22px;"></div></div><span class="river-suit tile-green" style="font-size:0.55rem;">${num}條</span>`;
+                    innerHtml = `<div class="mahjong-bamboo-container" style="width:26px;height:32px;padding:1px;gap:1px;"><div class="m-stick" style="width:3px;height:24px;"></div></div><span class="river-suit tile-green" style="font-size:0.55rem;">${num}條</span>`;
                 } else if (type === 'z') {
                     if (num === '7') {
                         innerHtml = `<div class="mahjong-white-board" style="width:24px;height:32px;"></div>`;
