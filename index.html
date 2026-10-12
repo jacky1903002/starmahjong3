@@ -10,13 +10,13 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Google Fonts: Cute & Rounded -->
     <link href="https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&family=M+PLUS+Rounded+1c:wght@700;900&display=swap" rel="stylesheet">
-    <!-- 正確引用您的外部樣式檔 style.css -->
+    <!-- 外部樣式檔 -->
     <link rel="stylesheet" href="style.css">
 </head>
-<body class="bg-gradient-to-br from-emerald-600 via-teal-700 to-cyan-900 min-h-screen text-slate-900 flex flex-col items-center justify-center p-4">
+<body class="bg-gradient-to-br from-emerald-600 via-teal-700 to-cyan-900 min-h-screen text-slate-900 flex flex-col items-center justify-center p-2 sm:p-4">
 
-    <!-- 登入與註冊畫面 (Login & Register Portal) -->
-    <div id="login-screen" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md flex items-center justify-center z-50 p-4">
+    <!-- 登入與註冊畫面 -->
+    <div id="login-screen" class="fixed inset-0 bg-slate-950/85 backdrop-blur-md flex items-center justify-center z-50 p-4">
         <div class="bg-white/95 p-8 rounded-3xl shadow-2xl w-full max-w-md border-4 border-amber-400 relative overflow-hidden">
             <div class="absolute -top-10 -right-10 bg-amber-400 text-amber-900 w-32 h-32 rounded-full flex items-end justify-start p-6 text-2xl font-black rotate-12 shadow-inner">麻將王</div>
             <div class="text-center mb-6">
@@ -53,24 +53,30 @@
         </div>
     </div>
 
-    <!-- 主遊戲大廳與牌桌介面 (Main Game App) -->
-    <div id="app-screen" class="hidden flex flex-col w-full max-w-6xl min-h-[92vh] bg-slate-900/90 rounded-3xl shadow-2xl border-4 border-amber-500/60 overflow-hidden backdrop-blur-xl">
+    <!-- 主遊戲大廳與牌桌介面 (支援全螢幕) -->
+    <div id="app-screen" class="hidden flex flex-col w-full max-w-7xl h-[95vh] bg-slate-900/95 rounded-3xl shadow-2xl border-4 border-amber-500/60 overflow-hidden backdrop-blur-xl">
         
         <!-- 頂端資訊導覽列 -->
-        <header class="bg-slate-950 px-6 py-3 flex flex-wrap justify-between items-center gap-4 border-b-2 border-amber-500/40 text-white">
+        <header class="bg-slate-950 px-6 py-3 flex flex-wrap justify-between items-center gap-4 border-b-2 border-amber-500/40 text-white shrink-0">
             <div class="flex items-center space-x-3">
                 <div class="bg-amber-500 text-slate-950 w-10 h-10 rounded-xl flex items-center justify-center text-xl font-black shadow-md">麻</div>
                 <div>
-                    <h1 class="text-lg font-black text-amber-400 tracking-wider">明星三缺一 | 聯網對決</h1>
+                    <h1 class="text-lg font-black text-amber-400 tracking-wider">明星三缺一 | 頂級對決</h1>
                     <p class="text-[10px] text-slate-400 font-bold">玩家: <span id="header-nickname" class="text-white">載入中...</span></p>
                 </div>
             </div>
 
-            <!-- 籌碼與每日入金提示 -->
-            <div class="flex items-center space-x-4 bg-slate-900 px-4 py-1.5 rounded-2xl border border-amber-500/30">
-                <div class="text-xs font-bold flex items-center text-amber-300">
+            <!-- 籌碼與聲音開關 -->
+            <div class="flex items-center space-x-4">
+                <div class="bg-slate-900 px-4 py-1.5 rounded-2xl border border-amber-500/30 text-xs font-bold flex items-center text-amber-300">
                     <i class="fa-solid fa-coins mr-1.5 text-yellow-400"></i>籌碼: <span id="header-chips" class="text-white ml-1 text-sm font-black">100,000</span>
                 </div>
+                <button onclick="toggleAudio()" id="audio-toggle-btn" class="bg-slate-800 hover:bg-slate-700 text-amber-400 px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center">
+                    <i class="fa-solid fa-volume-high mr-1"></i>音效: 開
+                </button>
+                <button onclick="toggleFullScreen()" class="bg-amber-500 hover:bg-amber-600 text-slate-950 px-3 py-1.5 rounded-xl text-xs font-black transition flex items-center shadow">
+                    <i class="fa-solid fa-expand mr-1"></i>全螢幕
+                </button>
             </div>
 
             <!-- 功能按鈕群 -->
@@ -87,19 +93,17 @@
             </div>
         </header>
 
-        <!-- 即時連線狀態與儲存時間列 -->
-        <div class="bg-slate-900 px-6 py-1.5 flex justify-between items-center text-[11px] text-slate-400 border-b border-slate-800">
+        <!-- 即時連線狀態列 -->
+        <div class="bg-slate-900 px-6 py-1 flex justify-between items-center text-[11px] text-slate-400 border-b border-slate-800 shrink-0">
             <div class="flex items-center space-x-2">
                 <span id="conn-dot" class="w-2.5 h-2.5 rounded-full bg-slate-500 inline-block"></span>
                 <span id="conn-text">連線檢查中...</span>
             </div>
-            <div>
-                上次同步: <span id="last-saved-time" class="text-amber-400 font-bold">尚未同步</span>
-            </div>
+            <div>上次同步: <span id="last-saved-time" class="text-amber-400 font-bold">尚未同步</span></div>
         </div>
 
         <!-- 遊戲大廳 / 選擇底台區 -->
-        <div id="lobby-view" class="flex-1 p-8 flex flex-col items-center justify-center space-y-8">
+        <div id="lobby-view" class="flex-1 p-8 flex flex-col items-center justify-center space-y-8 overflow-y-auto">
             <div class="text-center space-y-2">
                 <h2 class="text-4xl font-black text-amber-400 drop-shadow-md">請選擇對戰底台</h2>
                 <p class="text-sm text-slate-300 font-bold">每日 00:00 自動補發 100,000 籌碼！輸光也不怕！</p>
@@ -128,67 +132,79 @@
             </div>
         </div>
 
-        <!-- 模擬四方麻將桌對戰介面 (Game Table View) -->
-        <div id="game-view" class="hidden flex-1 relative p-6 flex flex-col justify-between select-none table-felt-bg">
+        <!-- 模擬四方麻將桌對戰介面 (包含真人頭貼、對話框、桌面牌河) -->
+        <div id="game-view" class="hidden flex-1 relative p-4 flex flex-col justify-between select-none table-felt-bg overflow-hidden">
             
-            <!-- 上方對手 AI (對家) -->
-            <div class="flex flex-col items-center">
-                <div class="bg-slate-900/80 px-4 py-1.5 rounded-2xl border border-amber-500/40 text-amber-300 text-xs font-black flex items-center space-x-2 shadow-lg">
-                    <i class="fa-solid fa-robot text-teal-400"></i>
-                    <span>對家 (AI 雀豪): <span class="text-white">籌碼 98,000</span></span>
+            <!-- 上方對手 (對家) 與頭貼對話框 -->
+            <div class="flex flex-col items-center z-20">
+                <div class="flex items-center space-x-3 bg-slate-900/90 px-4 py-1.5 rounded-2xl border border-amber-500/40 shadow-lg">
+                    <div class="relative">
+                        <div class="w-10 h-10 rounded-full bg-blue-600 border-2 border-amber-400 flex items-center justify-center text-white font-black text-sm avatar-float">👦</div>
+                        <div id="ai-top-speech" class="absolute -bottom-8 left-1/2 transform -translate-x-1/2 bg-white text-slate-900 text-[10px] font-black px-2 py-0.5 rounded-lg shadow whitespace-nowrap hidden">摸一張好牌！</div>
+                    </div>
+                    <div class="text-xs font-black text-amber-300">
+                        <div>對家 (AI 雀豪)</div>
+                        <div class="text-[10px] text-slate-300">籌碼: <span class="text-white">98,000</span></div>
+                    </div>
                 </div>
-                <div class="flex space-x-1 mt-2">
-                    <div class="w-6 h-9 mahjong-tile rounded"></div>
-                    <div class="w-6 h-9 mahjong-tile rounded"></div>
-                    <div class="w-6 h-9 mahjong-tile rounded"></div>
-                    <div class="w-6 h-9 mahjong-tile rounded"></div>
-                </div>
+                <div id="ai-top-tiles" class="flex space-x-1 mt-1"></div>
             </div>
 
-            <!-- 左右對手 AI 區與中央牌河 -->
-            <div class="flex justify-between items-center my-auto px-4">
+            <!-- 左右對手與中央牌河區 -->
+            <div class="flex justify-between items-center my-auto px-2 z-10">
                 <!-- 左方對手 (上家) -->
-                <div class="bg-slate-900/80 p-3 rounded-2xl border border-amber-500/40 text-amber-300 text-xs font-black flex flex-col items-center space-y-1">
-                    <i class="fa-solid fa-robot text-teal-400 text-lg"></i>
-                    <span class="text-white">上家 AI</span>
-                    <span class="text-[10px] text-slate-400">籌碼 105,000</span>
+                <div class="flex flex-col items-center bg-slate-900/90 p-3 rounded-2xl border border-amber-500/40 shadow-lg relative">
+                    <div class="w-10 h-10 rounded-full bg-pink-600 border-2 border-amber-400 flex items-center justify-center text-white font-black text-sm mb-1 avatar-float">👧</div>
+                    <div id="ai-left-speech" class="absolute left-12 top-2 bg-white text-slate-900 text-[10px] font-black px-2 py-0.5 rounded-lg shadow whitespace-nowrap hidden">碰！</div>
+                    <span class="text-white text-xs font-black">上家 AI</span>
+                    <span class="text-[10px] text-slate-300">105,000</span>
                 </div>
 
-                <!-- 中央牌桌資訊 -->
-                <div class="glass-panel p-6 rounded-3xl text-center shadow-2xl">
-                    <div class="text-amber-400 text-xs font-black mb-1" id="table-stakes-info">底台: 100 / 30</div>
-                    <div class="text-2xl font-black text-white my-1" id="game-status-text">摸牌中... 請出牌</div>
-                    <div class="text-xs text-slate-300 font-bold mt-2">剩餘牌數: <span id="tiles-left" class="text-amber-400 font-black">56</span> 張</div>
+                <!-- 中央牌桌資訊與牌河 (Discards River) -->
+                <div class="glass-panel p-4 rounded-3xl text-center shadow-2xl max-w-lg w-full mx-2 flex flex-col items-center">
+                    <div class="flex justify-between w-full text-amber-400 text-xs font-black mb-1">
+                        <span id="table-stakes-info">底台: 100 / 30</span>
+                        <span>剩餘牌數: <span id="tiles-left" class="text-white font-black">56</span> 張</span>
+                    </div>
+                    <div class="text-xl font-black text-white my-1" id="game-status-text">局勢進行中... 請出牌或摸牌</div>
+                    <!-- 桌面牌河展示區 -->
+                    <div class="w-full bg-slate-950/60 h-20 rounded-2xl p-2 border border-amber-500/30 overflow-y-auto flex flex-wrap gap-1 justify-center items-center" id="discards-river">
+                        <span class="text-[11px] text-slate-500 font-bold">牌河尚無打出之牌</span>
+                    </div>
                 </div>
 
                 <!-- 右方對手 (下家) -->
-                <div class="bg-slate-900/80 p-3 rounded-2xl border border-amber-500/40 text-amber-300 text-xs font-black flex flex-col items-center space-y-1">
-                    <i class="fa-solid fa-robot text-teal-400 text-lg"></i>
-                    <span class="text-white">下家 AI</span>
-                    <span class="text-[10px] text-slate-400">籌碼 92,000</span>
+                <div class="flex flex-col items-center bg-slate-900/90 p-3 rounded-2xl border border-amber-500/40 shadow-lg relative">
+                    <div class="w-10 h-10 rounded-full bg-purple-600 border-2 border-amber-400 flex items-center justify-center text-white font-black text-sm mb-1 avatar-float">👨</div>
+                    <div id="ai-right-speech" class="absolute right-12 top-2 bg-white text-slate-900 text-[10px] font-black px-2 py-0.5 rounded-lg shadow whitespace-nowrap hidden">小心我聽牌囉！</div>
+                    <span class="text-white text-xs font-black">下家 AI</span>
+                    <span class="text-[10px] text-slate-300">92,000</span>
                 </div>
             </div>
 
-            <!-- 卡牌跳躍互動按鈕區 (碰、吃、槓、胡) -->
-            <div id="action-buttons-container" class="absolute bottom-36 left-1/2 transform -translate-x-1/2 flex space-x-4 z-30">
-                <!-- 動態生成的按鈕會出現在這裡 -->
+            <!-- 卡牌跳躍互動按鈕區 (吃、碰、槓、聽、胡) -->
+            <div id="action-buttons-container" class="absolute bottom-36 left-1/2 transform -translate-x-1/2 flex space-x-3 z-30">
+                <!-- 動態按鈕 -->
             </div>
 
-            <!-- 下方玩家手牌區 -->
-            <div class="glass-panel p-4 rounded-3xl shadow-2xl">
-                <div class="flex justify-between w-full mb-2 items-center px-2">
-                    <span class="text-amber-300 text-xs font-black"><i class="fa-solid fa-user mr-1 text-teal-400"></i>你的手牌 (<span id="player-nickname-display">玩家</span>)</span>
+            <!-- 下方玩家手牌區與個人頭貼 -->
+            <div class="glass-panel p-4 rounded-3xl shadow-2xl z-20 relative">
+                <div class="flex justify-between items-center mb-2 px-1">
+                    <div class="flex items-center space-x-2">
+                        <div class="w-8 h-8 rounded-full bg-amber-500 text-slate-950 font-black flex items-center justify-center text-xs border-2 border-white">👑</div>
+                        <span class="text-amber-300 text-xs font-black">玩家: <span id="player-nickname-display" class="text-white">玩家</span></span>
+                    </div>
                     <button onclick="leaveTable()" class="bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-black px-3 py-1 rounded-xl transition">返回大廳</button>
                 </div>
                 <!-- 玩家手牌 -->
-                <div id="player-tiles" class="flex space-x-1.5 overflow-x-auto py-2">
+                <div id="player-tiles" class="flex space-x-1.5 overflow-x-auto py-2 justify-center">
                     <!-- 動態渲染手牌 -->
                 </div>
-                <div class="mt-3 flex space-x-3">
-                    <button onclick="simulateDrawAndDiscard()" class="btn-star-gold px-6 py-2 rounded-2xl font-black text-sm transition">
+                <div class="mt-2 flex justify-center space-x-3">
+                    <button onclick="playerDrawAndPlay()" class="btn-star-gold px-6 py-2 rounded-2xl font-black text-sm transition">
                         摸牌 / 出牌
                     </button>
-                    <button onclick="simulateWinGame()" class="btn-star-red px-6 py-2 rounded-2xl font-black text-sm transition win-text-glow">
+                    <button onclick="playerDeclareWin()" class="btn-star-red px-6 py-2 rounded-2xl font-black text-sm transition win-text-glow">
                         自摸 / 胡牌！
                     </button>
                 </div>
@@ -205,9 +221,7 @@
                 <h3 class="text-xl font-black text-slate-900 flex items-center"><i class="fa-solid fa-trophy text-amber-500 mr-2"></i>全伺服器富豪排行榜</h3>
                 <button onclick="closeModal('ranking-modal')" class="text-slate-400 hover:text-slate-700 font-black text-lg">✕</button>
             </div>
-            <div id="ranking-list" class="space-y-2 max-h-80 overflow-y-auto">
-                <!-- 排行榜動態載入 -->
-            </div>
+            <div id="ranking-list" class="space-y-2 max-h-80 overflow-y-auto"></div>
         </div>
     </div>
 
@@ -218,19 +232,15 @@
                 <h3 class="text-xl font-black text-slate-900 flex items-center"><i class="fa-solid fa-medal text-purple-600 mr-2"></i>我的成就徽章</h3>
                 <button onclick="closeModal('badge-modal')" class="text-slate-400 hover:text-slate-700 font-black text-lg">✕</button>
             </div>
-            <div class="grid grid-cols-2 gap-4" id="badge-grid">
-                <!-- 成就徽章動態載入 -->
-            </div>
+            <div class="grid grid-cols-2 gap-4" id="badge-grid"></div>
         </div>
     </div>
 
-    <!-- Firebase SDKs & 遊戲核心邏輯 (正確引入 script.js 模組) -->
+    <!-- Firebase SDKs & 完整遊戲邏輯與音效引擎 -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
         import { getDatabase, ref, set, get, update, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
-        
-        // 匯入您的 script.js 麻將核心引擎
         import MahjongEngine from "./script.js";
 
         const firebaseConfig = {
@@ -247,11 +257,10 @@
         const auth = getAuth(app);
         const database = getDatabase(app);
 
-        // 初始化麻將引擎實例
         const mahjongGame = new MahjongEngine();
-
         let currentUser = null;
         let isRegisterMode = false;
+        let soundEnabled = true;
         let userData = {
             nickname: "麻將大老千",
             chips: 100000,
@@ -259,6 +268,54 @@
             winCount: 0,
             loginCount: 0,
             selfDrawCount: 0
+        };
+
+        // --- 網頁音效合成系統 (Web Audio API) ---
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        function playSound(type) {
+            if (!soundEnabled) return;
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+
+            if (type === 'click') {
+                osc.frequency.setValueAtTime(600, audioCtx.currentTime);
+                gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.08);
+                osc.start(); osc.stop(audioCtx.currentTime + 0.08);
+            } else if (type === 'action') { // 吃、碰、槓
+                osc.frequency.setValueAtTime(400, audioCtx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(800, audioCtx.currentTime + 0.15);
+                gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.2);
+                osc.start(); osc.stop(audioCtx.currentTime + 0.2);
+            } else if (type === 'win') { // 胡牌勝利
+                const now = audioCtx.currentTime;
+                [523.25, 659.25, 783.99, 1046.50].forEach((freq, idx) => {
+                    const o = audioCtx.createOscillator();
+                    const g = audioCtx.createGain();
+                    o.connect(g); g.connect(audioCtx.destination);
+                    o.frequency.value = freq;
+                    g.gain.setValueAtTime(0.15, now + idx * 0.1);
+                    g.gain.exponentialRampToValueAtTime(0.01, now + idx * 0.1 + 0.3);
+                    o.start(now + idx * 0.1); o.stop(now + idx * 0.1 + 0.3);
+                });
+            }
+        }
+
+        window.toggleAudio = function() {
+            soundEnabled = !soundEnabled;
+            document.getElementById("audio-toggle-btn").innerHTML = `<i class="fa-solid fa-volume-${soundEnabled ? 'high' : 'xmark'} mr-1"></i>音效: ${soundEnabled ? '開' : '關'}`;
+        };
+
+        window.toggleFullScreen = function() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch(err => alert("全螢幕請求失敗: " + err.message));
+            } else {
+                if (document.exitFullscreen) document.exitFullscreen();
+            }
         };
 
         // 連線狀態監控
@@ -275,7 +332,6 @@
             }
         });
 
-        // 認證狀態變更
         onAuthStateChanged(auth, async (user) => {
             if (user) {
                 currentUser = user;
@@ -294,7 +350,6 @@
             const nickField = document.getElementById("nickname-field");
             const submitBtn = document.getElementById("auth-submit-btn");
             const toggleBtn = document.getElementById("auth-toggle-btn");
-
             if (isRegisterMode) {
                 nickField.classList.remove("hidden");
                 submitBtn.textContent = "註冊帳號並進入遊戲";
@@ -308,6 +363,7 @@
 
         document.getElementById("login-form").addEventListener("submit", async (e) => {
             e.preventDefault();
+            playSound('click');
             const email = document.getElementById("login-email").value;
             const pass = document.getElementById("login-password").value;
             const errDiv = document.getElementById("login-error");
@@ -337,6 +393,7 @@
         });
 
         window.logoutUser = function() {
+            playSound('click');
             signOut(auth);
         };
 
@@ -348,7 +405,6 @@
             if (snap.exists()) {
                 userData = snap.val();
                 userData.loginCount = (userData.loginCount || 0) + 1;
-
                 if (userData.lastLoginDate !== todayStr) {
                     userData.chips = (userData.chips || 0) + 100000;
                     userData.lastLoginDate = todayStr;
@@ -364,7 +420,6 @@
                     selfDrawCount: 0
                 };
             }
-
             await set(userRef, userData);
             updateUI();
             updateLastSavedTime();
@@ -377,14 +432,14 @@
         }
 
         function updateLastSavedTime() {
-            const now = new Date();
-            const timeStr = now.toLocaleTimeString();
-            document.getElementById("last-saved-time").textContent = timeStr;
+            document.getElementById("last-saved-time").textContent = new Date().toLocaleTimeString();
         }
 
-        // 遊戲對戰邏輯 (結合 script.js 的 MahjongEngine)
+        // --- 遊戲對戰與麻將核心邏輯聯動 ---
         let currentStakes = { base: 100, tai: 30 };
+
         window.startTable = function(base, tai) {
+            playSound('click');
             if (userData.chips < base * 10) {
                 alert("您的籌碼不足以進入此桌！請等待明天 00:00 自動補幣。");
                 return;
@@ -394,35 +449,38 @@
             document.getElementById("game-view").classList.remove("hidden");
             document.getElementById("table-stakes-info").textContent = `底台: ${base} / ${tai}`;
 
-            // 使用 MahjongEngine 洗牌與發牌
             mahjongGame.deal();
-            renderPlayerTiles();
-            triggerActionButtonsAnimation();
+            renderGameTable();
         };
 
         window.leaveTable = function() {
+            playSound('click');
             document.getElementById("game-view").classList.add("hidden");
             document.getElementById("lobby-view").classList.remove("hidden");
             saveUserDataToFirebase();
         };
 
-        function renderPlayerTiles() {
+        function renderGameTable() {
             const container = document.getElementById("player-tiles");
             container.innerHTML = "";
-            
-            // 取得 MahjongEngine 中玩家 (索引 0) 的真實手牌
             const playerHand = mahjongGame.players[0];
 
-            playerHand.forEach(t => {
+            playerHand.forEach((t, idx) => {
                 const tileDiv = document.createElement("div");
-                tileDiv.className = "w-10 h-14 mahjong-tile rounded-xl flex items-center justify-center text-xs font-black text-slate-900 cursor-pointer";
+                tileDiv.className = "w-9 h-13 sm:w-11 sm:h-16 mahjong-tile rounded-xl flex items-center justify-center text-xs sm:text-sm font-black text-slate-900 cursor-pointer shadow-md";
                 tileDiv.textContent = formatTileName(t);
+                tileDiv.onclick = () => playerDiscardTile(idx);
                 container.appendChild(tileDiv);
             });
+
+            // 渲染上方 AI 對手牌數
+            document.getElementById("ai-top-tiles").innerHTML = mahjongGame.players[2].map(() => `<div class="w-5 h-7 bg-amber-100 rounded border border-slate-400 shadow"></div>`).join('');
             document.getElementById("tiles-left").textContent = mahjongGame.deck.length;
+
+            // 檢查聽牌與胡牌判定
+            checkPlayerActions();
         }
 
-        // 將內部代號 (如 1m, 5z) 轉為中文顯示
         function formatTileName(code) {
             const num = code[0];
             const type = code[1];
@@ -436,37 +494,106 @@
             return code;
         }
 
-        // 互動按鈕跳躍動畫 (碰、吃、槓、胡)
-        function triggerActionButtonsAnimation() {
-            const container = document.getElementById("action-buttons-container");
-            container.innerHTML = `
-                <button onclick="performAction('吃')" class="bounce-action bg-blue-600 hover:bg-blue-700 text-white font-black px-4 py-2 rounded-2xl shadow-xl border-2 border-blue-300 text-sm">吃</button>
-                <button onclick="performAction('碰')" class="bounce-action bg-amber-500 hover:bg-amber-600 text-white font-black px-4 py-2 rounded-2xl shadow-xl border-2 border-amber-300 text-sm">碰</button>
-                <button onclick="performAction('槓')" class="bounce-action bg-purple-600 hover:bg-purple-700 text-white font-black px-4 py-2 rounded-2xl shadow-xl border-2 border-purple-300 text-sm">槓</button>
-                <button onclick="performAction('胡')" class="bounce-action bg-red-600 hover:bg-red-700 text-white font-black px-4 py-2 rounded-2xl shadow-xl border-2 border-red-300 text-base animate-pulse">胡啦！</button>
-            `;
-        }
-
-        window.performAction = function(actionName) {
-            alert(`您選擇了【${actionName}】！`);
-            if (actionName === '胡') {
-                simulateWinGame();
-            }
-        };
-
-        window.simulateDrawAndDiscard = function() {
+        // 玩家摸牌與出牌
+        window.playerDrawAndPlay = function() {
+            playSound('click');
             const drawn = mahjongGame.drawTile(0);
             if (!drawn) {
                 alert("牌局已流局！");
                 leaveTable();
                 return;
             }
-            document.getElementById("game-status-text").textContent = `摸了一張【${formatTileName(drawn)}】，請出牌`;
-            renderPlayerTiles();
-            triggerActionButtonsAnimation();
+            document.getElementById("game-status-text").textContent = `摸了一張【${formatTileName(drawn)}】，請點擊手牌打出一張`;
+            renderGameTable();
         };
 
-        window.simulateWinGame = function() {
+        // 玩家點擊手牌打出
+        function playerDiscardTile(index) {
+            playSound('click');
+            const playerHand = mahjongGame.players[0];
+            const discarded = playerHand.splice(index, 1)[0];
+            mahjongGame.sortHand(playerHand);
+            
+            // 加入桌面牌河
+            mahjongGame.discards[0].push(discarded);
+            updateDiscardsRiver();
+
+            document.getElementById("game-status-text").textContent = `你打出了【${formatTileName(discarded)}】，等待其他對手反應...`;
+            renderGameTable();
+
+            // 模擬 AI 回合反應
+            setTimeout(() => {
+                aiTurnAction();
+            }, 1000);
+        }
+
+        // 更新中央牌河視覺
+        function updateDiscardsRiver() {
+            const river = document.getElementById("discards-river");
+            const allDiscards = mahjongGame.discards.flat();
+            if (allDiscards.length === 0) {
+                river.innerHTML = `<span class="text-[11px] text-slate-500 font-bold">牌河尚無打出之牌</span>`;
+                return;
+            }
+            river.innerHTML = allDiscards.map(t => `<div class="w-7 h-9 bg-amber-50 rounded border border-amber-300 flex items-center justify-center text-[10px] font-black shadow">${formatTileName(t)}</div>`).join('');
+        }
+
+        // AI 回合模擬
+        function aiTurnAction() {
+            const aiIdx = Math.floor(Math.random() * 3) + 1; // 1, 2, 3
+            const aiHand = mahjongGame.players[aiIdx];
+            if (aiHand && aiHand.length > 0) {
+                const aiDiscard = aiHand.pop();
+                mahjongGame.discards[aiIdx].push(aiDiscard);
+                updateDiscardsRiver();
+                
+                const names = ["", "上家 AI", "對家 AI", "下家 AI"];
+                document.getElementById("game-status-text").textContent = `${names[aiIdx]} 打出了【${formatTileName(aiDiscard)}】`;
+                triggerAiSpeech(aiIdx);
+            }
+        }
+
+        function triggerAiSpeech(aiIdx) {
+            const speechIds = ["", "ai-left-speech", "ai-top-speech", "ai-right-speech"];
+            const msgs = ["聽牌囉！", "這張安全啦", "碰！", "小心放銃"];
+            const el = document.getElementById(speechIds[aiIdx]);
+            if (el) {
+                el.textContent = msgs[Math.floor(Math.random() * msgs.length)];
+                el.classList.remove("hidden");
+                setTimeout(() => el.classList.add("hidden"), 2000);
+            }
+        }
+
+        // 檢查玩家吃、碰、槓、聽、胡動作
+        function checkPlayerActions() {
+            const container = document.getElementById("action-buttons-container");
+            container.innerHTML = "";
+            const playerHand = mahjongGame.players[0];
+
+            // 嚴謹呼叫 MahjongEngine 的 canWin 判定
+            const canWin = mahjongGame.canWin(playerHand);
+
+            let buttonsHtml = '';
+            if (canWin) {
+                buttonsHtml += `<button onclick="playerDeclareWin()" class="bounce-action btn-star-red px-5 py-2 rounded-2xl text-sm font-black animate-pulse">胡啦！</button>`;
+            }
+            buttonsHtml += `
+                <button onclick="performAction('吃')" class="bounce-action bg-blue-600 hover:bg-blue-700 text-white font-black px-4 py-2 rounded-2xl shadow-xl border-2 border-blue-300 text-xs">吃</button>
+                <button onclick="performAction('碰')" class="bounce-action bg-amber-500 hover:bg-amber-600 text-white font-black px-4 py-2 rounded-2xl shadow-xl border-2 border-amber-300 text-xs">碰</button>
+                <button onclick="performAction('槓')" class="bounce-action bg-purple-600 hover:bg-purple-700 text-white font-black px-4 py-2 rounded-2xl shadow-xl border-2 border-purple-300 text-xs">槓</button>
+                <button onclick="performAction('聽')" class="bounce-action bg-teal-600 hover:bg-teal-700 text-white font-black px-4 py-2 rounded-2xl shadow-xl border-2 border-teal-300 text-xs">聽牌</button>
+            `;
+            container.innerHTML = buttonsHtml;
+        }
+
+        window.performAction = function(actionName) {
+            playSound('action');
+            alert(`您宣告了【${actionName}】！`);
+        };
+
+        // 玩家胡牌結算
+        window.playerDeclareWin = function() {
+            playSound('win');
             const winAmount = currentStakes.base * currentStakes.tai * 2;
             userData.chips += winAmount;
             userData.winCount = (userData.winCount || 0) + 1;
@@ -474,6 +601,7 @@
             updateUI();
             saveUserDataToFirebase();
             alert(`🎉 恭喜胡牌！獲得獎金 +${winAmount.toLocaleString()} 籌碼！`);
+            leaveTable();
         };
 
         async function saveUserDataToFirebase() {
@@ -485,16 +613,15 @@
 
         // 排行榜與徽章 Modal
         window.openModal = async function(modalId) {
+            playSound('click');
             document.getElementById(modalId).classList.remove("hidden");
             document.getElementById(modalId).classList.add("flex");
-            if (modalId === 'ranking-modal') {
-                await loadRankingList();
-            } else if (modalId === 'badge-modal') {
-                loadBadges();
-            }
+            if (modalId === 'ranking-modal') await loadRankingList();
+            else if (modalId === 'badge-modal') loadBadges();
         };
 
         window.closeModal = function(modalId) {
+            playSound('click');
             document.getElementById(modalId).classList.remove("flex");
             document.getElementById(modalId).classList.add("hidden");
         };
@@ -504,11 +631,8 @@
             const snap = await get(usersRef);
             const listContainer = document.getElementById("ranking-list");
             listContainer.innerHTML = "";
-
             if (snap.exists()) {
-                const usersObj = snap.val();
-                const usersArr = Object.values(usersObj).sort((a, b) => b.chips - a.chips);
-
+                const usersArr = Object.values(snap.val()).sort((a, b) => b.chips - a.chips);
                 usersArr.forEach((u, idx) => {
                     const row = document.createElement("div");
                     row.className = "flex justify-between items-center p-3 bg-slate-100 rounded-2xl font-bold text-sm";
