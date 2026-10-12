@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>明星三缺一 - 網頁麻將大對決</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Cute & Rounded -->
+    <link href="https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&family=M+PLUS+Rounded+1c:wght@700;900&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'M PLUS Rounded 1c', 'ZCOOL KuaiLe', sans-serif; }
+        .bounce-action { animation: bounceIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) both; }
+        @keyframes bounceIn {
+            0% { transform: scale(0); opacity: 0; }
+            60% { transform: scale(1.1); opacity: 1; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-emerald-600 via-teal-700 to-cyan-900 min-h-screen text-slate-900 flex flex-col items-center justify-center p-4">
+
+    <!-- 登入與註冊畫面 (Login & Register Portal) -->
+    <div id="login-screen" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md flex items-center justify-center z-50 p-4">
+        <div class="bg-white/95 p-8 rounded-3xl shadow-2xl w-full max-w-md border-4 border-amber-400 relative overflow-hidden">
+            <div class="absolute -top-10 -right-10 bg-amber-400 text-amber-900 w-32 h-32 rounded-full flex items-end justify-start p-6 text-2xl font-black rotate-12 shadow-inner">麻將王</div>
+            <div class="text-center mb-6">
+                <div class="bg-gradient-to-r from-amber-500 to-orange-500 text-white w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-3 text-4xl shadow-lg shadow-orange-500/40 animate-bounce">
+                    <i class="fa-solid fa-dice-one"></i>
+                </div>
+                <h2 class="text-3xl font-black text-slate-900 tracking-tight">明星三缺一網頁版</h2>
+                <p class="text-sm text-slate-500 mt-1 font-bold">快樂麻將，隨時開桌！</p>
+            </div>
+            <form id="login-form" class="space-y-4">
+                <div id="nickname-field" class="hidden">
+                    <label class="block text-xs font-black text-slate-700 mb-1 uppercase tracking-wider">遊戲玩家綽號 (Nickname)</label>
+                    <input type="text" id="reg-nickname" class="w-full px-4 py-3 border-2 border-slate-300 rounded-2xl focus:ring-4 focus:ring-amber-400 focus:outline-none font-bold text-slate-900" placeholder="例如：賭神高進">
+                </div>
+                <div>
+                    <label class="block text-xs font-black text-slate-700 mb-1 uppercase tracking-wider">電子郵件 (Email)</label>
+                    <input type="email" id="login-email" required class="w-full px-4 py-3 border-2 border-slate-300 rounded-2xl focus:ring-4 focus:ring-amber-400 focus:outline-none font-bold text-slate-900" placeholder="player@mahjong.com">
+                </div>
+                <div>
+                    <label class="block text-xs font-black text-slate-700 mb-1 uppercase tracking-wider">密碼 (Password)</label>
+                    <input type="password" id="login-password" required class="w-full px-4 py-3 border-2 border-slate-300 rounded-2xl focus:ring-4 focus:ring-amber-400 focus:outline-none font-bold text-slate-900" placeholder="••••••••">
+                </div>
+                <div id="login-error" class="text-red-600 text-xs font-bold text-center hidden"></div>
+                
+                <button type="submit" id="auth-submit-btn" class="w-full bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-black py-3.5 rounded-2xl transition duration-200 shadow-lg shadow-orange-500/40 text-lg">
+                    登入遊戲大廳
+                </button>
+                <div class="text-center pt-2">
+                    <button type="button" onclick="toggleAuthMode()" id="auth-toggle-btn" class="text-xs font-bold text-teal-700 hover:underline">
+                        沒有帳號？點此註冊新帳號與綽號
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 主遊戲大廳與牌桌介面 (Main Game App) -->
+    <div id="app-screen" class="hidden flex flex-col w-full max-w-6xl min-h-[92vh] bg-slate-900/90 rounded-3xl shadow-2xl border-4 border-amber-500/60 overflow-hidden backdrop-blur-xl">
+        
+        <!-- 頂端資訊導覽列 -->
+        <header class="bg-slate-950 px-6 py-3 flex flex-wrap justify-between items-center gap-4 border-b-2 border-amber-500/40 text-white">
+            <div class="flex items-center space-x-3">
+                <div class="bg-amber-500 text-slate-950 w-10 h-10 rounded-xl flex items-center justify-center text-xl font-black shadow-md">麻</div>
+                <div>
+                    <h1 class="text-lg font-black text-amber-400 tracking-wider">明星三缺一 | 聯網對決</h1>
+                    <p class="text-[10px] text-slate-400 font-bold">玩家: <span id="header-nickname" class="text-white">載入中...</span></p>
+                </div>
+            </div>
+
+            <!-- 籌碼與每日入金提示 -->
+            <div class="flex items-center space-x-4 bg-slate-900 px-4 py-1.5 rounded-2xl border border-amber-500/30">
+                <div class="text-xs font-bold flex items-center text-amber-300">
+                    <i class="fa-solid fa-coins mr-1.5 text-yellow-400"></i>籌碼: <span id="header-chips" class="text-white ml-1 text-sm font-black">100,000</span>
+                </div>
+            </div>
+
+            <!-- 功能按鈕群 -->
+            <div class="flex items-center space-x-3 text-xs font-bold">
+                <button onclick="openModal('ranking-modal')" class="bg-amber-500 hover:bg-amber-600 text-slate-950 px-3.5 py-2 rounded-xl transition font-black shadow-md flex items-center">
+                    <i class="fa-solid fa-trophy mr-1.5"></i>排行榜
+                </button>
+                <button onclick="openModal('badge-modal')" class="bg-purple-600 hover:bg-purple-700 text-white px-3.5 py-2 rounded-xl transition font-black shadow-md flex items-center">
+                    <i class="fa-solid fa-medal mr-1.5"></i>成就徽章
+                </button>
+                <button onclick="logoutUser()" class="bg-red-600 hover:bg-red-700 text-white px-3 py-2 rounded-xl transition font-black shadow-md">
+                    <i class="fa-solid fa-right-from-bracket mr-1"></i>登出
+                </button>
+            </div>
+        </header>
+
+        <!-- 即時連線狀態與儲存時間列 -->
+        <div class="bg-slate-900 px-6 py-1.5 flex justify-between items-center text-[11px] text-slate-400 border-b border-slate-800">
+            <div class="flex items-center space-x-2">
+                <span id="conn-dot" class="w-2.5 h-2.5 rounded-full bg-slate-500 inline-block"></span>
+                <span id="conn-text">連線檢查中...</span>
+            </div>
+            <div>
+                上次同步: <span id="last-saved-time" class="text-amber-400 font-bold">尚未同步</span>
+            </div>
+        </div>
+
+        <!-- 遊戲大廳 / 選擇底台區 -->
+        <div id="lobby-view" class="flex-1 p-8 flex flex-col items-center justify-center space-y-8">
+            <div class="text-center space-y-2">
+                <h2 class="text-4xl font-black text-amber-400 drop-shadow-md">請選擇對戰底台</h2>
+                <p class="text-sm text-slate-300 font-bold">每日 00:00 自動補發 100,000 籌碼！輸光也不怕！</p>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 w-full max-w-4xl">
+                <button onclick="startTable(50, 20)" class="bg-gradient-to-b from-teal-500 to-teal-700 hover:from-teal-400 hover:to-teal-600 p-6 rounded-3xl shadow-xl border-4 border-teal-300 text-white text-center transform hover:-translate-y-1 transition duration-200">
+                    <div class="text-2xl font-black mb-1">新手練習桌</div>
+                    <div class="text-3xl font-black text-amber-300 my-2">50 / 20 台</div>
+                    <div class="text-xs opacity-80">適合新手輕鬆胡牌</div>
+                </button>
+                <button onclick="startTable(100, 30)" class="bg-gradient-to-b from-blue-600 to-blue-800 hover:from-blue-500 hover:to-blue-700 p-6 rounded-3xl shadow-xl border-4 border-blue-300 text-white text-center transform hover:-translate-y-1 transition duration-200">
+                    <div class="text-2xl font-black mb-1">高手進階桌</div>
+                    <div class="text-3xl font-black text-amber-300 my-2">100 / 30 台</div>
+                    <div class="text-xs opacity-80">刺激對決人氣首選</div>
+                </button>
+                <button onclick="startTable(300, 100)" class="bg-gradient-to-b from-purple-600 to-purple-800 hover:from-purple-500 hover:to-purple-700 p-6 rounded-3xl shadow-xl border-4 border-purple-300 text-white text-center transform hover:-translate-y-1 transition duration-200">
+                    <div class="text-2xl font-black mb-1">土豪大亨桌</div>
+                    <div class="text-3xl font-black text-amber-300 my-2">300 / 100 台</div>
+                    <div class="text-xs opacity-80">高風險高報酬</div>
+                </button>
+                <button onclick="startTable(500, 100)" class="bg-gradient-to-b from-amber-600 to-orange-700 hover:from-amber-500 hover:to-orange-600 p-6 rounded-3xl shadow-xl border-4 border-amber-300 text-white text-center transform hover:-translate-y-1 transition duration-200">
+                    <div class="text-2xl font-black mb-1">至尊賭神桌</div>
+                    <div class="text-3xl font-black text-yellow-300 my-2">500 / 100 台</div>
+                    <div class="text-xs opacity-80">頂尖高手決戰之地</div>
+                </button>
+            </div>
+        </div>
+
+        <!-- 模擬四方麻將桌對戰介面 (Game Table View) -->
+        <div id="game-view" class="hidden flex-1 relative p-6 flex flex-col justify-between select-none bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-emerald-800 via-emerald-950 to-slate-950">
+            
+            <!-- 上方對手 AI (對家) -->
+            <div class="flex flex-col items-center">
+                <div class="bg-slate-900/80 px-4 py-1.5 rounded-2xl border border-amber-500/40 text-amber-300 text-xs font-black flex items-center space-x-2 shadow-lg">
+                    <i class="fa-solid fa-robot text-teal-400"></i>
+                    <span>對家 (AI 雀豪): <span class="text-white">籌碼 98,000</span></span>
+                </div>
+                <div class="flex space-x-1 mt-2">
+                    <div class="w-6 h-9 bg-amber-100 rounded border border-slate-400 shadow"></div>
+                    <div class="w-6 h-9 bg-amber-100 rounded border border-slate-400 shadow"></div>
+                    <div class="w-6 h-9 bg-amber-100 rounded border border-slate-400 shadow"></div>
+                    <div class="w-6 h-9 bg-amber-100 rounded border border-slate-400 shadow"></div>
+                </div>
+            </div>
+
+            <!-- 左右對手 AI 區與中央牌河 -->
+            <div class="flex justify-between items-center my-auto px-4">
+                <!-- 左方對手 (上家) -->
+                <div class="bg-slate-900/80 p-3 rounded-2xl border border-amber-500/40 text-amber-300 text-xs font-black flex flex-col items-center space-y-1">
+                    <i class="fa-solid fa-robot text-teal-400 text-lg"></i>
+                    <span class="text-white">上家 AI</span>
+                    <span class="text-[10px] text-slate-400">籌碼 105,000</span>
+                </div>
+
+                <!-- 中央牌桌資訊 -->
+                <div class="bg-slate-950/60 p-6 rounded-3xl border-2 border-amber-500/30 text-center shadow-2xl backdrop-blur-md">
+                    <div class="text-amber-400 text-xs font-black mb-1" id="table-stakes-info">底台: 100 / 30</div>
+                    <div class="text-2xl font-black text-white my-1" id="game-status-text">摸牌中... 請出牌</div>
+                    <div class="text-xs text-slate-300 font-bold mt-2">剩餘牌數: <span id="tiles-left" class="text-amber-400 font-black">56</span> 張</div>
+                </div>
+
+                <!-- 右方對手 (下家) -->
+                <div class="bg-slate-900/80 p-3 rounded-2xl border border-amber-500/40 text-amber-300 text-xs font-black flex flex-col items-center space-y-1">
+                    <i class="fa-solid fa-robot text-teal-400 text-lg"></i>
+                    <span class="text-white">下家 AI</span>
+                    <span class="text-[10px] text-slate-400">籌碼 92,000</span>
+                </div>
+            </div>
+
+            <!-- 卡牌跳躍互動按鈕區 (碰、吃、槓、胡) -->
+            <div id="action-buttons-container" class="absolute bottom-36 left-1/2 transform -translate-x-1/2 flex space-x-4 z-30">
+                <!-- 動態生成的按鈕會出現在這裡 -->
+            </div>
+
+            <!-- 下方玩家手牌區 -->
+            <div class="flex flex-col items-center bg-slate-950/80 p-4 rounded-3xl border-2 border-amber-500/50 shadow-2xl">
+                <div class="flex justify-between w-full max-w-4xl mb-2 items-center px-2">
+                    <span class="text-amber-300 text-xs font-black"><i class="fa-solid fa-user mr-1 text-teal-400"></i>你的手牌 (<span id="player-nickname-display">玩家</span>)</span>
+                    <button onclick="leaveTable()" class="bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-black px-3 py-1 rounded-xl transition">返回大廳</button>
+                </div>
+                <!-- 玩家手牌 -->
+                <div id="player-tiles" class="flex space-x-1.5 overflow-x-auto py-2">
+                    <!-- 動態渲染手牌 -->
+                </div>
+                <div class="mt-3 flex space-x-3">
+                    <button onclick="simulateDrawAndDiscard()" class="bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white px-6 py-2 rounded-2xl font-black text-sm shadow-lg shadow-orange-500/40 transition">
+                        摸牌 / 出牌
+                    </button>
+                    <button onclick="simulateWinGame()" class="bg-gradient-to-r from-emerald-500 to-teal-600 hover:bg-emerald-600 hover:to-teal-700 text-white px-6 py-2 rounded-2xl font-black text-sm shadow-lg shadow-teal-500/40 transition">
+                        自摸 / 胡牌！
+                    </button>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- 排行榜 Modal -->
+    <div id="ranking-modal" class="fixed inset-0 bg-slate-950/80 hidden items-center justify-center z-50 p-4 backdrop-blur-sm">
+        <div class="bg-white p-6 rounded-3xl shadow-2xl w-full max-w-lg border-4 border-amber-400">
+            <div class="flex justify-between items-center mb-4 border-b pb-3">
+                <h3 class="text-xl font-black text-slate-900 flex items-center"><i class="fa-solid fa-trophy text-amber-500 mr-2"></i>全伺服器富豪排行榜</h3>
+                <button onclick="closeModal('ranking-modal')" class="text-slate-400 hover:text-slate-700 font-black text-lg">✕</button>
+            </div>
+            <div id="ranking-list" class="space-y-2 max-h-80 overflow-y-auto">
+                <!-- 排行榜動態載入 -->
+            </div>
+        </div>
+    </div>
+
+    <!-- 成就徽章 Modal -->
+    <div id="badge-modal" class="fixed inset-0 bg-slate-950/80 hidden items-center justify-center z-50 p-4 backdrop-blur-sm">
+        <div class="bg-white p-6 rounded-3xl shadow-2xl w-full max-w-lg border-4 border-purple-400">
+            <div class="flex justify-between items-center mb-4 border-b pb-3">
+                <h3 class="text-xl font-black text-slate-900 flex items-center"><i class="fa-solid fa-medal text-purple-600 mr-2"></i>我的成就徽章</h3>
+                <button onclick="closeModal('badge-modal')" class="text-slate-400 hover:text-slate-700 font-black text-lg">✕</button>
+            </div>
+            <div class="grid grid-cols-2 gap-4" id="badge-grid">
+                <!-- 成就徽章動態載入 -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase SDKs & 遊戲核心邏輯 -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { getDatabase, ref, set, get, update, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDVY6He4UylPQTNbrqMeF2IjBuxuINAGbs",
+            authDomain: "starmahjong3.firebaseapp.com",
+            projectId: "starmahjong3",
+            storageBucket: "starmahjong3.firebasestorage.app",
+            messagingSenderId: "67800368789",
+            appId: "1:67800368789:web:a8665a8282dd7470d5bd9c",
+            measurementId: "G-7BP46L04JY"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const database = getDatabase(app);
+
+        let currentUser = null;
+        let isRegisterMode = false;
+        let userData = {
+            nickname: "麻將大老千",
+            chips: 100000,
+            lastLoginDate: "",
+            winCount: 0,
+            loginCount: 0,
+            selfDrawCount: 0
+        };
+
+        // 連線狀態監控
+        const connectedRef = ref(database, ".info/connected");
+        onValue(connectedRef, (snap) => {
+            const dot = document.getElementById("conn-dot");
+            const text = document.getElementById("conn-text");
+            if (snap.val() === true) {
+                dot.className = "w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block animate-pulse";
+                text.textContent = "已連線至 Firebase Realtime Database";
+            } else {
+                dot.className = "w-2.5 h-2.5 rounded-full bg-red-500 inline-block";
+                text.textContent = "連線中斷 / 離線";
+            }
+        });
+
+        // 認證狀態變更
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                currentUser = user;
+                document.getElementById("login-screen").classList.add("hidden");
+                document.getElementById("app-screen").classList.remove("hidden");
+                await loadUserData(user.uid);
+            } else {
+                currentUser = null;
+                document.getElementById("login-screen").classList.remove("hidden");
+                document.getElementById("app-screen").classList.add("hidden");
+            }
+        });
+
+        window.toggleAuthMode = function() {
+            isRegisterMode = !isRegisterMode;
+            const nickField = document.getElementById("nickname-field");
+            const submitBtn = document.getElementById("auth-submit-btn");
+            const toggleBtn = document.getElementById("auth-toggle-btn");
+
+            if (isRegisterMode) {
+                nickField.classList.remove("hidden");
+                submitBtn.textContent = "註冊帳號並進入遊戲";
+                toggleBtn.textContent = "已有帳號？點此登入";
+            } else {
+                nickField.classList.add("hidden");
+                submitBtn.textContent = "登入遊戲大廳";
+                toggleBtn.textContent = "沒有帳號？點此註冊新帳號與綽號";
+            }
+        };
+
+        document.getElementById("login-form").addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const email = document.getElementById("login-email").value;
+            const pass = document.getElementById("login-password").value;
+            const errDiv = document.getElementById("login-error");
+            errDiv.classList.add("hidden");
+
+            try {
+                if (isRegisterMode) {
+                    const nickname = document.getElementById("reg-nickname").value.trim() || "麻將新手";
+                    const cred = await createUserWithEmailAndPassword(auth, email, pass);
+                    const todayStr = new Date().toISOString().split('T')[0];
+                    const initialData = {
+                        nickname: nickname,
+                        chips: 100000,
+                        lastLoginDate: todayStr,
+                        winCount: 0,
+                        loginCount: 1,
+                        selfDrawCount: 0
+                    };
+                    await set(ref(database, `users/${cred.user.uid}`), initialData);
+                } else {
+                    await signInWithEmailAndPassword(auth, email, pass);
+                }
+            } catch (err) {
+                errDiv.textContent = "操作失敗: " + err.message;
+                errDiv.classList.remove("hidden");
+            }
+        });
+
+        window.logoutUser = function() {
+            signOut(auth);
+        };
+
+        async function loadUserData(uid) {
+            const userRef = ref(database, `users/${uid}`);
+            const snap = await get(userRef);
+            const todayStr = new Date().toISOString().split('T')[0];
+
+            if (snap.exists()) {
+                userData = snap.val();
+                userData.loginCount = (userData.loginCount || 0) + 1;
+
+                // 檢查是否跨日 00:00 每日自動入金 100,000
+                if (userData.lastLoginDate !== todayStr) {
+                    userData.chips = (userData.chips || 0) + 100000;
+                    userData.lastLoginDate = todayStr;
+                    alert("新的一天開始！系統已自動為您補充 100,000 籌碼！");
+                }
+            } else {
+                userData = {
+                    nickname: currentUser.email.split('@')[0],
+                    chips: 100000,
+                    lastLoginDate: todayStr,
+                    winCount: 0,
+                    loginCount: 1,
+                    selfDrawCount: 0
+                };
+            }
+
+            await set(userRef, userData);
+            updateUI();
+            updateLastSavedTime();
+        }
+
+        function updateUI() {
+            document.getElementById("header-nickname").textContent = userData.nickname;
+            document.getElementById("player-nickname-display").textContent = userData.nickname;
+            document.getElementById("header-chips").textContent = userData.chips.toLocaleString();
+        }
+
+        function updateLastSavedTime() {
+            const now = new Date();
+            const timeStr = now.toLocaleTimeString();
+            document.getElementById("last-saved-time").textContent = timeStr;
+        }
+
+        // 遊戲對戰邏輯
+        let currentStakes = { base: 100, tai: 30 };
+        window.startTable = function(base, tai) {
+            if (userData.chips < base * 10) {
+                alert("您的籌碼不足以進入此桌！請等待明天 00:00 自動補幣。");
+                return;
+            }
+            currentStakes = { base, tai };
+            document.getElementById("lobby-view").classList.add("hidden");
+            document.getElementById("game-view").classList.remove("hidden");
+            document.getElementById("table-stakes-info").textContent = `底台: ${base} / ${tai}`;
+            renderPlayerTiles();
+            triggerActionButtonsAnimation();
+        };
+
+        window.leaveTable = function() {
+            document.getElementById("game-view").classList.add("hidden");
+            document.getElementById("lobby-view").classList.remove("hidden");
+            saveUserDataToFirebase();
+        };
+
+        function renderPlayerTiles() {
+            const container = document.getElementById("player-tiles");
+            container.innerHTML = "";
+            const sampleTiles = ["一萬", "二萬", "三萬", "五索", "六索", "七索", "東風", "東風", "中", "發", "白板", "九筒", "九筒", "二筒"];
+            sampleTiles.forEach(t => {
+                const tileDiv = document.createElement("div");
+                tileDiv.className = "w-10 h-14 bg-amber-50 rounded-xl border-2 border-amber-300 shadow-md flex items-center justify-center text-xs font-black text-slate-900 transform hover:-translate-y-2 transition cursor-pointer";
+                tileDiv.textContent = t;
+                container.appendChild(tileDiv);
+            });
+        }
+
+        // 互動按鈕跳躍動畫 (碰、吃、槓、胡)
+        function triggerActionButtonsAnimation() {
+            const container = document.getElementById("action-buttons-container");
+            container.innerHTML = `
+                <button onclick="performAction('吃')" class="bounce-action bg-blue-600 hover:bg-blue-700 text-white font-black px-4 py-2 rounded-2xl shadow-xl border-2 border-blue-300 text-sm">吃</button>
+                <button onclick="performAction('碰')" class="bounce-action bg-amber-500 hover:bg-amber-600 text-white font-black px-4 py-2 rounded-2xl shadow-xl border-2 border-amber-300 text-sm">碰</button>
+                <button onclick="performAction('槓')" class="bounce-action bg-purple-600 hover:bg-purple-700 text-white font-black px-4 py-2 rounded-2xl shadow-xl border-2 border-purple-300 text-sm">槓</button>
+                <button onclick="performAction('胡')" class="bounce-action bg-red-600 hover:bg-red-700 text-white font-black px-4 py-2 rounded-2xl shadow-xl border-2 border-red-300 text-base animate-pulse">胡啦！</button>
+            `;
+        }
+
+        window.performAction = function(actionName) {
+            alert(`您選擇了【${actionName}】！`);
+            if (actionName === '胡') {
+                simulateWinGame();
+            }
+        };
+
+        window.simulateDrawAndDiscard = function() {
+            document.getElementById("game-status-text").textContent = "摸了一張【紅中】，打出一張【西風】";
+            triggerActionButtonsAnimation();
+        };
+
+        window.simulateWinGame = function() {
+            const winAmount = currentStakes.base * currentStakes.tai * 2;
+            userData.chips += winAmount;
+            userData.winCount = (userData.winCount || 0) + 1;
+            userData.selfDrawCount = (userData.selfDrawCount || 0) + 1;
+            updateUI();
+            saveUserDataToFirebase();
+            alert(`🎉 恭喜胡牌！獲得獎金 +${winAmount.toLocaleString()} 籌碼！`);
+        };
+
+        async function saveUserDataToFirebase() {
+            if (!currentUser) return;
+            const userRef = ref(database, `users/${currentUser.uid}`);
+            await update(userRef, userData);
+            updateLastSavedTime();
+        }
+
+        // 排行榜與徽章 Modal
+        window.openModal = async function(modalId) {
+            document.getElementById(modalId).classList.remove("hidden");
+            document.getElementById(modalId).classList.add("flex");
+            if (modalId === 'ranking-modal') {
+                await loadRankingList();
+            } else if (modalId === 'badge-modal') {
+                loadBadges();
+            }
+        };
+
+        window.closeModal = function(modalId) {
+            document.getElementById(modalId).classList.remove("flex");
+            document.getElementById(modalId).classList.add("hidden");
+        };
+
+        async function loadRankingList() {
+            const usersRef = ref(database, 'users');
+            const snap = await get(usersRef);
+            const listContainer = document.getElementById("ranking-list");
+            listContainer.innerHTML = "";
+
+            if (snap.exists()) {
+                const usersObj = snap.val();
+                const usersArr = Object.values(usersObj).sort((a, b) => b.chips - a.chips);
+
+                usersArr.forEach((u, idx) => {
+                    const row = document.createElement("div");
+                    row.className = "flex justify-between items-center p-3 bg-slate-100 rounded-2xl font-bold text-sm";
+                    row.innerHTML = `
+                        <div class="flex items-center space-x-3">
+                            <span class="w-7 h-7 rounded-full bg-amber-400 text-slate-950 flex items-center justify-center font-black text-xs">${idx + 1}</span>
+                            <span class="text-slate-800">${u.nickname}</span>
+                        </div>
+                        <span class="text-emerald-600 font-black">${(u.chips || 0).toLocaleString()} 籌碼</span>
+                    `;
+                    listContainer.appendChild(row);
+                });
+            }
+        }
+
+        function loadBadges() {
+            const grid = document.getElementById("badge-grid");
+            const wins = userData.winCount || 0;
+            const logins = userData.loginCount || 0;
+            const selfDraws = userData.selfDrawCount || 0;
+
+            const badges = [
+                { name: "初試啼聲", desc: "胡牌達 1 次", unlocked: wins >= 1, icon: "fa-star" },
+                { name: "雀神降臨", desc: "胡牌達 5 次", unlocked: wins >= 5, icon: "fa-crown" },
+                { name: "天天登入", desc: "登入達 3 次", unlocked: logins >= 3, icon: "fa-calendar-check" },
+                { name: "自摸高手", desc: "自摸達 3 次", unlocked: selfDraws >= 3, icon: "fa-hand-sparkles" }
+            ];
+
+            grid.innerHTML = badges.map(b => `
+                <div class="p-4 rounded-2xl border-2 ${b.unlocked ? 'border-amber-400 bg-amber-50/50' : 'border-slate-200 bg-slate-50 opacity-50'} flex flex-col items-center text-center">
+                    <div class="w-12 h-12 rounded-2xl ${b.unlocked ? 'bg-amber-500 text-white shadow-lg' : 'bg-slate-300 text-slate-500'} flex items-center justify-center text-xl mb-2">
+                        <i class="fa-solid ${b.icon}"></i>
+                    </div>
+                    <h4 class="font-black text-slate-900 text-sm">${b.name}</h4>
+                    <p class="text-[11px] text-slate-500 font-bold mt-0.5">${b.desc}</p>
+                    <span class="text-[10px] font-extrabold mt-2 px-2 py-0.5 rounded-full ${b.unlocked ? 'bg-emerald-100 text-emerald-700' : 'bg-slate-200 text-slate-600'}">${b.unlocked ? '已解鎖' : '未解鎖'}</span>
+                </div>
+            `).join('');
+        }
+    </script>
+</body>
+</html>
