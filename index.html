@@ -52,6 +52,62 @@
         .tile-blue { color: #2563eb !important; }
         .tile-dark { color: #0f172a !important; }
 
+        /* 傳統麻將圖示樣式 (筒子餅狀、條子竹節、白板方框) */
+        .mahjong-circle-icon {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2px;
+            padding: 2px;
+            background: #dbeafe;
+            border: 2px solid #2563eb;
+            border-radius: 50%;
+            width: 38px;
+            height: 38px;
+            align-items: center;
+            justify-items: center;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
+        }
+        .mahjong-dot-item {
+            width: 10px;
+            height: 10px;
+            background: #dc2626;
+            border-radius: 50%;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.4);
+        }
+        .mahjong-dot-item.center-green {
+            background: #16a34a;
+        }
+
+        .mahjong-bamboo-icon {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            padding: 3px 6px;
+            background: #dcfce7;
+            border: 2px solid #16a34a;
+            border-radius: 6px;
+            width: 36px;
+            height: 48px;
+            align-items: center;
+            justify-content: center;
+        }
+        .mahjong-bamboo-line {
+            width: 6px;
+            height: 10px;
+            background: #16a34a;
+            border-radius: 3px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.3);
+        }
+
+        .mahjong-white-board {
+            width: 36px;
+            height: 48px;
+            background: #ffffff;
+            border: 3px solid #94a3b8;
+            border-radius: 6px;
+            box-shadow: inset 0 0 8px rgba(37, 99, 235, 0.4);
+        }
+
         /* 海底牌河極致寬大專用精緻麻將 */
         .mahjong-tile-river-real {
             width: 52px;
@@ -107,14 +163,11 @@
             transform: scale(1.35);
         }
 
-        /* 超大型動態箭頭與閃爍指示框 */
-        @keyframes giantPulse {
-            0%, 100% { transform: scale(1); box-shadow: 0 0 20px #ef4444; border-color: #ef4444; }
-            50% { transform: scale(1.05); box-shadow: 0 0 45px #f87171; border-color: #f87171; }
-        }
+        /* 穩定全框發光特效 (不晃動) */
         .turn-active-glow {
-            animation: giantPulse 0.8s infinite ease-in-out;
-            background-color: rgba(239, 68, 68, 0.15);
+            border-color: #ef4444 !important;
+            box-shadow: 0 0 35px rgba(239, 68, 68, 0.9), inset 0 0 15px rgba(239, 68, 68, 0.5) !important;
+            background-color: rgba(239, 68, 68, 0.12);
         }
     </style>
 </head>
@@ -129,7 +182,7 @@
                     <i class="fa-solid fa-dice-one"></i>
                 </div>
                 <h2 class="text-3xl font-black text-slate-900 tracking-tight">明星三缺一 4人爆笑版</h2>
-                <p class="text-sm text-slate-500 mt-1 font-bold">真實麻將花色，巨型動態箭頭指引！</p>
+                <p class="text-sm text-slate-500 mt-1 font-bold">真實傳統花色，穩定發光指示！</p>
             </div>
             <form id="login-form" class="space-y-4">
                 <div id="nickname-field" class="hidden">
@@ -166,7 +219,7 @@
             <div class="flex items-center space-x-3">
                 <div class="bg-amber-500 text-slate-950 w-10 h-10 rounded-xl flex items-center justify-center text-xl font-black shadow-md">麻</div>
                 <div>
-                    <h1 class="text-lg font-black text-amber-400 tracking-wider">明星三缺一 | 4人真實花色對決</h1>
+                    <h1 class="text-lg font-black text-amber-400 tracking-wider">明星三缺一 | 4人傳統花色對決</h1>
                     <p class="text-[10px] text-slate-400 font-bold">玩家: <span id="header-nickname" class="text-white">載入中...</span></p>
                 </div>
             </div>
@@ -235,7 +288,7 @@
             </div>
         </div>
 
-        <!-- 滿版 4 人對戰麻將桌介面 (極致寬大海底 + 巨大動態指示箭頭) -->
+        <!-- 滿版 4 人對戰麻將桌介面 (極致寬大海底 + 穩定全框發光指示) -->
         <div id="game-view" class="hidden flex-1 relative p-2 sm:p-4 flex flex-col justify-between select-none table-felt-bg overflow-hidden">
             
             <!-- 上方對手 (對家 AI) -->
@@ -253,7 +306,7 @@
                             <div class="text-sm text-slate-200 font-bold mt-1">籌碼: <span class="text-amber-400 font-black">98,000</span></div>
                         </div>
                         <!-- 巨大動態箭頭 -->
-                        <div id="arrow-2" class="hidden bg-red-600 text-white px-3 py-1 rounded-2xl text-xl font-black animate-bounce shadow-lg border-2 border-yellow-300">⬇️ 換他出牌</div>
+                        <div id="arrow-2" class="hidden bg-red-600 text-white px-3 py-1 rounded-2xl text-xl font-black shadow-lg border-2 border-yellow-300">⬇️ 換他出牌</div>
                     </div>
                 </div>
                 <div id="ai-top-tiles" class="flex space-x-1.5 mt-1.5"></div>
@@ -272,7 +325,7 @@
                     <span class="text-white text-lg font-black">上家 ➔ 雀后小莉 (AI)</span>
                     <span class="text-sm text-amber-400 font-extrabold mb-1">105,000 籌碼</span>
                     <!-- 巨大動態箭頭 -->
-                    <div id="arrow-3" class="hidden bg-red-600 text-white px-3 py-1 rounded-2xl text-base font-black animate-bounce shadow-lg border-2 border-yellow-300">➡️ 換他</div>
+                    <div id="arrow-3" class="hidden bg-red-600 text-white px-3 py-1 rounded-2xl text-base font-black shadow-lg border-2 border-yellow-300">➡️ 換他</div>
                 </div>
 
                 <!-- 中央牌桌資訊與【極致寬跟大】的海底牌河 -->
@@ -299,14 +352,14 @@
                     <span class="text-white text-lg font-black">下家 ➔ 賭神大飛 (AI)</span>
                     <span class="text-sm text-amber-400 font-extrabold mb-1">92,000 籌碼</span>
                     <!-- 巨大動態箭頭 -->
-                    <div id="arrow-1" class="hidden bg-red-600 text-white px-3 py-1 rounded-2xl text-base font-black animate-bounce shadow-lg border-2 border-yellow-300">⬅️ 換他</div>
+                    <div id="arrow-1" class="hidden bg-red-600 text-white px-3 py-1 rounded-2xl text-base font-black shadow-lg border-2 border-yellow-300">⬅️ 換他</div>
                 </div>
             </div>
 
             <!-- 吃碰槓動作按鈕區 -->
             <div id="action-buttons-container" class="absolute bottom-48 left-1/2 transform -translate-x-1/2 flex space-x-4 z-30"></div>
 
-            <!-- 下方玩家手牌區 (真實麻將花色 + 玩家回合巨大箭頭) -->
+            <!-- 下方玩家手牌區 (傳統麻將圖示 + 穩定發光外框) -->
             <div id="avatar-box-0" class="glass-panel p-3 sm:p-4 rounded-3xl shadow-2xl z-20 relative flex items-center justify-between border-4 border-amber-500/50 bg-slate-950/90 transition-all duration-300">
                 <div class="flex items-center space-x-4 bg-slate-900/90 px-5 py-2.5 rounded-3xl border-2 border-amber-400 shadow-xl shrink-0">
                     <div class="avatar-player-box">
@@ -317,12 +370,12 @@
                             <div class="text-amber-300 text-base font-black">玩家: <span id="player-nickname-display" class="text-white text-xl">賭神高進</span></div>
                             <div class="text-xs text-emerald-400 font-bold mt-0.5">🔥 手氣發爐中 🔥</div>
                         </div>
-                        <!-- 玩家巨大動態箭頭 -->
-                        <div id="arrow-0" class="hidden bg-red-600 text-white px-3.5 py-1.5 rounded-2xl text-lg font-black animate-bounce shadow-xl border-2 border-yellow-300">⬆️ 【換你出牌】</div>
+                        <!-- 玩家穩定發光箭頭 -->
+                        <div id="arrow-0" class="hidden bg-red-600 text-white px-3.5 py-1.5 rounded-2xl text-lg font-black shadow-xl border-2 border-yellow-300">⬆️ 【換你出牌】</div>
                     </div>
                 </div>
 
-                <!-- 滿版貼邊真實花色手牌區 -->
+                <!-- 滿版貼邊傳統圖示手牌區 -->
                 <div id="player-tiles" class="flex space-x-1.5 overflow-x-auto py-1 px-2 flex-1 justify-center items-center"></div>
 
                 <!-- 控制按鈕區 -->
@@ -365,7 +418,7 @@
         </div>
     </div>
 
-    <!-- Firebase SDKs & 真人語音與真實麻將花色邏輯 -->
+    <!-- Firebase SDKs & 真人語音與傳統麻將圖示邏輯 -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
@@ -611,7 +664,7 @@
             saveUserDataToFirebase();
         };
 
-        // --- 更新目前回合的巨大動態箭頭與閃爍外框 ---
+        // --- 更新目前回合的穩定發光外框指示器 ---
         function updateTurnIndicator() {
             for (let i = 0; i <= 3; i++) {
                 const box = document.getElementById(`avatar-box-${i}`);
@@ -659,34 +712,41 @@
             checkPlayerActions();
         }
 
-        // --- 真實麻將精緻花色 HTML 產生器 ---
+        // --- 傳統麻將精緻圖示與花色產生器 (完美呈現萬、筒、條、字牌) ---
         function createTileHtml(code) {
             const num = code[0];
             const type = code[1];
-            let numText = num;
-            let suitText = '';
-            let colorClass = 'tile-dark';
 
             if (type === 'm') {
-                suitText = '萬';
-                colorClass = 'tile-red';
                 const chineseNums = {'1':'一','2':'二','3':'三','4':'四','5':'五','6':'六','7':'七','8':'八','9':'九'};
-                numText = chineseNums[num] || num;
+                return `<span class="tile-number tile-red">${chineseNums[num] || num}</span><span class="tile-suit tile-red">萬</span>`;
             } else if (type === 'p') {
-                suitText = '筒';
-                colorClass = 'tile-blue';
+                const n = parseInt(num);
+                let dotsHtml = '';
+                for (let i = 0; i < n; i++) {
+                    dotsHtml += `<div class="mahjong-dot-item ${i % 2 === 1 ? 'center-green' : ''}"></div>`;
+                }
+                return `<div class="mahjong-circle-icon">${dotsHtml}</div><span class="tile-suit tile-blue" style="font-size:0.7rem; margin-top:2px;">${num}筒</span>`;
             } else if (type === 's') {
-                suitText = '條';
-                colorClass = 'tile-green';
+                const n = parseInt(num);
+                let bambooLines = '';
+                for (let i = 0; i < Math.min(n, 3); i++) {
+                    bambooLines += `<div class="mahjong-bamboo-line"></div>`;
+                }
+                return `<div class="mahjong-bamboo-icon">${bambooLines}</div><span class="tile-suit tile-green" style="font-size:0.7rem; margin-top:2px;">${num}條</span>`;
             } else if (type === 'z') {
-                suitText = '';
+                if (num === '7') {
+                    // 白板：純白方框
+                    return `<div class="mahjong-white-board"></div>`;
+                }
                 const winds = ['東', '南', '西', '北', '中', '發', '白'];
-                numText = winds[parseInt(num) - 1];
+                const txt = winds[parseInt(num) - 1];
+                let colorClass = 'tile-dark';
                 if (num === '5') colorClass = 'tile-red'; // 中
                 else if (num === '6') colorClass = 'tile-green'; // 發
-                else if (num === '7') colorClass = 'tile-blue'; // 白
+                return `<span class="tile-number ${colorClass}">${txt}</span>`;
             }
-            return `<span class="tile-number ${colorClass}">${numText}</span><span class="tile-suit ${colorClass}">${suitText}</span>`;
+            return `<span class="tile-number tile-dark">${code}</span>`;
         }
 
         function formatTileName(code) {
@@ -763,17 +823,27 @@
             river.innerHTML = allDiscards.map(t => {
                 const num = t[0];
                 const type = t[1];
-                let numText = num;
-                let suitText = type === 'm' ? '萬' : type === 'p' ? '筒' : type === 's' ? '條' : '';
-                let colorClass = type === 'm' ? 'tile-red' : type === 'p' ? 'tile-blue' : type === 's' ? 'tile-green' : 'tile-dark';
-                if (type === 'z') {
-                    const winds = ['東', '南', '西', '北', '中', '發', '白'];
-                    numText = winds[parseInt(num) - 1];
-                    if (num === '5') colorClass = 'tile-red';
-                    else if (num === '6') colorClass = 'tile-green';
-                    else if (num === '7') colorClass = 'tile-blue';
+                let innerHtml = '';
+                if (type === 'm') {
+                    const chineseNums = {'1':'一','2':'二','3':'三','4':'四','5':'五','6':'六','7':'七','8':'八','9':'九'};
+                    innerHtml = `<span class="river-num tile-red">${chineseNums[num] || num}</span><span class="river-suit tile-red">萬</span>`;
+                } else if (type === 'p') {
+                    innerHtml = `<div class="mahjong-circle-icon" style="width:24px;height:24px;"><div class="mahjong-dot-item" style="width:6px;height:6px;"></div></div><span class="river-suit tile-blue" style="font-size:0.6rem;">${num}筒</span>`;
+                } else if (type === 's') {
+                    innerHtml = `<div class="mahjong-bamboo-icon" style="width:22px;height:30px;padding:2px;"><div class="mahjong-bamboo-line" style="width:4px;height:6px;"></div></div><span class="river-suit tile-green" style="font-size:0.6rem;">${num}條</span>`;
+                } else if (type === 'z') {
+                    if (num === '7') {
+                        innerHtml = `<div class="mahjong-white-board" style="width:24px;height:32px;"></div>`;
+                    } else {
+                        const winds = ['東', '南', '西', '北', '中', '發', '白'];
+                        const txt = winds[parseInt(num) - 1];
+                        let c = 'tile-dark';
+                        if (num === '5') c = 'tile-red';
+                        else if (num === '6') c = 'tile-green';
+                        innerHtml = `<span class="river-num ${c}" style="font-size:1.1rem;">${txt}</span>`;
+                    }
                 }
-                return `<div class="mahjong-tile-river-real"><span class="river-num ${colorClass}">${numText}</span><span class="river-suit ${colorClass}">${suitText}</span></div>`;
+                return `<div class="mahjong-tile-river-real">${innerHtml}</div>`;
             }).join('');
         }
 
