@@ -293,7 +293,7 @@
 
                 <!-- 控制按鈕區 -->
                 <div class="flex flex-col space-y-2 ml-3 shrink-0">
-                    <button onclick="playerDrawAndPlay()" class="btn-star-gold px-6 py-3 rounded-2xl font-black text-base transition shadow-lg">
+                    <button id="draw-btn" onclick="playerDrawAndPlay()" class="btn-star-gold px-6 py-3 rounded-2xl font-black text-base transition shadow-lg">
                         摸牌 / 出牌
                     </button>
                     <button onclick="playerDeclareWin()" class="btn-star-red px-6 py-3 rounded-2xl font-black text-base transition win-text-glow shadow-lg">
@@ -356,6 +356,7 @@
         let currentUser = null;
         let isRegisterMode = false;
         let soundEnabled = true;
+        let hasDrawnThisTurn = false; // 回合摸牌鎖定狀態
         let userData = {
             nickname: "麻將大老千",
             chips: 100000,
@@ -365,15 +366,29 @@
             selfDrawCount: 0
         };
 
-        // --- 真人語音發音引擎 (最佳化真人語氣與高音調) ---
+        // --- 高品質真人語音合成引擎 (支援真人語調、情緒起伏與語音庫篩選) ---
+        let naturalVoice = null;
+        function initVoices() {
+            if ('speechSynthesis' in window) {
+                const voices = window.speechSynthesis.getVoices();
+                // 優先選擇中文真人語音
+                naturalVoice = voices.find(v => v.lang.includes('zh') || v.lang.includes('TW') || v.lang.includes('CN')) || voices[0];
+            }
+        }
+        if ('speechSynthesis' in window) {
+            window.speechSynthesis.onvoiceschanged = initVoices;
+            initVoices();
+        }
+
         function speakVoice(text) {
             if (!soundEnabled) return;
             if ('speechSynthesis' in window) {
                 window.speechSynthesis.cancel();
                 const utterance = new SpeechSynthesisUtterance(text);
+                if (naturalVoice) utterance.voice = naturalVoice;
                 utterance.lang = 'zh-TW';
-                utterance.pitch = 1.25; // 更有活力與真人情感
-                utterance.rate = 1.15;  // 語速明快
+                utterance.pitch = 1.15; // 模擬真人街機活潑高音
+                utterance.rate = 1.2;   // 語速明快
                 window.speechSynthesis.speak(utterance);
             }
         }
@@ -549,8 +564,9 @@
             document.getElementById("table-stakes-info").textContent = `底台: ${base} / ${tai}`;
 
             mahjongGame.deal();
+            hasDrawnThisTurn = false; // 新局開始重置摸牌狀態
             renderGameTable();
-            speakVoice("牌局開始，請出牌！");
+            speakVoice("牌局開始，請摸牌！");
         };
 
         window.leaveTable = function() {
@@ -576,6 +592,16 @@
             document.getElementById("ai-top-tiles").innerHTML = mahjongGame.players[2].map(() => `<div class="w-6 h-9 bg-amber-100 rounded border border-slate-400 shadow"></div>`).join('');
             document.getElementById("tiles-left").textContent = mahjongGame.deck.length;
 
+            // 控制摸牌按鈕狀態
+            const drawBtn = document.getElementById("draw-btn");
+            if (hasDrawnThisTurn) {
+                drawBtn.disabled = true;
+                drawBtn.classList.add("opacity-50", "cursor-not-allowed");
+            } else {
+                drawBtn.disabled = false;
+                drawBtn.classList.remove("opacity-50", "cursor-not-allowed");
+            }
+
             checkPlayerActions();
         }
 
@@ -593,6 +619,10 @@
         }
 
         window.playerDrawAndPlay = function() {
+            if (hasDrawnThisTurn) {
+                alert("您已經摸過牌了，請先打出一張牌！");
+                return;
+            }
             playSound('click');
             const drawn = mahjongGame.drawTile(0);
             if (!drawn) {
@@ -600,12 +630,18 @@
                 leaveTable();
                 return;
             }
-            document.getElementById("game-status-text").textContent = `摸了一張【${formatTileName(drawn)}】，請點擊手牌打出一張`;
+            hasDrawnThisTurn = true; // 鎖定必須出牌
+            const tileName = formatTileName(drawn);
+            document.getElementById("game-status-text").textContent = `摸了一張【${tileName}】，請點擊手牌打出一張`;
             renderGameTable();
-            speakVoice(formatTileName(drawn));
+            speakVoice(tileName);
         };
 
         function playerDiscardTile(index) {
+            if (!hasDrawnThisTurn) {
+                alert("請先點擊「摸牌 / 出牌」摸一張牌後才能出牌！");
+                return;
+            }
             playSound('click');
             const playerHand = mahjongGame.players[0];
             const discarded = playerHand.splice(index, 1)[0];
@@ -614,9 +650,12 @@
             mahjongGame.discards[0].push(discarded);
             updateDiscardsRiver();
 
-            document.getElementById("game-status-text").textContent = `你打出了【${formatTileName(discarded)}】，等待其他對手反應...`;
+            const tileName = formatTileName(discarded);
+            document.getElementById("game-status-text").textContent = `你打出了【${tileName}】，等待其他對手反應...`;
+            
+            hasDrawnThisTurn = false; // 解除鎖定，準備進入下一次摸牌
             renderGameTable();
-            speakVoice(formatTileName(discarded)); // 喊出打出的牌
+            speakVoice(tileName); // 玩家本人丟牌朗讀牌名
 
             setTimeout(() => {
                 aiTurnAction();
@@ -642,8 +681,9 @@
                 updateDiscardsRiver();
                 
                 const names = ["", "上家 ➔ 雀后小莉", "對家 ➔ 賭俠阿強", "下家 ➔ 賭神大飛"];
-                document.getElementById("game-status-text").textContent = `${names[aiIdx]} 打出了【${formatTileName(aiDiscard)}】`;
-                speakVoice(formatTileName(aiDiscard)); // 喊出 AI 打出的牌
+                const tileName = formatTileName(aiDiscard);
+                document.getElementById("game-status-text").textContent = `${names[aiIdx]} 打出了【${tileName}】`;
+                speakVoice(tileName); // AI 丟牌朗讀牌名
                 triggerAiSpeech(aiIdx);
             }
         }
