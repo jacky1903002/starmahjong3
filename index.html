@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>明星三缺一 - 爆笑麻將大對決</title>
+    <title>明星三缺一 - 真人四人爆笑麻將大對決</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome Icons -->
@@ -13,7 +13,7 @@
     <!-- 外部樣式檔 -->
     <link rel="stylesheet" href="style.css">
     <style>
-        /* 滿版拉長麻將牌專屬 CSS (貼近深色邊框) */
+        /* 滿版貼邊巨型麻將牌 (高度 120px) */
         .mahjong-tile-full {
             width: 76px;
             height: 120px;
@@ -40,11 +40,11 @@
             border-color: #fbbf24;
         }
 
-        /* 桌面牌河中型牌 */
+        /* 經典《明星三缺一》鋪平式海底牌河：中型擬真麻將 */
         .mahjong-tile-river {
-            width: 46px;
-            height: 64px;
-            font-size: 1.4rem;
+            width: 48px;
+            height: 66px;
+            font-size: 1.45rem;
             background: linear-gradient(135deg, #ffffff 0%, #fef3c7 100%);
             border: 2px solid #f59e0b;
             border-bottom: 5px solid #d97706;
@@ -54,10 +54,10 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.4);
         }
 
-        /* 巨無霸真人頭貼 (128px - 臉部特寫滿版填滿圓圈) */
+        /* 滿版特寫真人頭貼 (128px) */
         .avatar-box-giant {
             width: 128px;
             height: 128px;
@@ -73,10 +73,10 @@
             height: 100%;
             object-fit: cover;
             object-position: center top;
-            transform: scale(1.35); /* 放大特寫臉部 */
+            transform: scale(1.35);
         }
 
-        /* 玩家個人特寫大頭貼 (110px) */
+        /* 玩家特寫頭貼 (110px) */
         .avatar-player-box {
             width: 110px;
             height: 110px;
@@ -105,8 +105,8 @@
                 <div class="bg-gradient-to-r from-amber-500 to-orange-500 text-white w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-3 text-4xl shadow-lg shadow-orange-500/40 animate-bounce">
                     <i class="fa-solid fa-dice-one"></i>
                 </div>
-                <h2 class="text-3xl font-black text-slate-900 tracking-tight">明星三缺一爆笑版</h2>
-                <p class="text-sm text-slate-500 mt-1 font-bold">特寫大頭，滿版貼邊！</p>
+                <h2 class="text-3xl font-black text-slate-900 tracking-tight">明星三缺一 4人爆笑版</h2>
+                <p class="text-sm text-slate-500 mt-1 font-bold">真人語音，隨時開桌！</p>
             </div>
             <form id="login-form" class="space-y-4">
                 <div id="nickname-field" class="hidden">
@@ -143,7 +143,7 @@
             <div class="flex items-center space-x-3">
                 <div class="bg-amber-500 text-slate-950 w-10 h-10 rounded-xl flex items-center justify-center text-xl font-black shadow-md">麻</div>
                 <div>
-                    <h1 class="text-lg font-black text-amber-400 tracking-wider">明星三缺一 | 滿版大牌對決</h1>
+                    <h1 class="text-lg font-black text-amber-400 tracking-wider">明星三缺一 | 4人真人對決</h1>
                     <p class="text-[10px] text-slate-400 font-bold">玩家: <span id="header-nickname" class="text-white">載入中...</span></p>
                 </div>
             </div>
@@ -153,7 +153,7 @@
                     <i class="fa-solid fa-coins mr-1.5 text-yellow-400"></i>籌碼: <span id="header-chips" class="text-white ml-1 text-sm font-black">100,000</span>
                 </div>
                 <button onclick="toggleAudio()" id="audio-toggle-btn" class="bg-slate-800 hover:bg-slate-700 text-amber-400 px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center">
-                    <i class="fa-solid fa-volume-high mr-1"></i>人聲音效: 開
+                    <i class="fa-solid fa-volume-high mr-1"></i>真實人聲: 開
                 </button>
                 <button onclick="toggleFullScreen()" class="bg-amber-500 hover:bg-amber-600 text-slate-950 px-3 py-1.5 rounded-xl text-xs font-black transition flex items-center shadow">
                     <i class="fa-solid fa-expand mr-1"></i>全螢幕 (ESC還原)
@@ -212,61 +212,62 @@
             </div>
         </div>
 
-        <!-- 滿版麻將桌對戰介面 (含 128px 滿版特寫真人頭貼) -->
+        <!-- 滿版 4 人對戰麻將桌介面 (含特寫頭貼與特大鋪平海底) -->
         <div id="game-view" class="hidden flex-1 relative p-2 sm:p-4 flex flex-col justify-between select-none table-felt-bg overflow-hidden">
             
-            <!-- 上方對手 (對家) 與 128px 特寫滿版頭貼 -->
+            <!-- 上方對手 (對家 AI) -->
             <div class="flex flex-col items-center z-20 mt-1">
                 <div class="flex items-center space-x-5 bg-slate-900/95 px-6 py-2 rounded-3xl border-4 border-amber-400 shadow-2xl relative">
                     <div class="relative">
                         <div class="avatar-box-giant avatar-float">
-                            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80" alt="對家滿版頭貼">
+                            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80" alt="對家頭貼">
                         </div>
                         <div id="ai-top-speech" class="absolute -bottom-10 left-1/2 transform -translate-x-1/2 bg-yellow-300 text-slate-950 text-base font-black px-4 py-1.5 rounded-2xl shadow-2xl whitespace-nowrap hidden border-2 border-amber-500 animate-bounce">哈哈！我胡啦！</div>
                     </div>
                     <div class="text-lg font-black text-amber-300">
-                        <div class="text-xl text-white">對家 ➔ 賭俠阿強</div>
+                        <div class="text-xl text-white">對家 ➔ 賭俠阿強 (AI)</div>
                         <div class="text-sm text-slate-200 font-bold mt-1">籌碼: <span class="text-amber-400 font-black">98,000</span></div>
                     </div>
                 </div>
                 <div id="ai-top-tiles" class="flex space-x-1.5 mt-1.5"></div>
             </div>
 
-            <!-- 左右對手與中央牌河區 -->
+            <!-- 左右對手與中央超大鋪平海底牌河區 -->
             <div class="flex justify-between items-center my-auto px-6 z-10">
-                <!-- 左方對手 (上家) 與滿版頭貼 -->
+                <!-- 左方對手 (上家 AI) -->
                 <div class="flex flex-col items-center bg-slate-900/95 p-4 rounded-3xl border-4 border-amber-400 shadow-2xl relative">
                     <div class="relative mb-2">
                         <div class="avatar-box-giant avatar-float">
-                            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=300&q=80" alt="上家滿版頭貼">
+                            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=300&q=80" alt="上家頭貼">
                         </div>
                         <div id="ai-left-speech" class="absolute left-32 top-2 bg-yellow-300 text-slate-950 text-base font-black px-4 py-1.5 rounded-2xl shadow-2xl whitespace-nowrap hidden border-2 border-amber-500">哎呀！放槍了！</div>
                     </div>
-                    <span class="text-white text-lg font-black">上家 ➔ 雀后小莉</span>
+                    <span class="text-white text-lg font-black">上家 ➔ 雀后小莉 (AI)</span>
                     <span class="text-sm text-amber-400 font-extrabold">105,000 籌碼</span>
                 </div>
 
-                <!-- 中央牌桌資訊與大字體牌河 -->
-                <div class="glass-panel p-5 rounded-3xl text-center shadow-2xl max-w-2xl w-full mx-4 flex flex-col items-center border-4 border-amber-500/50">
+                <!-- 中央牌桌資訊與經典鋪平式海底牌河 (加大面積) -->
+                <div class="glass-panel p-5 rounded-3xl text-center shadow-2xl max-w-3xl w-full mx-4 flex flex-col items-center border-4 border-amber-500/50">
                     <div class="flex justify-between w-full text-amber-300 text-base font-black mb-1">
                         <span id="table-stakes-info">底台: 100 / 30</span>
                         <span>剩餘牌數: <span id="tiles-left" class="text-white font-black text-lg">56</span> 張</span>
                     </div>
                     <div class="text-2xl font-black text-amber-200 my-1 animate-pulse" id="game-status-text">牌局開始！請摸牌或出牌</div>
-                    <div class="w-full bg-slate-950/80 h-28 rounded-2xl p-2.5 border-2 border-amber-500/40 overflow-y-auto flex flex-wrap gap-2 justify-center items-center shadow-inner" id="discards-river">
-                        <span class="text-sm text-slate-400 font-bold">牌河尚無打出之牌</span>
+                    <!-- 海底牌河：全面鋪平展開 -->
+                    <div class="w-full bg-slate-950/85 h-36 rounded-2xl p-3 border-2 border-amber-500/40 overflow-y-auto flex flex-wrap gap-2 justify-center items-center shadow-inner" id="discards-river">
+                        <span class="text-sm text-slate-400 font-bold">海底牌河尚無打出之牌</span>
                     </div>
                 </div>
 
-                <!-- 右方對手 (下家) 與滿版頭貼 -->
+                <!-- 右方對手 (下家 AI) -->
                 <div class="flex flex-col items-center bg-slate-900/95 p-4 rounded-3xl border-4 border-amber-400 shadow-2xl relative">
                     <div class="relative mb-2">
                         <div class="avatar-box-giant avatar-float">
-                            <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=300&q=80" alt="下家滿版頭貼">
+                            <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=300&q=80" alt="下家頭貼">
                         </div>
                         <div id="ai-right-speech" class="absolute right-32 top-2 bg-yellow-300 text-slate-950 text-base font-black px-4 py-1.5 rounded-2xl shadow-2xl whitespace-nowrap hidden border-2 border-amber-500">摸好牌啦！</div>
                     </div>
-                    <span class="text-white text-lg font-black">下家 ➔ 賭神大飛</span>
+                    <span class="text-white text-lg font-black">下家 ➔ 賭神大飛 (AI)</span>
                     <span class="text-sm text-amber-400 font-extrabold">92,000 籌碼</span>
                 </div>
             </div>
@@ -278,7 +279,7 @@
             <div class="glass-panel p-3 sm:p-4 rounded-3xl shadow-2xl z-20 relative flex items-center justify-between border-4 border-amber-500/50 bg-slate-950/90">
                 <div class="flex items-center space-x-4 bg-slate-900/90 px-5 py-2 rounded-3xl border-2 border-amber-400 shadow-xl shrink-0">
                     <div class="avatar-player-box">
-                        <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=300&q=80" alt="玩家滿版頭貼">
+                        <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=300&q=80" alt="玩家頭貼">
                     </div>
                     <div>
                         <div class="text-amber-300 text-base font-black">玩家: <span id="player-nickname-display" class="text-white text-xl">賭神高進</span></div>
@@ -329,7 +330,7 @@
         </div>
     </div>
 
-    <!-- Firebase SDKs & 爆笑遊戲核心邏輯 -->
+    <!-- Firebase SDKs & 真人語音與 4 人對戰核心邏輯 -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
@@ -363,6 +364,19 @@
             selfDrawCount: 0
         };
 
+        // --- 真人語音合成引擎 (Web Speech API + Web Audio 雙效支援) ---
+        function speakVoice(text) {
+            if (!soundEnabled) return;
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel(); // 立即中斷前一句
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = 'zh-TW';
+                utterance.pitch = 1.2; // 調整生動高音
+                utterance.rate = 1.1;  // 語速明快
+                window.speechSynthesis.speak(utterance);
+            }
+        }
+
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         function playSound(type) {
             if (!soundEnabled) return;
@@ -377,12 +391,6 @@
                 gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
                 gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.05);
                 osc.start(); osc.stop(audioCtx.currentTime + 0.05);
-            } else if (type === 'action') {
-                osc.frequency.setValueAtTime(300, audioCtx.currentTime);
-                osc.frequency.exponentialRampToValueAtTime(700, audioCtx.currentTime + 0.1);
-                gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.15);
-                osc.start(); osc.stop(audioCtx.currentTime + 0.15);
             } else if (type === 'win') {
                 const now = audioCtx.currentTime;
                 [400, 550, 700, 900, 1200].forEach((freq, idx) => {
@@ -394,24 +402,12 @@
                     g.gain.exponentialRampToValueAtTime(0.01, now + idx * 0.08 + 0.2);
                     o.start(now + idx * 0.08); o.stop(now + idx * 0.08 + 0.2);
                 });
-            } else if (type === 'laugh') {
-                const now = audioCtx.currentTime;
-                [350, 450, 350, 500].forEach((freq, idx) => {
-                    const o = audioCtx.createOscillator();
-                    const g = audioCtx.createGain();
-                    o.connect(g); g.connect(audioCtx.destination);
-                    o.type = 'sawtooth';
-                    o.frequency.value = freq;
-                    g.gain.setValueAtTime(0.1, now + idx * 0.1);
-                    g.gain.exponentialRampToValueAtTime(0.01, now + idx * 0.1 + 0.1);
-                    o.start(now + idx * 0.1); o.stop(now + idx * 0.1 + 0.1);
-                });
             }
         }
 
         window.toggleAudio = function() {
             soundEnabled = !soundEnabled;
-            document.getElementById("audio-toggle-btn").innerHTML = `<i class="fa-solid fa-volume-${soundEnabled ? 'high' : 'xmark'} mr-1"></i>人聲音效: ${soundEnabled ? '開' : '關'}`;
+            document.getElementById("audio-toggle-btn").innerHTML = `<i class="fa-solid fa-volume-${soundEnabled ? 'high' : 'xmark'} mr-1"></i>真實人聲: ${soundEnabled ? '開' : '關'}`;
         };
 
         window.toggleFullScreen = function() {
@@ -553,6 +549,7 @@
 
             mahjongGame.deal();
             renderGameTable();
+            speakVoice("牌局開始，請出牌！");
         };
 
         window.leaveTable = function() {
@@ -615,26 +612,27 @@
             mahjongGame.discards[0].push(discarded);
             updateDiscardsRiver();
 
-            document.getElementById("game-status-text").textContent = `你打出了【${formatTileName(discarded)}】，等待對手反應...`;
+            document.getElementById("game-status-text").textContent = `你打出了【${formatTileName(discarded)}】，等待其他 3 位對手反應...`;
             renderGameTable();
+            speakVoice(formatTileName(discarded));
 
             setTimeout(() => {
                 aiTurnAction();
-            }, 1000);
+            }, 1200);
         }
 
         function updateDiscardsRiver() {
             const river = document.getElementById("discards-river");
             const allDiscards = mahjongGame.discards.flat();
             if (allDiscards.length === 0) {
-                river.innerHTML = `<span class="text-sm text-slate-400 font-bold">牌河尚無打出之牌</span>`;
+                river.innerHTML = `<span class="text-sm text-slate-400 font-bold">海底牌河尚無打出之牌</span>`;
                 return;
             }
             river.innerHTML = allDiscards.map(t => `<div class="mahjong-tile-river">${formatTileName(t)}</div>`).join('');
         }
 
         function aiTurnAction() {
-            const aiIdx = Math.floor(Math.random() * 3) + 1;
+            const aiIdx = Math.floor(Math.random() * 3) + 1; // 1, 2, 3 (上家、對家、下家)
             const aiHand = mahjongGame.players[aiIdx];
             if (aiHand && aiHand.length > 0) {
                 const aiDiscard = aiHand.pop();
@@ -643,23 +641,24 @@
                 
                 const names = ["", "上家 ➔ 雀后小莉", "對家 ➔ 賭俠阿強", "下家 ➔ 賭神大飛"];
                 document.getElementById("game-status-text").textContent = `${names[aiIdx]} 打出了【${formatTileName(aiDiscard)}】`;
+                speakVoice(formatTileName(aiDiscard));
                 triggerAiSpeech(aiIdx);
             }
         }
 
         function triggerAiSpeech(aiIdx) {
-            playSound('laugh');
             const speechIds = ["", "ai-left-speech", "ai-top-speech", "ai-right-speech"];
-            const msgs = ["哈哈！你會輸很慘！", "這張安全啦！", "碰！看我的厲害", "小心我聽牌囉！"];
+            const msgs = ["哈哈！看我的厲害！", "這張安全啦！", "碰！換我聽牌囉！", "小心我胡牌啦！"];
+            const chosenMsg = msgs[Math.floor(Math.random() * msgs.length)];
             const el = document.getElementById(speechIds[aiIdx]);
             if (el) {
-                el.textContent = msgs[Math.floor(Math.random() * msgs.length)];
+                el.textContent = chosenMsg;
                 el.classList.remove("hidden");
+                speakVoice(chosenMsg);
                 setTimeout(() => el.classList.add("hidden"), 2500);
             }
         }
 
-        /* --- 修正吃、碰、槓真實扣牌與胡牌邏輯 --- */
         function checkPlayerActions() {
             const container = document.getElementById("action-buttons-container");
             container.innerHTML = "";
@@ -669,7 +668,6 @@
             if (!lastDisc) return;
 
             let actionsHtml = '';
-            // 嚴格判定胡牌
             if (mahjongGame.canWin(playerHand, lastDisc)) {
                 actionsHtml += `<button onclick="playerDeclareWin()" class="bounce-action btn-star-red px-7 py-3.5 rounded-2xl text-xl font-black animate-pulse shadow-2xl">胡啦！</button>`;
             }
@@ -687,9 +685,8 @@
             container.innerHTML = actionsHtml;
         }
 
-        // 碰牌真實扣手牌 2 張
         window.performPeng = function(tile) {
-            playSound('action');
+            speakVoice("碰！");
             const playerHand = mahjongGame.players[0];
             let count = 0;
             for (let i = playerHand.length - 1; i >= 0; i--) {
@@ -700,16 +697,15 @@
             }
             renderGameTable();
             document.getElementById("action-buttons-container").innerHTML = "";
-            alert(`🎉 成功碰牌【${formatTileName(tile)}】！手牌已扣除 2 張對子！`);
+            alert(`🎉 成功碰牌【${formatTileName(tile)}】！`);
         };
 
-        // 吃牌真實扣手牌 2 張
         window.performChi = function(tile) {
-            playSound('action');
+            speakVoice("吃！");
             const playerHand = mahjongGame.players[0];
             const chiCombos = mahjongGame.canChi(playerHand, tile);
             if (chiCombos.length > 0) {
-                const targetCombo = chiCombos[0]; // 預設使用第一組可吃的搭子
+                const targetCombo = chiCombos[0];
                 targetCombo.forEach(t => {
                     if (t !== tile) {
                         const idx = playerHand.indexOf(t);
@@ -718,13 +714,12 @@
                 });
                 renderGameTable();
                 document.getElementById("action-buttons-container").innerHTML = "";
-                alert(`🎉 成功吃牌【${formatTileName(tile)}】！手牌已順利扣除搭子！`);
+                alert(`🎉 成功吃牌【${formatTileName(tile)}】！`);
             }
         };
 
-        // 槓牌真實扣手牌 3 張
         window.performGang = function(tile) {
-            playSound('action');
+            speakVoice("槓！");
             const playerHand = mahjongGame.players[0];
             let count = 0;
             for (let i = playerHand.length - 1; i >= 0; i--) {
@@ -733,22 +728,23 @@
                     count++;
                 }
             }
-            mahjongGame.drawTile(0); // 槓牌摸補牌
+            mahjongGame.drawTile(0);
             renderGameTable();
             document.getElementById("action-buttons-container").innerHTML = "";
-            alert(`🎉 成功槓牌【${formatTileName(tile)}】！手牌已扣除並摸補一張牌！`);
+            alert(`🎉 成功槓牌【${formatTileName(tile)}】！`);
         };
 
-        // 嚴格胡牌判定
         window.playerDeclareWin = function() {
             const playerHand = mahjongGame.players[0];
             const lastDisc = mahjongGame.discards.flat().slice(-1)[0];
 
             if (!mahjongGame.canWin(playerHand, lastDisc)) {
+                speakVoice("牌型不符");
                 alert("❌ 牌型未符合胡牌條件，無法胡牌！請繼續湊牌。");
                 return;
             }
 
+            speakVoice("胡啦！恭喜發財！");
             playSound('win');
             const winAmount = currentStakes.base * currentStakes.tai * 2;
             userData.chips += winAmount;
