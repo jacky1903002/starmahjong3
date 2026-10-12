@@ -1,10 +1,8 @@
 /**
  * 明星三缺一 - 台灣十六張麻將核心演算法
- * (Taiwan 16-Tile Mahjong Engine)
+ * (Taiwan 16-Tile Mahjong Engine) - 修正胡牌張數與判定
  */
 
-// 1. 牌型定義 (Tiles Definition)
-// 萬 (1m-9m), 筒 (1p-9p), 索 (1s-9s), 風 (東南西北 1z-4z), 三元 (中發白 5z-7z), 花牌 (8z1-8z8)
 const ALL_TILES = [
     // 萬子 (1-9萬 各4張)
     '1m','1m','1m','1m', '2m','2m','2m','2m', '3m','3m','3m','3m',
@@ -26,18 +24,11 @@ const ALL_TILES = [
 class MahjongEngine {
     constructor() {
         this.deck = [];
-        this.players = [[], [], [], []]; // 4位玩家的手牌 (0:玩家, 1:下家, 2:對家, 3:上家)
-        this.discards = [[], [], [], []]; // 廢牌區
-        this.currentTurn = 0; // 當前輪到的玩家
+        this.players = [[], [], [], []]; 
+        this.discards = [[], [], [], []]; 
+        this.currentTurn = 0; 
     }
 
-    // -------------------------------------------------------------
-    // 二、 洗牌與發牌系統 (Shuffle & Deal)
-    // -------------------------------------------------------------
-    
-    /**
-     * 洗牌 (Fisher-Yates 隨機洗牌演算法)
-     */
     shuffle() {
         this.deck = [...ALL_TILES];
         for (let i = this.deck.length - 1; i > 0; i--) {
@@ -46,42 +37,31 @@ class MahjongEngine {
         }
     }
 
-    /**
-     * 初始化發牌 (台灣十六張：每人16張)
-     */
     deal() {
         this.shuffle();
         this.players = [[], [], [], []];
         this.discards = [[], [], [], []];
 
-        // 每人發 16 張牌
         for (let i = 0; i < 16; i++) {
             for (let p = 0; p < 4; p++) {
                 this.players[p].push(this.deck.pop());
             }
         }
 
-        // 整理手牌 (排序)
         for (let p = 0; p < 4; p++) {
             this.sortHand(this.players[p]);
         }
     }
 
-    /**
-     * 摸牌 (Draw Tile)
-     */
     drawTile(playerIndex) {
         if (this.deck.length === 0) {
-            return null; // 流局 (Draw Game)
+            return null; 
         }
         const tile = this.deck.pop();
         this.players[playerIndex].push(tile);
         return tile;
     }
 
-    /**
-     * 理牌排序 (Sort Tiles)
-     */
     sortHand(hand) {
         return hand.sort((a, b) => {
             const order = ['m', 'p', 's', 'z'];
@@ -97,80 +77,60 @@ class MahjongEngine {
         });
     }
 
-    // -------------------------------------------------------------
-    // 三、 吃、碰、槓 判定演算法 (Actions Detection)
-    // -------------------------------------------------------------
-
-    /**
-     * 檢查是否能「碰」
-     */
     canPeng(hand, targetTile) {
         const count = hand.filter(tile => tile === targetTile).length;
         return count >= 2;
     }
 
-    /**
-     * 檢查是否能「槓」(明槓/暗槓)
-     */
     canGang(hand, targetTile) {
         const count = hand.filter(tile => tile === targetTile).length;
-        return count === 3; // 他人打出且手上已有3張
+        return count === 3; 
     }
 
-    /**
-     * 檢查是否能「吃」(僅上家打出的牌可吃)
-     */
     canChi(hand, targetTile) {
         const type = targetTile.slice(-1);
         const num = parseInt(targetTile[0]);
 
-        // 字牌 (z) 不能吃
         if (type === 'z') return [];
 
         const validCombos = [];
         const has = (n) => hand.includes(`${n}${type}`);
 
-        // 情況 1: [x-2, x-1, X] (例如: 打 3萬，手上有 1萬、2萬)
         if (num >= 3 && has(num - 2) && has(num - 1)) {
             validCombos.push([`${num - 2}${type}`, `${num - 1}${type}`, targetTile]);
         }
-        // 情況 2: [x-1, X, x+1] (例如: 打 3萬，手上有 2萬、4萬)
         if (num >= 2 && num <= 8 && has(num - 1) && has(num + 1)) {
             validCombos.push([`${num - 1}${type}`, targetTile, `${num + 1}${type}`]);
         }
-        // 情況 3: [X, x+1, x+2] (例如: 打 3萬，手上有 4萬、5萬)
         if (num <= 7 && has(num + 1) && has(num + 2)) {
             validCombos.push([targetTile, `${num + 1}${type}`, `${num + 2}${type}`]);
         }
 
-        return validCombos; // 回傳所有可吃的組合
+        return validCombos; 
     }
 
-    // -------------------------------------------------------------
-    // 四、 台灣十六張麻將「胡牌」判定演算法 (Mahjong Win Check)
-    // -------------------------------------------------------------
-
     /**
-     * 檢查是否胡牌 (台灣十六張基本胡牌：5面子 + 1將牌 = 17張牌)
+     * 修正後的台灣十六張麻將胡牌判定
+     * 台灣十六張含胡的那張牌總共應為 17 張 (若傳入 hand 為 16 張 + extraTile 1張 = 17張)
      */
     canWin(hand, extraTile = null) {
         const fullHand = extraTile ? [...hand, extraTile] : [...hand];
-        if (fullHand.length % 3 !== 2) return false; // 十六張麻將胡牌張數必須是 17 (3n + 2)
+        
+        // 台灣十六張標準胡牌張數為 17 張 (17 % 3 = 2)
+        if (fullHand.length !== 17 && fullHand.length % 3 !== 2) {
+            return false; 
+        }
 
-        // 轉換牌組為統計字典，方便迴圈檢測
         const tileCounts = {};
         fullHand.forEach(tile => {
             tileCounts[tile] = (tileCounts[tile] || 0) + 1;
         });
 
-        // 嘗試將每一種「數量 >= 2」的牌作為「將牌 (眼睛/眼牌)」，剩餘牌嘗試拆成面子
         for (const tile in tileCounts) {
             if (tileCounts[tile] >= 2) {
-                // 複製一份計數器
                 const tempCounts = { ...tileCounts };
-                tempCounts[tile] -= 2; // 扣除眼睛/將牌
+                tempCounts[tile] -= 2; 
 
-                // 檢測剩餘牌是否全由面子 (順子或刻子) 組成
                 if (this.checkMelds(tempCounts)) {
                     return true;
                 }
@@ -179,26 +139,20 @@ class MahjongEngine {
         return false;
     }
 
-    /**
-     * 遞迴驗證剩餘牌是否可全數拆解為「刻子 (AAA)」或「順子 (ABC)」
-     */
     checkMelds(counts) {
-        // 找到第一張還有剩餘數量的牌
         const firstTile = Object.keys(counts).find(k => counts[k] > 0);
-        if (!firstTile) return true; // 所有牌均已完美匹配成面子，胡牌成立！
+        if (!firstTile) return true; 
 
         const count = counts[firstTile];
         const num = parseInt(firstTile[0]);
         const type = firstTile.slice(-1);
 
-        // 嘗試 1: 拆解為「刻子 (AAA)」
         if (count >= 3) {
             counts[firstTile] -= 3;
             if (this.checkMelds(counts)) return true;
-            counts[firstTile] += 3; // 回溯 (Backtrack)
+            counts[firstTile] += 3; 
         }
 
-        // 嘗試 2: 拆解為「順子 (ABC)」 (僅數牌萬/筒/索可組成順子)
         if (type !== 'z' && num <= 7) {
             const tile2 = `${num + 1}${type}`;
             const tile3 = `${num + 2}${type}`;
@@ -210,39 +164,26 @@ class MahjongEngine {
 
                 if (this.checkMelds(counts)) return true;
 
-                // 回溯 (Backtrack)
                 counts[firstTile]++;
                 counts[tile2]++;
                 counts[tile3]++;
             }
         }
 
-        return false; // 無法完全拆解，胡牌無效
+        return false; 
     }
 
-    // -------------------------------------------------------------
-    // 五、 基本台數計算器 (Tai Calculator Prototype)
-    // -------------------------------------------------------------
-
-    /**
-     * 計算基本胡牌台數
-     */
     calculateTai(hand, winningTile, isSelfDraw = false) {
         let totalTai = 0;
         const resultNotes = [];
 
-        // 1. 莊家加台 (假設預設1台)
-        // 2. 自摸加 1 台
         if (isSelfDraw) {
             totalTai += 1;
             resultNotes.push('自摸 (1台)');
         }
 
-        // 3. 門清 (未吃/碰/槓) 加 1 台
-        // 4. 平胡 / 大三元 / 四暗刻 等高階役種可在此進一步擴充...
-
         if (totalTai === 0) {
-            totalTai = 1; // 底台算起
+            totalTai = 1; 
             resultNotes.push('底胡 (1台)');
         }
 
@@ -250,5 +191,4 @@ class MahjongEngine {
     }
 }
 
-// 導出模組供前端頁面調用
 export default MahjongEngine;
