@@ -253,7 +253,7 @@
                         <span id="table-stakes-info">底台: 100 / 30</span>
                         <span>剩餘牌數: <span id="tiles-left" class="text-white font-black text-lg">56</span> 張</span>
                     </div>
-                    <div class="text-2xl font-black text-amber-200 my-1 animate-pulse" id="game-status-text">牌局開始！請摸牌或出牌</div>
+                    <div class="text-2xl font-black text-amber-200 my-1 animate-pulse" id="game-status-text">牌局開始！請點擊右側按鈕摸牌</div>
                     <!-- 海底牌河：完全展開鋪平，不使用下拉捲軸 -->
                     <div class="w-full bg-slate-950/85 h-40 rounded-2xl p-3 border-2 border-amber-500/40 flex flex-wrap gap-1.5 justify-center items-start shadow-inner overflow-hidden" id="discards-river">
                         <span class="text-sm text-slate-400 font-bold self-center">海底牌河尚無打出之牌</span>
@@ -293,7 +293,7 @@
 
                 <!-- 控制按鈕區 -->
                 <div class="flex flex-col space-y-2 ml-3 shrink-0">
-                    <button id="draw-btn" onclick="playerDrawAndPlay()" class="btn-star-gold px-6 py-3 rounded-2xl font-black text-base transition shadow-lg">
+                    <button id="draw-btn" onclick="playerDrawAndPlay()" class="btn-star-gold px-6 py-3 rounded-2xl font-black text-base transition shadow-lg animate-pulse">
                         摸牌 / 出牌
                     </button>
                     <button onclick="playerDeclareWin()" class="btn-star-red px-6 py-3 rounded-2xl font-black text-base transition win-text-glow shadow-lg">
@@ -356,7 +356,7 @@
         let currentUser = null;
         let isRegisterMode = false;
         let soundEnabled = true;
-        let hasDrawnThisTurn = false; // 回合摸牌鎖定狀態
+        let hasDrawnThisTurn = false; // 回合摸牌強制鎖定
         let userData = {
             nickname: "麻將大老千",
             chips: 100000,
@@ -366,12 +366,11 @@
             selfDrawCount: 0
         };
 
-        // --- 高品質真人語音合成引擎 (支援真人語調、情緒起伏與語音庫篩選) ---
+        // --- 自然真人語音引擎 (支援中文真人腔調) ---
         let naturalVoice = null;
         function initVoices() {
             if ('speechSynthesis' in window) {
                 const voices = window.speechSynthesis.getVoices();
-                // 優先選擇中文真人語音
                 naturalVoice = voices.find(v => v.lang.includes('zh') || v.lang.includes('TW') || v.lang.includes('CN')) || voices[0];
             }
         }
@@ -387,8 +386,8 @@
                 const utterance = new SpeechSynthesisUtterance(text);
                 if (naturalVoice) utterance.voice = naturalVoice;
                 utterance.lang = 'zh-TW';
-                utterance.pitch = 1.15; // 模擬真人街機活潑高音
-                utterance.rate = 1.2;   // 語速明快
+                utterance.pitch = 1.15;
+                utterance.rate = 1.2;
                 window.speechSynthesis.speak(utterance);
             }
         }
@@ -564,9 +563,9 @@
             document.getElementById("table-stakes-info").textContent = `底台: ${base} / ${tai}`;
 
             mahjongGame.deal();
-            hasDrawnThisTurn = false; // 新局開始重置摸牌狀態
+            hasDrawnThisTurn = false; // 初始狀態：尚未摸牌，強制要求玩家先點摸牌
             renderGameTable();
-            speakVoice("牌局開始，請摸牌！");
+            speakVoice("牌局開始，請點擊摸牌！");
         };
 
         window.leaveTable = function() {
@@ -592,14 +591,16 @@
             document.getElementById("ai-top-tiles").innerHTML = mahjongGame.players[2].map(() => `<div class="w-6 h-9 bg-amber-100 rounded border border-slate-400 shadow"></div>`).join('');
             document.getElementById("tiles-left").textContent = mahjongGame.deck.length;
 
-            // 控制摸牌按鈕狀態
+            // 嚴格鎖定按鈕：如果還沒摸牌，只能按摸牌；摸了牌才能出牌
             const drawBtn = document.getElementById("draw-btn");
             if (hasDrawnThisTurn) {
                 drawBtn.disabled = true;
-                drawBtn.classList.add("opacity-50", "cursor-not-allowed");
+                drawBtn.classList.add("opacity-40", "cursor-not-allowed", "animate-none");
+                drawBtn.classList.remove("animate-pulse");
             } else {
                 drawBtn.disabled = false;
-                drawBtn.classList.remove("opacity-50", "cursor-not-allowed");
+                drawBtn.classList.remove("opacity-40", "cursor-not-allowed");
+                drawBtn.classList.add("animate-pulse");
             }
 
             checkPlayerActions();
@@ -620,7 +621,7 @@
 
         window.playerDrawAndPlay = function() {
             if (hasDrawnThisTurn) {
-                alert("您已經摸過牌了，請先打出一張牌！");
+                alert("您已經摸過牌了，請從手牌中點擊一張打出！");
                 return;
             }
             playSound('click');
@@ -630,7 +631,9 @@
                 leaveTable();
                 return;
             }
-            hasDrawnThisTurn = true; // 鎖定必須出牌
+            hasDrawnThisTurn = true; // 鎖定：必須出牌才能再次摸牌
+            mahjongGame.sortHand(mahjongGame.players[0]);
+
             const tileName = formatTileName(drawn);
             document.getElementById("game-status-text").textContent = `摸了一張【${tileName}】，請點擊手牌打出一張`;
             renderGameTable();
@@ -639,7 +642,7 @@
 
         function playerDiscardTile(index) {
             if (!hasDrawnThisTurn) {
-                alert("請先點擊「摸牌 / 出牌」摸一張牌後才能出牌！");
+                alert("請先點擊右側「摸牌 / 出牌」摸一張牌後才能出牌！");
                 return;
             }
             playSound('click');
@@ -653,7 +656,7 @@
             const tileName = formatTileName(discarded);
             document.getElementById("game-status-text").textContent = `你打出了【${tileName}】，等待其他對手反應...`;
             
-            hasDrawnThisTurn = false; // 解除鎖定，準備進入下一次摸牌
+            hasDrawnThisTurn = false; // 解除鎖定，準備進入下一次摸牌循環
             renderGameTable();
             speakVoice(tileName); // 玩家本人丟牌朗讀牌名
 
