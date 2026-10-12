@@ -12,7 +12,6 @@
     <link href="https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&family=M+PLUS+Rounded+1c:wght@700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <style>
-        /* 最佳化手牌尺寸，避免產生橫向滾動條/拉伸條 */
         .mahjong-tile-real {
             width: 68px;
             height: 110px;
@@ -29,7 +28,7 @@
             transition: all 0.15s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             margin: 0 1.5px;
             cursor: pointer;
-            shrink: 0;
+            flex-shrink: 0;
         }
         .mahjong-tile-real:hover {
             transform: translateY(-12px) scale(1.06);
@@ -37,136 +36,57 @@
             border-color: #fbbf24;
         }
 
-        .tile-number {
-            font-size: 2.1rem;
-            font-weight: 900;
-            line-height: 1;
-        }
-        .tile-suit {
-            font-size: 1.05rem;
-            font-weight: 900;
-            margin-top: -1px;
-        }
+        .tile-number { font-size: 2.1rem; font-weight: 900; line-height: 1; }
+        .tile-suit { font-size: 1.05rem; font-weight: 900; margin-top: -1px; }
         .tile-red { color: #dc2626 !important; }
         .tile-green { color: #16a34a !important; }
         .tile-blue { color: #2563eb !important; }
         .tile-dark { color: #0f172a !important; }
 
-        /* 經典傳統筒子 (餅) 繪製樣式 */
         .mahjong-dot-container {
-            width: 40px;
-            height: 48px;
-            background: #eff6ff;
-            border: 2px solid #3b82f6;
-            border-radius: 8px;
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            justify-content: center;
-            gap: 2px;
-            padding: 2px;
+            width: 40px; height: 48px; background: #eff6ff; border: 2px solid #3b82f6; border-radius: 8px;
+            display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 2px; padding: 2px;
             box-shadow: inset 0 1px 3px rgba(0,0,0,0.15);
         }
-        .m-dot {
-            width: 9px;
-            height: 9px;
-            border-radius: 50%;
-            background: #dc2626;
-            box-shadow: 0 1px 2px rgba(0,0,0,0.3);
-        }
+        .m-dot { width: 9px; height: 9px; border-radius: 50%; background: #dc2626; box-shadow: 0 1px 2px rgba(0,0,0,0.3); }
         .m-dot.green { background: #16a34a; }
         .m-dot.blue { background: #2563eb; }
 
-        /* 經典傳統條子 (索) 繪製樣式 */
         .mahjong-bamboo-container {
-            width: 40px;
-            height: 48px;
-            background: #f0fdf4;
-            border: 2px solid #22c55e;
-            border-radius: 8px;
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            justify-content: center;
-            gap: 2px;
-            padding: 2px;
+            width: 40px; height: 48px; background: #f0fdf4; border: 2px solid #22c55e; border-radius: 8px;
+            display: flex; flex-direction: row; align-items: center; justify-content: center; gap: 2px; padding: 2px;
             box-shadow: inset 0 1px 3px rgba(0,0,0,0.15);
         }
-        .m-stick {
-            width: 4.5px;
-            height: 34px;
-            background: #16a34a;
-            border-radius: 3px;
-            box-shadow: 0 1px 2px rgba(0,0,0,0.3);
-        }
+        .m-stick { width: 4.5px; height: 34px; background: #16a34a; border-radius: 3px; box-shadow: 0 1px 2px rgba(0,0,0,0.3); }
 
-        /* 白板與花牌 */
         .mahjong-white-board {
-            width: 34px;
-            height: 46px;
-            background: #ffffff;
-            border: 3px solid #94a3b8;
-            border-radius: 6px;
+            width: 34px; height: 46px; background: #ffffff; border: 3px solid #94a3b8; border-radius: 6px;
             box-shadow: inset 0 0 8px rgba(37, 99, 235, 0.4);
         }
 
-        /* 海底牌河極致寬大專用精緻麻將 */
         .mahjong-tile-river-real {
-            width: 48px;
-            height: 66px;
-            background: linear-gradient(135deg, #ffffff 0%, #fef3c7 100%);
-            border: 2px solid #f59e0b;
-            border-bottom: 4px solid #d97706;
-            border-radius: 8px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.4);
-            margin: 3px;
+            width: 48px; height: 66px; background: linear-gradient(135deg, #ffffff 0%, #fef3c7 100%);
+            border: 2px solid #f59e0b; border-bottom: 4px solid #d97706; border-radius: 8px;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.4); margin: 3px;
         }
         .river-num { font-size: 1.25rem; font-weight: 900; line-height: 1; }
         .river-suit { font-size: 0.8rem; font-weight: 900; }
 
-        /* 滿版特寫真人頭貼 (128px) */
         .avatar-box-giant {
-            width: 128px;
-            height: 128px;
-            border-radius: 50%;
-            border: 5px solid #f59e0b;
+            width: 128px; height: 128px; border-radius: 50%; border: 5px solid #f59e0b;
             box-shadow: 0 0 30px rgba(245, 158, 11, 0.8), 0 8px 16px rgba(0,0,0,0.6);
-            overflow: hidden;
-            background-color: #1e293b;
-            position: relative;
+            overflow: hidden; background-color: #1e293b; position: relative;
         }
-        .avatar-box-giant img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            object-position: center top;
-            transform: scale(1.35);
-        }
+        .avatar-box-giant img { width: 100%; height: 100%; object-fit: cover; object-position: center top; transform: scale(1.35); }
 
-        /* 玩家縮小精緻頭貼 (85px)，讓出置牌空間 */
         .avatar-player-box {
-            width: 85px;
-            height: 85px;
-            border-radius: 50%;
-            border: 4px solid #10b981;
+            width: 85px; height: 85px; border-radius: 50%; border: 4px solid #10b981;
             box-shadow: 0 0 20px rgba(16, 185, 129, 0.8), 0 6px 12px rgba(0,0,0,0.6);
-            overflow: hidden;
-            position: relative;
-            shrink: 0;
+            overflow: hidden; position: relative; flex-shrink: 0;
         }
-        .avatar-player-box img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            object-position: center top;
-            transform: scale(1.35);
-        }
+        .avatar-player-box img { width: 100%; height: 100%; object-fit: cover; object-position: center top; transform: scale(1.35); }
 
-        /* 穩定全框發光特效 (不晃動) */
         .turn-active-glow {
             border-color: #ef4444 !important;
             box-shadow: 0 0 35px rgba(239, 68, 68, 0.9), inset 0 0 15px rgba(239, 68, 68, 0.5) !important;
@@ -185,7 +105,7 @@
                     <i class="fa-solid fa-dice-one"></i>
                 </div>
                 <h2 class="text-3xl font-black text-slate-900 tracking-tight">明星三缺一 4人對決</h2>
-                <p class="text-sm text-slate-500 mt-1 font-bold">置牌區加大優化 & 老人/小孩音色切換！</p>
+                <p class="text-sm text-slate-500 mt-1 font-bold">吃碰槓判定全面修復版！</p>
             </div>
             <form id="login-form" class="space-y-4">
                 <div id="nickname-field" class="hidden">
@@ -214,10 +134,10 @@
         </div>
     </div>
 
-    <!-- 主遊戲大廳與牌桌介面 (滿版全螢幕) -->
+    <!-- 主遊戲大廳與牌桌介面 -->
     <div id="app-screen" class="hidden flex flex-col w-screen h-screen bg-slate-900/95 overflow-hidden">
         
-        <!-- 頂端資訊導覽列 (含 CODE 輸入區與音色切換) -->
+        <!-- 頂端資訊導覽列 -->
         <header class="bg-slate-950 px-6 py-2 flex flex-wrap justify-between items-center gap-3 border-b-2 border-amber-500/40 text-white shrink-0 z-40">
             <div class="flex items-center space-x-3">
                 <div class="bg-amber-500 text-slate-950 w-10 h-10 rounded-xl flex items-center justify-center text-xl font-black shadow-md">麻</div>
@@ -240,8 +160,6 @@
                 <div class="bg-slate-900 px-3.5 py-1.5 rounded-2xl border border-amber-500/30 text-xs font-bold flex items-center text-amber-300">
                     <i class="fa-solid fa-coins mr-1.5 text-yellow-400"></i>籌碼: <span id="header-chips" class="text-white ml-1 text-sm font-black">100,000</span>
                 </div>
-                
-                <!-- 音色切換按鈕 (老大人 / 囡仔音色) -->
                 <button onclick="cycleVoiceMode()" id="voice-mode-btn" class="bg-amber-500 hover:bg-amber-600 text-slate-950 px-3 py-1.5 rounded-xl text-xs font-black transition flex items-center shadow">
                     <i class="fa-solid fa-user-group mr-1"></i>音色: 老人音
                 </button>
@@ -369,25 +287,21 @@
             <!-- 吃碰槓動作按鈕區 -->
             <div id="action-buttons-container" class="absolute bottom-40 left-1/2 transform -translate-x-1/2 flex space-x-4 z-30"></div>
 
-            <!-- 下方玩家手牌區 (已精簡左側框格，加大置牌空間) -->
+            <!-- 下方玩家手牌區 -->
             <div id="avatar-box-0" class="glass-panel p-2.5 rounded-3xl shadow-2xl z-20 relative flex items-center justify-between border-4 border-amber-500/50 bg-slate-950/90 transition-all duration-300 w-full overflow-hidden">
                 
-                <!-- 精簡後的玩家個人資訊 (將「換你出牌」放在名稱下方) -->
                 <div class="flex items-center space-x-3 bg-slate-900/90 px-3.5 py-2 rounded-2xl border-2 border-amber-400 shadow-xl shrink-0">
                     <div class="avatar-player-box">
                         <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=300&q=80" alt="玩家頭貼">
                     </div>
                     <div class="flex flex-col justify-center">
                         <div class="text-amber-300 text-sm font-black">玩家: <span id="player-nickname-display" class="text-white text-base">賭神高進</span></div>
-                        
-                        <!-- 換你出牌提示顯示在名稱正下方 -->
                         <div id="arrow-0" class="hidden mt-1 bg-red-600 text-white px-2.5 py-0.5 rounded-xl text-xs font-black shadow-md border border-yellow-300 text-center animate-pulse">
                             ⬆️ 換你出牌
                         </div>
                     </div>
                 </div>
 
-                <!-- 手牌置牌區域 (完全無滾動條，完美排開) -->
                 <div id="player-tiles" class="flex items-center justify-center flex-1 mx-2 overflow-hidden py-1"></div>
 
                 <div class="flex flex-col space-y-1.5 shrink-0">
@@ -429,7 +343,7 @@
         </div>
     </div>
 
-    <!-- Firebase SDKs & 音色轉換引擎 -->
+    <!-- Firebase SDKs & 修復吃碰槓判定邏輯 -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
@@ -454,7 +368,7 @@
         let currentUser = null;
         let isRegisterMode = false;
         let soundEnabled = true;
-        let currentVoiceMode = 'old'; // 'old' (老人) 或 'child' (小孩)
+        let currentVoiceMode = 'old'; 
         let hasDrawnThisTurn = false;
         let currentTurnPlayer = 0; 
         let userData = {
@@ -466,7 +380,6 @@
             selfDrawCount: 0
         };
 
-        // --- CODE 密碼輸入送籌碼功能 (輸入 jacky +999999) ---
         window.submitCheatCode = function() {
             playSound('click');
             const codeInput = document.getElementById("cheat-code-input").value.trim();
@@ -482,7 +395,6 @@
             }
         };
 
-        // --- 老人 / 小孩 音色切換系統 ---
         window.cycleVoiceMode = function() {
             if (currentVoiceMode === 'old') {
                 currentVoiceMode = 'child';
@@ -510,8 +422,6 @@
         function translateToPhonetics(text) {
             if (!text) return "";
             let t = text;
-            
-            // 轉譯牌名發音
             const wanMap = {'1':'一萬','2':'二萬','3':'三萬','4':'四萬','5':'五萬','6':'六萬','7':'七萬','8':'八萬','9':'九萬'};
             const tongMap = {'1':'一餅','2':'二餅','3':'三餅','4':'四餅','5':'五餅','6':'六餅','7':'七餅','8':'八餅','9':'九餅'};
             const tiaoMap = {'1':'一索','2':'二索','3':'三索','4':'四索','5':'五索','6':'六索','7':'七索','8':'八索','9':'九索'};
@@ -538,13 +448,12 @@
                 if (currentVoice) utterance.voice = currentVoice;
                 utterance.lang = 'zh-TW';
 
-                // 根據模式切換老人/小孩音色
                 if (currentVoiceMode === 'old') {
-                    utterance.pitch = 0.75; // 沉穩老大人音調
-                    utterance.rate = 0.95;  // 穩重的語速
+                    utterance.pitch = 0.75;
+                    utterance.rate = 0.95;
                 } else if (currentVoiceMode === 'child') {
-                    utterance.pitch = 1.65; // 高昂清脆囡仔音調
-                    utterance.rate = 1.25;  // 活潑快捷語速
+                    utterance.pitch = 1.65;
+                    utterance.rate = 1.25;
                 }
 
                 window.speechSynthesis.speak(utterance);
@@ -774,7 +683,6 @@
             checkPlayerActions();
         }
 
-        // --- 標準傳統麻將圖示產生器 ---
         function createTileHtml(code) {
             const num = code[0];
             const type = code[1];
@@ -927,14 +835,18 @@
                 speakVoice(tileName);
                 triggerAiSpeech(aiIdx);
 
+                // 檢查玩家是否可以吃、碰、槓、胡
                 setTimeout(() => {
-                    currentTurnPlayer = (aiIdx + 1) % 4;
-                    if (currentTurnPlayer === 0) {
-                        document.getElementById("game-status-text").textContent = "輪到你了！請點擊右側摸牌";
-                    } else {
-                        aiTurnAction(currentTurnPlayer);
+                    checkPlayerActions();
+                    if (currentTurnPlayer !== 0) {
+                        currentTurnPlayer = (aiIdx + 1) % 4;
+                        if (currentTurnPlayer === 0) {
+                            document.getElementById("game-status-text").textContent = "輪到你了！請點擊右側摸牌";
+                        } else {
+                            aiTurnAction(currentTurnPlayer);
+                        }
+                        renderGameTable();
                     }
-                    renderGameTable();
                 }, 1500);
             }
         }
@@ -955,23 +867,32 @@
             const container = document.getElementById("action-buttons-container");
             container.innerHTML = "";
             const playerHand = mahjongGame.players[0];
-            const lastDisc = mahjongGame.discards.flat().slice(-1)[0];
+            const allDiscards = mahjongGame.discards.flat();
+            const lastDisc = allDiscards[allDiscards.length - 1];
 
             if (!lastDisc) return;
 
+            // 確保每次判定前都進行函式安全檢查
             let actionsHtml = '';
-            if (mahjongGame.canWin(playerHand, lastDisc)) {
-                actionsHtml += `<button onclick="playerDeclareWin()" class="bounce-action btn-star-red px-6 py-3 rounded-2xl text-lg font-black animate-pulse shadow-2xl">胡矣！</button>`;
-            }
-            if (mahjongGame.canPeng(playerHand, lastDisc)) {
-                actionsHtml += `<button onclick="performPeng('${lastDisc}')" class="bounce-action bg-amber-500 hover:bg-amber-600 text-white font-black px-5 py-2.5 rounded-2xl shadow-xl border-2 border-amber-300 text-base">碰！</button>`;
-            }
-            const chiCombos = mahjongGame.canChi(playerHand, lastDisc);
-            if (chiCombos.length > 0) {
-                actionsHtml += `<button onclick="performChi('${lastDisc}')" class="bounce-action bg-blue-600 hover:bg-blue-700 text-white font-black px-5 py-2.5 rounded-2xl shadow-xl border-2 border-blue-300 text-base">吃！</button>`;
-            }
-            if (mahjongGame.canGang(playerHand, lastDisc)) {
-                actionsHtml += `<button onclick="performGang('${lastDisc}')" class="bounce-action bg-purple-600 hover:bg-purple-700 text-white font-black px-5 py-2.5 rounded-2xl shadow-xl border-2 border-purple-300 text-base">槓！</button>`;
+            
+            try {
+                if (typeof mahjongGame.canWin === 'function' && mahjongGame.canWin(playerHand, lastDisc)) {
+                    actionsHtml += `<button onclick="playerDeclareWin()" class="bounce-action btn-star-red px-6 py-3 rounded-2xl text-lg font-black animate-pulse shadow-2xl">胡矣！</button>`;
+                }
+                if (typeof mahjongGame.canPeng === 'function' && mahjongGame.canPeng(playerHand, lastDisc)) {
+                    actionsHtml += `<button onclick="performPeng('${lastDisc}')" class="bounce-action bg-amber-500 hover:bg-amber-600 text-white font-black px-5 py-2.5 rounded-2xl shadow-xl border-2 border-amber-300 text-base">碰！</button>`;
+                }
+                if (typeof mahjongGame.canChi === 'function') {
+                    const chiCombos = mahjongGame.canChi(playerHand, lastDisc);
+                    if (chiCombos && chiCombos.length > 0) {
+                        actionsHtml += `<button onclick="performChi('${lastDisc}')" class="bounce-action bg-blue-600 hover:bg-blue-700 text-white font-black px-5 py-2.5 rounded-2xl shadow-xl border-2 border-blue-300 text-base">吃！</button>`;
+                    }
+                }
+                if (typeof mahjongGame.canGang === 'function' && mahjongGame.canGang(playerHand, lastDisc)) {
+                    actionsHtml += `<button onclick="performGang('${lastDisc}')" class="bounce-action bg-purple-600 hover:bg-purple-700 text-white font-black px-5 py-2.5 rounded-2xl shadow-xl border-2 border-purple-300 text-base">槓！</button>`;
+                }
+            } catch (err) {
+                console.error("Action check error:", err);
             }
 
             container.innerHTML = actionsHtml;
@@ -987,15 +908,17 @@
                     count++;
                 }
             }
+            currentTurnPlayer = 0; // 碰牌後輪到玩家出牌
+            hasDrawnThisTurn = true; // 碰牌後可以直接打出一張牌
             renderGameTable();
             document.getElementById("action-buttons-container").innerHTML = "";
-            alert(`🎉 成功碰牌【${formatTileName(tile)}】！`);
+            alert(`🎉 成功碰牌【${formatTileName(tile)}】！請打出一張牌。`);
         };
 
         window.performChi = function(tile) {
             speakVoice("吃！");
             const playerHand = mahjongGame.players[0];
-            const chiCombos = mahjongGame.canChi(playerHand, tile);
+            const chiCombos = mahjongGame.canChi ? mahjongGame.canChi(playerHand, tile) : [];
             if (chiCombos.length > 0) {
                 const targetCombo = chiCombos[0];
                 targetCombo.forEach(t => {
@@ -1004,9 +927,11 @@
                         if (idx !== -1) playerHand.splice(idx, 1);
                     }
                 });
+                currentTurnPlayer = 0;
+                hasDrawnThisTurn = true;
                 renderGameTable();
                 document.getElementById("action-buttons-container").innerHTML = "";
-                alert(`🎉 成功吃牌【${formatTileName(tile)}】！`);
+                alert(`🎉 成功吃牌【${formatTileName(tile)}】！請打出一張牌。`);
             }
         };
 
@@ -1021,6 +946,8 @@
                 }
             }
             mahjongGame.drawTile(0);
+            currentTurnPlayer = 0;
+            hasDrawnThisTurn = true;
             renderGameTable();
             document.getElementById("action-buttons-container").innerHTML = "";
             alert(`🎉 成功槓牌【${formatTileName(tile)}】！`);
@@ -1028,7 +955,8 @@
 
         window.playerDeclareWin = function() {
             const playerHand = mahjongGame.players[0];
-            const lastDisc = mahjongGame.discards.flat().slice(-1)[0];
+            const allDiscards = mahjongGame.discards.flat();
+            const lastDisc = allDiscards[allDiscards.length - 1];
 
             if (!mahjongGame.canWin(playerHand, lastDisc)) {
                 speakVoice("牌型毋著");
