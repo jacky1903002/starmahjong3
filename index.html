@@ -46,57 +46,54 @@
             font-weight: 900;
             margin-top: -1px;
         }
-        /* 真實麻將專屬色彩 */
         .tile-red { color: #dc2626 !important; }
         .tile-green { color: #16a34a !important; }
         .tile-blue { color: #2563eb !important; }
         .tile-dark { color: #0f172a !important; }
 
-        /* 傳統麻將圖示樣式 (筒子餅狀、條子竹節、白板方框) */
-        .mahjong-circle-icon {
+        /* 正確的筒子圓點陣列圖示 */
+        .mahjong-dots-grid {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
+            grid-template-columns: repeat(3, 1fr);
             gap: 2px;
-            padding: 2px;
+            padding: 3px;
             background: #dbeafe;
             border: 2px solid #2563eb;
-            border-radius: 50%;
-            width: 38px;
-            height: 38px;
+            border-radius: 8px;
+            width: 40px;
+            height: 48px;
             align-items: center;
             justify-items: center;
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
         }
-        .mahjong-dot-item {
-            width: 10px;
-            height: 10px;
+        .mahjong-dot {
+            width: 9px;
+            height: 9px;
             background: #dc2626;
             border-radius: 50%;
-            box-shadow: 0 1px 2px rgba(0,0,0,0.4);
+            box-shadow: 0 1px 2px rgba(0,0,0,0.3);
         }
-        .mahjong-dot-item.center-green {
-            background: #16a34a;
-        }
+        .mahjong-dot.green { background: #16a34a; }
+        .mahjong-dot.blue { background: #2563eb; }
 
-        .mahjong-bamboo-icon {
+        /* 正確的條子竹節陣列圖示 */
+        .mahjong-bamboo-box {
             display: flex;
-            flex-direction: column;
-            gap: 2px;
-            padding: 3px 6px;
+            flex-direction: row;
+            gap: 3px;
+            padding: 3px 4px;
             background: #dcfce7;
             border: 2px solid #16a34a;
-            border-radius: 6px;
-            width: 36px;
+            border-radius: 8px;
             height: 48px;
             align-items: center;
             justify-content: center;
         }
-        .mahjong-bamboo-line {
+        .mahjong-bamboo-stick {
             width: 6px;
-            height: 10px;
+            height: 36px;
             background: #16a34a;
             border-radius: 3px;
-            box-shadow: 0 1px 2px rgba(0,0,0,0.3);
+            box-shadow: inset 0 1px 2px rgba(255,255,255,0.6), 0 1px 2px rgba(0,0,0,0.3);
         }
 
         .mahjong-white-board {
@@ -182,7 +179,7 @@
                     <i class="fa-solid fa-dice-one"></i>
                 </div>
                 <h2 class="text-3xl font-black text-slate-900 tracking-tight">明星三缺一 4人爆笑版</h2>
-                <p class="text-sm text-slate-500 mt-1 font-bold">真實傳統花色，穩定發光指示！</p>
+                <p class="text-sm text-slate-500 mt-1 font-bold">正確筒條圖示，密碼送籌碼！</p>
             </div>
             <form id="login-form" class="space-y-4">
                 <div id="nickname-field" class="hidden">
@@ -214,14 +211,23 @@
     <!-- 主遊戲大廳與牌桌介面 (滿版全螢幕) -->
     <div id="app-screen" class="hidden flex flex-col w-screen h-screen bg-slate-900/95 overflow-hidden">
         
-        <!-- 頂端資訊導覽列 -->
+        <!-- 頂端資訊導覽列 (含 CODE 輸入區) -->
         <header class="bg-slate-950 px-6 py-2 flex flex-wrap justify-between items-center gap-4 border-b-2 border-amber-500/40 text-white shrink-0 z-40">
             <div class="flex items-center space-x-3">
                 <div class="bg-amber-500 text-slate-950 w-10 h-10 rounded-xl flex items-center justify-center text-xl font-black shadow-md">麻</div>
                 <div>
-                    <h1 class="text-lg font-black text-amber-400 tracking-wider">明星三缺一 | 4人傳統花色對決</h1>
+                    <h1 class="text-lg font-black text-amber-400 tracking-wider">明星三缺一 | 4人正統花色對決</h1>
                     <p class="text-[10px] text-slate-400 font-bold">玩家: <span id="header-nickname" class="text-white">載入中...</span></p>
                 </div>
+            </div>
+
+            <!-- CODE 密碼輸入送籌碼區 -->
+            <div class="flex items-center space-x-2 bg-slate-900 px-3 py-1.5 rounded-2xl border border-amber-500/40">
+                <span class="text-xs text-amber-300 font-black"><i class="fa-solid fa-key mr-1"></i>CODE:</span>
+                <input type="text" id="cheat-code-input" class="px-2.5 py-1 text-xs rounded-xl bg-slate-950 text-white font-bold border border-slate-700 focus:outline-none focus:border-amber-400 w-28" placeholder="輸入解鎖碼">
+                <button onclick="submitCheatCode()" class="bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-slate-950 font-black px-3 py-1 rounded-xl text-xs transition shadow">
+                    領取籌碼
+                </button>
             </div>
 
             <div class="flex items-center space-x-4">
@@ -232,7 +238,7 @@
                     <i class="fa-solid fa-volume-high mr-1"></i>真人語音: 開
                 </button>
                 <button onclick="toggleFullScreen()" class="bg-amber-500 hover:bg-amber-600 text-slate-950 px-3 py-1.5 rounded-xl text-xs font-black transition flex items-center shadow">
-                    <i class="fa-solid fa-expand mr-1"></i>全螢幕 (ESC還原)
+                    <i class="fa-solid fa-expand mr-1"></i>全螢幕
                 </button>
             </div>
 
@@ -262,7 +268,7 @@
         <div id="lobby-view" class="flex-1 p-8 flex flex-col items-center justify-center space-y-8 overflow-y-auto">
             <div class="text-center space-y-2">
                 <h2 class="text-4xl font-black text-amber-400 drop-shadow-md">請選擇對戰底台</h2>
-                <p class="text-sm text-slate-300 font-bold">每日 00:00 自動補發 100,000 籌碼！輸光也不怕！</p>
+                <p class="text-sm text-slate-300 font-bold">輸入 CODE 【jacky】即可獲得 +999,999 籌碼大獎！</p>
             </div>
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 w-full max-w-4xl">
                 <button onclick="startTable(50, 20)" class="bg-gradient-to-b from-teal-500 to-teal-700 hover:from-teal-400 hover:to-teal-600 p-6 rounded-3xl shadow-xl border-4 border-teal-300 text-white text-center transform hover:-translate-y-1 transition duration-200">
@@ -288,7 +294,7 @@
             </div>
         </div>
 
-        <!-- 滿版 4 人對戰麻將桌介面 (極致寬大海底 + 穩定全框發光指示) -->
+        <!-- 滿版 4 人對戰麻將桌介面 -->
         <div id="game-view" class="hidden flex-1 relative p-2 sm:p-4 flex flex-col justify-between select-none table-felt-bg overflow-hidden">
             
             <!-- 上方對手 (對家 AI) -->
@@ -305,14 +311,13 @@
                             <div class="text-xl text-white">對家 ➔ 賭俠阿強 (AI)</div>
                             <div class="text-sm text-slate-200 font-bold mt-1">籌碼: <span class="text-amber-400 font-black">98,000</span></div>
                         </div>
-                        <!-- 巨大動態箭頭 -->
                         <div id="arrow-2" class="hidden bg-red-600 text-white px-3 py-1 rounded-2xl text-xl font-black shadow-lg border-2 border-yellow-300">⬇️ 換他出牌</div>
                     </div>
                 </div>
                 <div id="ai-top-tiles" class="flex space-x-1.5 mt-1.5"></div>
             </div>
 
-            <!-- 左右對手與中央【極致寬大】海底牌河區 -->
+            <!-- 左右對手與中央海底牌河區 -->
             <div class="flex justify-between items-center my-auto px-4 z-10">
                 <!-- 左方對手 (上家 AI) -->
                 <div id="avatar-box-3" class="flex flex-col items-center bg-slate-900/95 p-4 rounded-3xl border-4 border-amber-400 shadow-2xl relative transition-all duration-300">
@@ -324,18 +329,16 @@
                     </div>
                     <span class="text-white text-lg font-black">上家 ➔ 雀后小莉 (AI)</span>
                     <span class="text-sm text-amber-400 font-extrabold mb-1">105,000 籌碼</span>
-                    <!-- 巨大動態箭頭 -->
                     <div id="arrow-3" class="hidden bg-red-600 text-white px-3 py-1 rounded-2xl text-base font-black shadow-lg border-2 border-yellow-300">➡️ 換他</div>
                 </div>
 
-                <!-- 中央牌桌資訊與【極致寬跟大】的海底牌河 -->
+                <!-- 中央牌桌資訊與極致寬大海底 -->
                 <div class="glass-panel p-4 rounded-3xl text-center shadow-2xl w-full max-w-5xl mx-3 flex flex-col items-center border-4 border-amber-500/50">
                     <div class="flex justify-between w-full text-amber-300 text-base font-black mb-1">
                         <span id="table-stakes-info">底台: 100 / 30</span>
                         <span>剩餘牌數: <span id="tiles-left" class="text-white font-black text-lg">56</span> 張</span>
                     </div>
                     <div class="text-2xl font-black text-amber-200 my-1 animate-pulse" id="game-status-text">牌局開始！請點擊右側摸牌</div>
-                    <!-- 極致寬與大的海底牌河區 (高度 190px，寬敞舒適) -->
                     <div class="w-full bg-slate-950/85 h-48 rounded-2xl p-4 border-2 border-amber-500/40 flex flex-wrap gap-2.5 justify-center items-start shadow-inner overflow-y-auto" id="discards-river">
                         <span class="text-sm text-slate-400 font-bold self-center">海底牌河尚無打出之牌</span>
                     </div>
@@ -351,7 +354,6 @@
                     </div>
                     <span class="text-white text-lg font-black">下家 ➔ 賭神大飛 (AI)</span>
                     <span class="text-sm text-amber-400 font-extrabold mb-1">92,000 籌碼</span>
-                    <!-- 巨大動態箭頭 -->
                     <div id="arrow-1" class="hidden bg-red-600 text-white px-3 py-1 rounded-2xl text-base font-black shadow-lg border-2 border-yellow-300">⬅️ 換他</div>
                 </div>
             </div>
@@ -359,7 +361,7 @@
             <!-- 吃碰槓動作按鈕區 -->
             <div id="action-buttons-container" class="absolute bottom-48 left-1/2 transform -translate-x-1/2 flex space-x-4 z-30"></div>
 
-            <!-- 下方玩家手牌區 (傳統麻將圖示 + 穩定發光外框) -->
+            <!-- 下方玩家手牌區 -->
             <div id="avatar-box-0" class="glass-panel p-3 sm:p-4 rounded-3xl shadow-2xl z-20 relative flex items-center justify-between border-4 border-amber-500/50 bg-slate-950/90 transition-all duration-300">
                 <div class="flex items-center space-x-4 bg-slate-900/90 px-5 py-2.5 rounded-3xl border-2 border-amber-400 shadow-xl shrink-0">
                     <div class="avatar-player-box">
@@ -370,15 +372,12 @@
                             <div class="text-amber-300 text-base font-black">玩家: <span id="player-nickname-display" class="text-white text-xl">賭神高進</span></div>
                             <div class="text-xs text-emerald-400 font-bold mt-0.5">🔥 手氣發爐中 🔥</div>
                         </div>
-                        <!-- 玩家穩定發光箭頭 -->
                         <div id="arrow-0" class="hidden bg-red-600 text-white px-3.5 py-1.5 rounded-2xl text-lg font-black shadow-xl border-2 border-yellow-300">⬆️ 【換你出牌】</div>
                     </div>
                 </div>
 
-                <!-- 滿版貼邊傳統圖示手牌區 -->
                 <div id="player-tiles" class="flex space-x-1.5 overflow-x-auto py-1 px-2 flex-1 justify-center items-center"></div>
 
-                <!-- 控制按鈕區 -->
                 <div class="flex flex-col space-y-2 ml-3 shrink-0">
                     <button id="draw-btn" onclick="playerDrawAndPlay()" class="btn-star-gold px-6 py-3 rounded-2xl font-black text-base transition shadow-lg animate-pulse">
                         摸牌 / 出牌
@@ -418,7 +417,7 @@
         </div>
     </div>
 
-    <!-- Firebase SDKs & 真人語音與傳統麻將圖示邏輯 -->
+    <!-- Firebase SDKs & 真人語音與正統麻將花色邏輯 -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
@@ -444,7 +443,7 @@
         let isRegisterMode = false;
         let soundEnabled = true;
         let hasDrawnThisTurn = false;
-        let currentTurnPlayer = 0; // 0:玩家, 1:下家AI, 2:對家AI, 3:上家AI
+        let currentTurnPlayer = 0; 
         let userData = {
             nickname: "麻將大老千",
             chips: 100000,
@@ -452,6 +451,22 @@
             winCount: 0,
             loginCount: 0,
             selfDrawCount: 0
+        };
+
+        // --- 密碼輸入送籌碼功能 (輸入 jacky +999999) ---
+        window.submitCheatCode = function() {
+            playSound('click');
+            const codeInput = document.getElementById("cheat-code-input").value.trim();
+            if (codeInput === 'jacky') {
+                userData.chips += 999999;
+                updateUI();
+                saveUserDataToFirebase();
+                speakVoice("恭喜獲得密碼大獎！");
+                alert("🎉 CODE 輸入正確！成功獲得籌碼 +999,999！");
+                document.getElementById("cheat-code-input").value = "";
+            } else {
+                alert("❌ 錯誤的 CODE 代碼！");
+            }
         };
 
         // --- 自然真人語音引擎 ---
@@ -664,7 +679,6 @@
             saveUserDataToFirebase();
         };
 
-        // --- 更新目前回合的穩定發光外框指示器 ---
         function updateTurnIndicator() {
             for (let i = 0; i <= 3; i++) {
                 const box = document.getElementById(`avatar-box-${i}`);
@@ -712,7 +726,7 @@
             checkPlayerActions();
         }
 
-        // --- 傳統麻將精緻圖示與花色產生器 (完美呈現萬、筒、條、字牌) ---
+        // --- 正確的傳統麻將圖示產生器 (萬、筒、條、字牌) ---
         function createTileHtml(code) {
             const num = code[0];
             const type = code[1];
@@ -724,19 +738,19 @@
                 const n = parseInt(num);
                 let dotsHtml = '';
                 for (let i = 0; i < n; i++) {
-                    dotsHtml += `<div class="mahjong-dot-item ${i % 2 === 1 ? 'center-green' : ''}"></div>`;
+                    dotsHtml += `<div class="mahjong-dot ${i % 3 === 1 ? 'green' : (i % 3 === 2 ? 'blue' : '')}"></div>`;
                 }
-                return `<div class="mahjong-circle-icon">${dotsHtml}</div><span class="tile-suit tile-blue" style="font-size:0.7rem; margin-top:2px;">${num}筒</span>`;
+                return `<div class="mahjong-dots-grid">${dotsHtml}</div><span class="tile-suit tile-blue" style="font-size:0.65rem; margin-top:2px;">${num}筒</span>`;
             } else if (type === 's') {
                 const n = parseInt(num);
-                let bambooLines = '';
-                for (let i = 0; i < Math.min(n, 3); i++) {
-                    bambooLines += `<div class="mahjong-bamboo-line"></div>`;
+                let sticksHtml = '';
+                for (let i = 0; i < n; i++) {
+                    sticksHtml += `<div class="mahjong-bamboo-stick"></div>`;
                 }
-                return `<div class="mahjong-bamboo-icon">${bambooLines}</div><span class="tile-suit tile-green" style="font-size:0.7rem; margin-top:2px;">${num}條</span>`;
+                return `<div class="mahjong-bamboo-box">${sticksHtml}</div><span class="tile-suit tile-green" style="font-size:0.65rem; margin-top:2px;">${num}條</span>`;
             } else if (type === 'z') {
                 if (num === '7') {
-                    // 白板：純白方框
+                    // 白板
                     return `<div class="mahjong-white-board"></div>`;
                 }
                 const winds = ['東', '南', '西', '北', '中', '發', '白'];
@@ -804,7 +818,7 @@
             document.getElementById("game-status-text").textContent = `你打出了【${tileName}】，換下家 AI 摸牌...`;
             
             hasDrawnThisTurn = false;
-            currentTurnPlayer = 1; // 換下家 (AI 1)
+            currentTurnPlayer = 1; 
             renderGameTable();
             speakVoice(tileName);
 
@@ -828,9 +842,9 @@
                     const chineseNums = {'1':'一','2':'二','3':'三','4':'四','5':'五','6':'六','7':'七','8':'八','9':'九'};
                     innerHtml = `<span class="river-num tile-red">${chineseNums[num] || num}</span><span class="river-suit tile-red">萬</span>`;
                 } else if (type === 'p') {
-                    innerHtml = `<div class="mahjong-circle-icon" style="width:24px;height:24px;"><div class="mahjong-dot-item" style="width:6px;height:6px;"></div></div><span class="river-suit tile-blue" style="font-size:0.6rem;">${num}筒</span>`;
+                    innerHtml = `<div class="mahjong-dots-grid" style="width:26px;height:32px;padding:1px;"><div class="mahjong-dot" style="width:5px;height:5px;"></div></div><span class="river-suit tile-blue" style="font-size:0.55rem;">${num}筒</span>`;
                 } else if (type === 's') {
-                    innerHtml = `<div class="mahjong-bamboo-icon" style="width:22px;height:30px;padding:2px;"><div class="mahjong-bamboo-line" style="width:4px;height:6px;"></div></div><span class="river-suit tile-green" style="font-size:0.6rem;">${num}條</span>`;
+                    innerHtml = `<div class="mahjong-bamboo-box" style="height:32px;padding:1px 2px;gap:1px;"><div class="mahjong-bamboo-stick" style="width:4px;height:22px;"></div></div><span class="river-suit tile-green" style="font-size:0.55rem;">${num}條</span>`;
                 } else if (type === 'z') {
                     if (num === '7') {
                         innerHtml = `<div class="mahjong-white-board" style="width:24px;height:32px;"></div>`;
