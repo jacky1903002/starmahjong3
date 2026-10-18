@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>明星三缺一 - 16張標準圖解算台版</title>
+    <title>明星三缺一 - 16張標準算台版</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome Icons -->
@@ -88,6 +88,15 @@
         .turn-active-glow {
             border-color: #ef4444 !important; box-shadow: 0 0 25px rgba(239, 68, 68, 0.9) !important; background-color: rgba(239, 68, 68, 0.15);
         }
+
+        /* 提醒通知橫幅動畫 */
+        @keyframes pulseAlert {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.03); opacity: 0.9; }
+        }
+        .action-alert-banner {
+            animation: pulseAlert 1.2s infinite ease-in-out;
+        }
     </style>
 </head>
 <body class="bg-gradient-to-br from-emerald-600 via-teal-700 to-cyan-900 min-h-screen text-slate-900 flex flex-col items-center justify-center p-0 m-0 overflow-hidden">
@@ -105,7 +114,6 @@
                 <div id="nickname-field" class="hidden space-y-3">
                     <div>
                         <label class="block text-xs font-black text-slate-700 mb-1 uppercase">玩家綽號 (必填)</label>
-                        <!-- 加上 required 屬性，強制註冊時必須輸入暱稱 -->
                         <input type="text" id="reg-nickname" class="w-full px-4 py-3 border-2 border-slate-300 rounded-2xl font-bold text-slate-900 text-sm" placeholder="例如：賭神高進">
                     </div>
                     <div>
@@ -261,6 +269,12 @@
                         <span id="table-stakes-info">對戰底台: 100/30</span>
                         <span>剩牌: <span id="tiles-left" class="text-white">56</span> 張</span>
                     </div>
+                    
+                    <!-- 智慧動作提醒通知橫幅 -->
+                    <div id="action-alert-banner" class="hidden my-1 px-3 py-1 bg-red-600 text-white text-xs font-black rounded-lg shadow-lg action-alert-banner flex items-center space-x-1">
+                        <i class="fa-solid fa-bell"></i><span id="action-alert-text">【提示】可進行碰牌/胡牌！</span>
+                    </div>
+
                     <div class="text-sm sm:text-lg font-black text-amber-200 my-0.5 animate-pulse" id="game-status-text">16張標準算台對決中</div>
                     <div class="w-full bg-slate-900/90 h-28 rounded-xl p-2 border border-amber-500/40 flex flex-wrap gap-1.5 justify-center items-start overflow-y-auto" id="discards-river">
                         <span class="text-[11px] text-slate-400">尚無打出之牌</span>
@@ -300,9 +314,6 @@
                 </button>
                 <button onclick="playerDeclareWin()" class="action-btn-retro text-yellow-300 flex flex-col items-center">
                     <span>胡</span><i class="fa-solid fa-hand-pointer glove-icon text-yellow-300 text-xs mt-0.5"></i>
-                </button>
-                <button onclick="playerDrawAndPlay()" class="action-btn-retro text-amber-400 flex flex-col items-center">
-                    <span>摸/出</span><i class="fa-solid fa-hand-pointer glove-icon text-amber-400 text-xs mt-0.5"></i>
                 </button>
                 <button onclick="passAction()" class="action-btn-retro text-slate-400 flex flex-col items-center text-lg">
                     <span>放棄</span><i class="fa-solid fa-hand-pointer glove-icon text-slate-300 text-xs mt-0.5"></i>
@@ -395,6 +406,7 @@
         let dealerSeatIndex = 0;
         let lastDiscardedTile = null;
         let lastDiscarderSeat = null;
+        let isTingState = false;
         
         let userData = {
             nickname: "麻將玩家",
@@ -664,33 +676,29 @@
 
             updatePlayerWindsAndNames();
             updateTurnIndicator();
+            checkAvailableActionsAndNotify();
         }
 
-        window.playerDrawAndPlay = function() {
-            if (currentTurnPlayer !== mySeatIndex) {
-                alert("目前不是您的回合！");
-                return;
-            }
-            if (hasDrawnThisTurn) {
-                alert("您本回合已經摸牌，請點選要打出的手牌！");
-                return;
-            }
-            const drawn = mahjongGame.drawTile(mySeatIndex);
-            if (!drawn) { alert("流局！"); leaveTable(); return; }
+        // 自動摸牌邏輯：當輪到玩家且未摸牌時自動執行
+        function checkAndAutoDraw() {
+            if (currentTurnPlayer === mySeatIndex && !hasDrawnThisTurn) {
+                const drawn = mahjongGame.drawTile(mySeatIndex);
+                if (!drawn) { alert("流局！"); backToModeSelect(); return; }
 
-            if (drawn[1] === 'f') {
-                playerFlowers.push(drawn);
-                speakVoice("補花！", getVoicePresetByAvatar(userData.avatar));
-                const nextDrawn = mahjongGame.drawTile(mySeatIndex);
-                if (nextDrawn) mahjongGame.players[mySeatIndex].push(nextDrawn);
-            } else {
-                mahjongGame.players[mySeatIndex].push(drawn);
-            }
+                if (drawn[1] === 'f') {
+                    playerFlowers.push(drawn);
+                    speakVoice("補花！", getVoicePresetByAvatar(userData.avatar));
+                    const nextDrawn = mahjongGame.drawTile(mySeatIndex);
+                    if (nextDrawn) mahjongGame.players[mySeatIndex].push(nextDrawn);
+                } else {
+                    mahjongGame.players[mySeatIndex].push(drawn);
+                }
 
-            hasDrawnThisTurn = true;
-            mahjongGame.sortHand(mahjongGame.players[mySeatIndex]);
-            renderGameTable();
-        };
+                hasDrawnThisTurn = true;
+                mahjongGame.sortHand(mahjongGame.players[mySeatIndex]);
+                renderGameTable();
+            }
+        }
 
         function playerDiscardTile(index) {
             if (currentTurnPlayer !== mySeatIndex || !hasDrawnThisTurn) {
@@ -750,12 +758,16 @@
 
                 currentTurnPlayer = (currentTurnPlayer + 1) % 4;
                 renderGameTable();
-                if (currentTurnPlayer !== mySeatIndex) {
+                
+                if (currentTurnPlayer === mySeatIndex) {
+                    setTimeout(() => checkAndAutoDraw(), 800);
+                } else {
                     setTimeout(() => aiTurnAction(currentTurnPlayer), 1200);
                 }
             }
         }
 
+        // 嚴格胡牌判定 (5個面子 + 1個對子)
         function checkCanWin(hand) {
             if (!hand || hand.length === 0) return false;
             if ((hand.length - 2) % 3 !== 0) return false;
@@ -807,6 +819,54 @@
             return false;
         }
 
+        // 嚴格聽牌判定：假設任意一張牌加入後能胡牌即為聽牌
+        function checkCanTing(hand) {
+            const possibleTiles = [];
+            ['m','p','s'].forEach(type => {
+                for(let i=1; i<=9; i++) possibleTiles.push(`${i}${type}`);
+            });
+            for(let i=1; i<=7; i++) possibleTiles.push(`${i}z`);
+
+            for (let t of possibleTiles) {
+                const testHand = [...hand, t];
+                if (checkCanWin(testHand)) return true;
+            }
+            return false;
+        }
+
+        // 智慧檢查可用動作並發出提醒通知
+        function checkAvailableActionsAndNotify() {
+            const playerHand = mahjongGame.players[mySeatIndex];
+            const alertBanner = document.getElementById("action-alert-banner");
+            const alertText = document.getElementById("action-alert-text");
+            
+            let notifications = [];
+
+            // 檢查胡牌
+            if (checkCanWin(playerHand)) {
+                notifications.push("可胡牌！");
+            }
+
+            // 檢查聽牌
+            if (!isTingState && checkCanTing(playerHand)) {
+                notifications.push("可聽牌！");
+            }
+
+            // 檢查碰與槓 (針對別人打出的牌)
+            if (lastDiscardedTile && lastDiscarderSeat !== mySeatIndex) {
+                const sameCount = playerHand.filter(t => t === lastDiscardedTile).length;
+                if (sameCount >= 2) notifications.push(`可碰 ${formatTileName(lastDiscardedTile)}！`);
+                if (sameCount >= 3) notifications.push(`可槓 ${formatTileName(lastDiscardedTile)}！`);
+            }
+
+            if (notifications.length > 0) {
+                alertText.textContent = "【提示】" + notifications.join(" ｜ ");
+                alertBanner.classList.remove("hidden");
+            } else {
+                alertBanner.classList.add("hidden");
+            }
+        }
+
         window.triggerAction = function(type) {
             const playerHand = mahjongGame.players[mySeatIndex];
 
@@ -840,7 +900,7 @@
                     playerHand.splice(playerHand.indexOf(lastDiscardedTile), 1);
                 }
                 speakVoice("槓！", getVoicePresetByAvatar(userData.avatar));
-                playerDrawAndPlay();
+                checkAndAutoDraw();
             } else if (type === 'chi') {
                 const upperSeat = (mySeatIndex + 3) % 4;
                 if (!lastDiscardedTile || lastDiscarderSeat !== upperSeat) {
@@ -849,13 +909,18 @@
                 }
                 alert("吃牌成功！");
             } else if (type === 'ting') {
+                if (!checkCanTing(playerHand)) {
+                    alert("尚未達到聽牌條件，無法宣告聽牌！");
+                    return;
+                }
+                isTingState = true;
                 speakVoice("聽牌！", getVoicePresetByAvatar(userData.avatar));
-                alert("您已宣告聽牌！");
+                alert("聽牌成功！");
             }
         };
 
         window.passAction = function() {
-            alert("您選擇放棄本次操作！");
+            document.getElementById("action-alert-banner").classList.add("hidden");
         };
 
         function formatTileName(code) {
@@ -891,7 +956,6 @@
             const regNickInput = document.getElementById("reg-nickname");
             
             nickField.classList.toggle("hidden", !isRegisterMode);
-            // 切換註冊模式時動態設定 required 屬性
             if (isRegisterMode) {
                 regNickInput.setAttribute("required", "true");
             } else {
@@ -996,6 +1060,7 @@
             dealerSeatIndex = Math.floor(Math.random() * 4);
 
             playerFlowers = [];
+            isTingState = false;
             mahjongGame.deal();
             hasDrawnThisTurn = false;
             currentTurnPlayer = dealerSeatIndex;
@@ -1004,6 +1069,10 @@
 
             renderGameTable();
             speakVoice("牌局開始，請開牌！", getVoicePresetByAvatar(userData.avatar));
+
+            if (currentTurnPlayer === mySeatIndex) {
+                setTimeout(() => checkAndAutoDraw(), 1000);
+            }
         };
 
         window.createRoom = async function() {
@@ -1105,6 +1174,9 @@
             currentTurnPlayer = state.currentTurn;
             dealerSeatIndex = state.dealer !== undefined ? state.dealer : 0;
             renderGameTable();
+            if (currentTurnPlayer === mySeatIndex) {
+                checkAndAutoDraw();
+            }
         }
 
         window.playerDeclareWin = function() {
