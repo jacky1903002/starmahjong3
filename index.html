@@ -170,7 +170,7 @@
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 w-full max-w-2xl">
                 <button onclick="openTableSelect('ai')" class="bg-gradient-to-b from-teal-600 to-teal-800 p-8 rounded-3xl shadow-xl border-4 border-teal-300 text-white text-center transform hover:scale-105 transition">
                     <div class="text-3xl font-black mb-2"><i class="fa-solid fa-robot mr-2"></i>電腦對戰</div>
-                    <div class="text-xs opacity-90">單人挑戰 AI 機器人 (16張標準算台)[cite: 20]</div>
+                    <div class="text-xs opacity-90">單人挑戰 AI 機器人 (16張標準算台)</div>
                 </button>
                 <button onclick="openRoomLobby()" class="bg-gradient-to-b from-purple-600 to-indigo-800 p-8 rounded-3xl shadow-xl border-4 border-purple-300 text-white text-center transform hover:scale-105 transition">
                     <div class="text-3xl font-black mb-2"><i class="fa-solid fa-users mr-2"></i>四人線上對戰房</div>
@@ -231,7 +231,7 @@
                 </button>
             </div>
 
-            <!-- 上方對家 (風位+名稱緊接，若為莊家顯示紅字)[cite: 21] -->
+            <!-- 上方對家 -->
             <div class="flex flex-col items-center z-20 mt-1">
                 <div class="text-center mb-1">
                     <div class="player-wind-badge text-xl sm:text-2xl font-black text-yellow-300 tracking-wider" id="p2-wind-display">東風南 曾國城</div>
@@ -247,7 +247,7 @@
             <!-- 左右對手與中央牌河 -->
             <div class="flex justify-between items-center my-auto px-1 z-10">
                 
-                <!-- 左邊上家 (風位+名稱緊接)[cite: 21] -->
+                <!-- 左邊上家 -->
                 <div id="avatar-box-3" class="flex flex-col items-center bg-slate-900/95 p-2 rounded-2xl border-3 border-amber-400 shadow-2xl">
                     <div class="text-center mb-1">
                         <div class="player-wind-badge text-sm sm:text-lg font-black text-yellow-300" id="p3-wind-display">東風西 徐華鳳</div>
@@ -269,7 +269,7 @@
                     </div>
                 </div>
 
-                <!-- 右邊下家 (風位+名稱緊接)[cite: 21] -->
+                <!-- 右邊下家 -->
                 <div id="avatar-box-1" class="flex flex-col items-center bg-slate-900/95 p-2 rounded-2xl border-3 border-amber-400 shadow-2xl">
                     <div class="text-center mb-1">
                         <div class="player-wind-badge text-sm sm:text-lg font-black text-yellow-300" id="p1-wind-display">東風東 楊思敏</div>
@@ -311,7 +311,7 @@
                 </button>
             </div>
 
-            <!-- 下方自己 (風位+名稱緊接)[cite: 20, 21] -->
+            <!-- 下方自己 -->
             <div id="avatar-box-0" class="p-2 rounded-2xl shadow-2xl z-20 relative flex flex-col sm:flex-row items-center justify-between border-2 border-amber-500/50 bg-slate-950/95 w-full gap-2">
                 <div class="flex items-center space-x-3 bg-slate-900 px-3 py-1.5 rounded-xl border border-amber-400 shrink-0">
                     <div class="avatar-player-box" onclick="openAvatarModal()" title="點擊更換頭像">
@@ -319,7 +319,7 @@
                     </div>
                     <div>
                         <div class="flex items-center space-x-2">
-                            <span class="player-wind-badge text-base sm:text-xl font-black text-yellow-300" id="p0-wind-display">東風北 劉金勳</span>
+                            <span class="player-wind-badge text-base sm:text-xl font-black text-yellow-300" id="p0-wind-display">東風北 玩家</span>
                         </div>
                         <div class="text-amber-400 font-black text-sm sm:text-base" id="p0-chips-display">$ 100,000</div>
                     </div>
@@ -337,9 +337,7 @@
                 <i class="fa-solid fa-trophy"></i>
             </div>
             <h2 class="text-3xl font-black text-slate-900 tracking-tight">恭喜胡牌！16張算台明細</h2>
-            <div class="bg-amber-50 p-4 rounded-2xl border-2 border-amber-200 space-y-2 text-xs sm:text-sm font-bold text-slate-800 text-left max-h-48 overflow-y-auto" id="win-details-list">
-                <!-- 動態載入算台項目[cite: 20] -->
-            </div>
+            <div class="bg-amber-50 p-4 rounded-2xl border-2 border-amber-200 space-y-2 text-xs sm:text-sm font-bold text-slate-800 text-left max-h-48 overflow-y-auto" id="win-details-list"></div>
             <div class="bg-slate-900 p-3 rounded-2xl text-white flex justify-between items-center font-black">
                 <span>總台數：<span class="text-yellow-400 text-lg" id="win-total-tai">0 台</span></span>
                 <span>贏得籌碼：<span class="text-emerald-400 text-xl" id="win-total-chips">+$0</span></span>
@@ -396,16 +394,15 @@
         let currentBaseStake = 100;
         let currentTaiStake = 30;
         let playerFlowers = [];
-        let dealerSeatIndex = 0; // 預設 0 (東風東為莊家)
+        let dealerSeatIndex = 0;
         
         let userData = {
-            nickname: "劉金勳",
+            nickname: "麻將玩家",
             chips: 100000,
             avatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=300&q=80"
         };
 
-        // 玩家名稱陣列 (0: 自己, 1: 下家, 2: 對家, 3: 上家)
-        let playerNames = ["劉金勳", "楊思敏", "曾國城", "徐華鳳"];
+        let playerNames = ["麻將玩家", "楊思敏", "曾國城", "徐華鳳"];
 
         const AVATAR_LIST = [
             "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=300&q=80",
@@ -488,7 +485,6 @@
             return 'male';
         }
 
-        // SVG 牌面產生器
         function createWanSvg(numStr) {
             const numCharMap = {'1':'一','2':'二','3':'三','4':'四','5':'伍','6':'六','7':'七','8':'八','9':'九'};
             const topChar = numCharMap[numStr] || numStr;
@@ -621,27 +617,18 @@
         }
 
         function updatePlayerWindsAndNames() {
-            // 圈風為固定「東風」（台灣麻將起手），依序分配各家門風：
-            // 莊家座位為東，逆時針依序為南、西、北
             const winds = ["東", "南", "西", "北"];
-            
             for (let i = 0; i < 4; i++) {
-                // 計算相對位置 (0: 自己, 1: 下家, 2: 對家, 3: 上家)
                 const relSeat = (i - mySeatIndex + 4) % 4;
-                
-                // 計算該座位的風位索引
                 const windIdx = (i - dealerSeatIndex + 4) % 4;
                 const windStr = `東風${winds[windIdx]}`;
                 const nameStr = playerNames[i];
-                
-                // 組合顯示文字：「風向 玩家名稱」（如：東風東 劉金勳）
                 const displayText = `${windStr} ${nameStr}`;
                 
                 const elementId = `p${relSeat}-wind-display`;
                 const el = document.getElementById(elementId);
                 if (el) {
                     el.textContent = displayText;
-                    // 如果該位置是莊家，加上紅色顯眼字樣特效；否則移除
                     if (i === dealerSeatIndex) {
                         el.classList.add("dealer-highlight");
                     } else {
@@ -803,7 +790,7 @@
             errDiv.classList.add("hidden");
             try {
                 if (isRegisterMode) {
-                    const nick = document.getElementById("reg-nickname").value.trim() || "劉金勳";
+                    const nick = document.getElementById("reg-nickname").value.trim() || "麻將玩家";
                     const cred = await createUserWithEmailAndPassword(auth, email, pass);
                     await set(ref(database, `users/${cred.user.uid}`), { nickname: nick, chips: 100000, avatar: selectedAvatarUrl });
                 } else {
@@ -827,7 +814,7 @@
                     userData = snap.val();
                     if (!userData.avatar) userData.avatar = AVATAR_LIST[0];
                 }
-                playerNames[0] = userData.nickname || "劉金勳";
+                playerNames[0] = userData.nickname || "麻將玩家";
                 updateUI();
             } else {
                 currentUser = null;
@@ -874,7 +861,7 @@
             document.getElementById("game-view").classList.remove("hidden");
             document.getElementById("table-stakes-info").textContent = `對戰底台: ${base}/${tai}`;
             
-            playerNames[0] = userData.nickname || "劉金勳";
+            playerNames[0] = userData.nickname || "麻將玩家";
             playerNames[1] = "楊思敏";
             playerNames[2] = "曾國城";
             playerNames[3] = "徐華鳳";
@@ -883,13 +870,12 @@
             document.getElementById("avatar-img-2").src = AVATAR_LIST[3];
             document.getElementById("avatar-img-3").src = AVATAR_LIST[2];
 
-            // 隨機或指定莊家座位 (0~3)
             dealerSeatIndex = Math.floor(Math.random() * 4);
 
             playerFlowers = [];
             mahjongGame.deal();
             hasDrawnThisTurn = false;
-            currentTurnPlayer = dealerSeatIndex; // 由莊家開始
+            currentTurnPlayer = dealerSeatIndex;
             renderGameTable();
             speakVoice("牌局開始，請開牌！", getVoicePresetByAvatar(userData.avatar));
         };
@@ -999,9 +985,9 @@
             speakVoice("胡矣！恭喜發財！", getVoicePresetByAvatar(userData.avatar));
             
             const matchedRules = [
-                { name: "莊家", tai: 1, desc: "當莊時胡牌或被胡" },[cite: 20]
-                { name: "門清自摸", tai: 3, desc: "門清狀態下自摸" },[cite: 20]
-                { name: "花牌", tai: playerFlowers.length, desc: `拿到 ${playerFlowers.length} 張花牌` }[cite: 20]
+                { name: "莊家", tai: 1, desc: "當莊時胡牌或被胡" },
+                { name: "門清自摸", tai: 3, desc: "門清狀態下自摸" },
+                { name: "花牌", tai: playerFlowers.length, desc: `拿到 ${playerFlowers.length} 張花牌` }
             ];
             const totalTai = matchedRules.reduce((a, b) => a + b.tai, 0);
             const totalChips = currentBaseStake + (totalTai * currentTaiStake);
