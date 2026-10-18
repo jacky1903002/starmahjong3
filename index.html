@@ -15,7 +15,6 @@
             width: 100%; min-height: 100vh; overflow-x: hidden; overflow-y: auto; margin: 0; padding: 0;
             background: #064e3b; box-sizing: border-box;
         }
-        /* 玩家手牌極大化樣式，確保在任何畫面均完整呈現 */
         .mahjong-tile-real {
             width: 44px; height: 74px;
             background: linear-gradient(135deg, #ffffff 0%, #fffbeb 50%, #fef3c7 100%);
@@ -114,7 +113,7 @@
         </div>
     </div>
 
-    <!-- 登入畫面 -->
+    <!-- 登入畫面 (修正強制隱藏問題) -->
     <div id="login-screen" class="fixed inset-0 bg-slate-950/90 backdrop-blur-md hidden items-center justify-center z-40 p-4 overflow-y-auto">
         <div class="bg-white/95 p-6 sm:p-8 rounded-3xl shadow-2xl w-full max-w-md border-4 border-amber-400 relative overflow-hidden my-auto">
             <div class="text-center mb-6">
@@ -231,7 +230,7 @@
             </div>
         </div>
 
-        <!-- 麻將對戰桌介面 (採用彈性高度與捲動，確保全螢幕下絕不切掉手牌) -->
+        <!-- 麻將對戰桌介面 -->
         <div id="game-view" class="hidden flex-1 relative p-2 sm:p-3 flex flex-col justify-between select-none bg-emerald-800 w-full min-h-[calc(100vh-50px)] overflow-y-auto box-sizing gap-2">
             
             <!-- 左上角控制按鈕 -->
@@ -303,7 +302,7 @@
                 </div>
             </div>
 
-            <!-- 下方自己 (完美呈現絕不遮擋) -->
+            <!-- 下方自己 -->
             <div id="avatar-box-0" class="p-2 sm:p-2.5 rounded-2xl shadow-2xl z-20 relative flex flex-col items-center justify-between border-2 border-amber-500/50 bg-slate-950/95 w-full gap-1.5 shrink-0">
                 
                 <div class="flex items-center justify-between w-full px-2">
@@ -499,14 +498,24 @@
                     console.log("Fullscreen error:", err);
                 });
             }
-            document.getElementById("fullscreen-overlay").classList.add("hidden");
-            document.getElementById("login-screen").classList.remove("hidden");
-            document.getElementById("login-screen").classList.add("flex");
+            const overlay = document.getElementById("fullscreen-overlay");
+            if (overlay) overlay.style.display = "none";
+            
+            // 若已登入則直接進入大廳，否則顯示登入畫面
+            const loginScreen = document.getElementById("login-screen");
+            if (currentUser) {
+                loginScreen.style.display = "none";
+                document.getElementById("app-screen").classList.remove("hidden");
+            } else {
+                loginScreen.style.display = "flex";
+                loginScreen.classList.remove("hidden");
+            }
         };
 
         function renderAvatarSelectors() {
             const regGrid = document.getElementById("reg-avatar-grid");
             const modalGrid = document.getElementById("modal-avatar-grid");
+            if (!regGrid || !modalGrid) return;
             const html = AVATAR_LIST.map((url) => `
                 <div class="w-12 h-12 rounded-full border-3 border-slate-300 overflow-hidden cursor-pointer hover:border-amber-500 hover:scale-105 transition avatar-option" data-url="${url}" onclick="selectAvatar('${url}')">
                     <img src="${url}" class="w-full h-full object-cover">
@@ -529,13 +538,15 @@
         };
 
         window.openAvatarModal = function() {
-            document.getElementById("avatar-modal").classList.remove("hidden");
-            document.getElementById("avatar-modal").classList.add("flex");
+            const modal = document.getElementById("avatar-modal");
+            modal.style.display = "flex";
+            modal.classList.remove("hidden");
         };
 
         window.closeAvatarModal = async function() {
-            document.getElementById("avatar-modal").classList.remove("flex");
-            document.getElementById("avatar-modal").classList.add("hidden");
+            const modal = document.getElementById("avatar-modal");
+            modal.style.display = "none";
+            modal.classList.add("hidden");
             userData.avatar = selectedAvatarUrl;
             updateUI();
             if (currentUser) {
@@ -544,13 +555,15 @@
         };
 
         window.openSettingsModal = function() {
-            document.getElementById("settings-modal").classList.remove("hidden");
-            document.getElementById("settings-modal").classList.add("flex");
+            const modal = document.getElementById("settings-modal");
+            modal.style.display = "flex";
+            modal.classList.remove("hidden");
         };
 
         window.closeSettingsModal = function() {
-            document.getElementById("settings-modal").classList.remove("flex");
-            document.getElementById("settings-modal").classList.add("hidden");
+            const modal = document.getElementById("settings-modal");
+            modal.style.display = "none";
+            modal.classList.add("hidden");
         };
 
         window.toggleBgm = function() {
@@ -1112,7 +1125,6 @@
             document.getElementById("auth-submit-btn").textContent = isRegisterMode ? "註冊帳號並進入" : "登入遊戲大廳";
         };
 
-        // 強化登入/註冊非同步處理與錯誤例外捕捉
         document.getElementById("login-form").addEventListener("submit", async (e) => {
             e.preventDefault();
             const email = document.getElementById("login-email").value.trim();
@@ -1156,18 +1168,25 @@
             signOut(auth).catch(err => console.log(err)); 
         };
 
+        // 強化登入狀態監聽與登入畫面強制隱關閉
         onAuthStateChanged(auth, async (user) => {
+            const loginScreen = document.getElementById("login-screen");
+            const appScreen = document.getElementById("app-screen");
+            
             if (user) {
                 currentUser = user;
-                document.getElementById("login-screen").classList.add("hidden");
-                document.getElementById("app-screen").classList.remove("hidden");
+                // 強制隱藏登入畫面
+                loginScreen.style.display = "none";
+                loginScreen.classList.add("hidden");
+                loginScreen.classList.remove("flex");
+                
+                appScreen.classList.remove("hidden");
                 try {
                     const snap = await get(ref(database, `users/${user.uid}`));
                     if (snap.exists()) {
                         userData = snap.val();
                         if (!userData.avatar) userData.avatar = AVATAR_LIST[0];
                     } else {
-                        // 若無資料庫紀錄則自動初始化預設資料
                         userData = { nickname: user.email.split('@')[0], chips: 100000, avatar: AVATAR_LIST[0] };
                         await set(ref(database, `users/${user.uid}`), userData);
                     }
@@ -1178,8 +1197,12 @@
                 updateUI();
             } else {
                 currentUser = null;
-                document.getElementById("login-screen").classList.remove("hidden");
-                document.getElementById("app-screen").classList.add("hidden");
+                // 未登入時顯示登入畫面
+                loginScreen.style.display = "flex";
+                loginScreen.classList.remove("hidden");
+                loginScreen.classList.add("flex");
+                
+                appScreen.classList.add("hidden");
                 if (unsubscribeRoom) { unsubscribeRoom(); unsubscribeRoom = null; }
             }
         });
