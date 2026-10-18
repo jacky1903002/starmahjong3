@@ -13,11 +13,11 @@
     <style>
         html, body {
             width: 100%; min-height: 100vh; overflow-x: hidden; overflow-y: auto; margin: 0; padding: 0;
-            background: #064e3b;
+            background: #064e3b; box-sizing: border-box;
         }
-        /* 玩家手牌極大化樣式 */
+        /* 玩家手牌極大化樣式，確保在任何畫面均完整呈現 */
         .mahjong-tile-real {
-            width: 46px; height: 76px;
+            width: 44px; height: 74px;
             background: linear-gradient(135deg, #ffffff 0%, #fffbeb 50%, #fef3c7 100%);
             border: 2.5px solid #d97706; border-bottom: 5px solid #b45309; border-radius: 8px;
             box-shadow: 0 4px 10px rgba(0,0,0,0.5), inset 0 2px 3px rgba(255,255,255,0.9);
@@ -26,52 +26,45 @@
             margin: 0 1px; cursor: pointer; flex-shrink: 0;
         }
         @media (min-width: 640px) {
-            .mahjong-tile-real { width: 58px; height: 90px; border: 3px solid #f59e0b; border-bottom: 6px solid #d97706; border-radius: 10px; margin: 0 2px; }
+            .mahjong-tile-real { width: 54px; height: 86px; border: 3px solid #f59e0b; border-bottom: 6px solid #d97706; border-radius: 10px; margin: 0 2px; }
         }
         .mahjong-tile-real:hover, .mahjong-tile-real:active {
             transform: translateY(-8px) scale(1.06); box-shadow: 0 12px 20px rgba(245, 158, 11, 0.8); border-color: #fbbf24;
         }
         
         .mahjong-panel-box {
-            width: 30px; height: 46px; background: #fffcf8; border: 2px solid #fed7aa; border-radius: 5px;
+            width: 28px; height: 42px; background: #fffcf8; border: 2px solid #fed7aa; border-radius: 5px;
             display: flex; flex-direction: column; align-items: center; justify-content: space-between; padding: 1px;
             box-shadow: inset 0 1px 3px rgba(0,0,0,0.08); box-sizing: border-box; overflow: hidden;
         }
-        @media (min-width: 640px) { .mahjong-panel-box { width: 38px; height: 56px; padding: 2px; } }
+        @media (min-width: 640px) { .mahjong-panel-box { width: 36px; height: 52px; padding: 2px; } }
 
         .melds-tile-box {
-            width: 26px; height: 36px; background: #fffcf8; border: 1.5px solid #fed7aa; border-radius: 4px;
+            width: 24px; height: 34px; background: #fffcf8; border: 1.5px solid #fed7aa; border-radius: 4px;
             display: flex; flex-direction: column; align-items: center; justify-content: center; box-sizing: border-box; font-size: 10px;
         }
 
         .river-tile-box {
-            width: 24px; height: 34px; background: #fffcf8; border: 1.5px solid #d97706; border-radius: 4px;
+            width: 22px; height: 32px; background: #fffcf8; border: 1.5px solid #d97706; border-radius: 4px;
             display: flex; flex-direction: column; align-items: center; justify-content: center; box-sizing: border-box;
             box-shadow: 0 2px 4px rgba(0,0,0,0.3); font-size: 10px; flex-shrink: 0;
         }
 
-        /* 1:1還原：其他玩家背面牌尺寸放大 */
         .mahjong-tile-back-top {
-            width: 20px; height: 38px;
+            width: 20px; height: 36px;
             background: linear-gradient(135deg, #15803d 0%, #166534 50%, #14532d 100%);
             border: 2px solid #16a34a; border-bottom: 3px solid #052e16; border-radius: 4px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.5);
-            flex-shrink: 0; margin: 0 1px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.5); flex-shrink: 0; margin: 0 1px;
         }
-        @media (min-width: 640px) {
-            .mahjong-tile-back-top { width: 26px; height: 46px; }
-        }
+        @media (min-width: 640px) { .mahjong-tile-back-top { width: 24px; height: 42px; } }
 
         .mahjong-tile-back-side {
-            width: 34px; height: 18px;
+            width: 32px; height: 16px;
             background: linear-gradient(135deg, #15803d 0%, #166534 50%, #14532d 100%);
             border: 2px solid #16a34a; border-right: 3px solid #052e16; border-radius: 4px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.5);
-            flex-shrink: 0; margin: 1px 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.5); flex-shrink: 0; margin: 1px 0;
         }
-        @media (min-width: 640px) {
-            .mahjong-tile-back-side { width: 44px; height: 22px; }
-        }
+        @media (min-width: 640px) { .mahjong-tile-back-side { width: 40px; height: 20px; } }
 
         .player-wind-badge {
             font-family: 'ZCOOL KuaiLe', cursive, sans-serif;
@@ -84,16 +77,16 @@
         }
 
         .avatar-box-giant {
-            width: 60px; height: 60px; border-radius: 50%; border: 3px solid #f59e0b;
-            box-shadow: 0 0 15px rgba(245, 158, 11, 0.9); overflow: hidden; background-color: #1e293b; flex-shrink: 0;
+            width: 54px; height: 54px; border-radius: 50%; border: 3px solid #f59e0b;
+            box-shadow: 0 0 12px rgba(245, 158, 11, 0.9); overflow: hidden; background-color: #1e293b; flex-shrink: 0;
         }
-        @media (min-width: 640px) { .avatar-box-giant { width: 80px; height: 80px; border: 3.5px solid #f59e0b; } }
+        @media (min-width: 640px) { .avatar-box-giant { width: 70px; height: 70px; border: 3.5px solid #f59e0b; } }
         .avatar-box-giant img { width: 100%; height: 100%; object-fit: cover; object-position: center top; transform: scale(1.35); }
 
         .avatar-player-box {
-            width: 44px; height: 44px; border-radius: 50%; border: 2.5px solid #10b981; overflow: hidden; flex-shrink: 0; cursor: pointer;
+            width: 40px; height: 40px; border-radius: 50%; border: 2.5px solid #10b981; overflow: hidden; flex-shrink: 0; cursor: pointer;
         }
-        @media (min-width: 640px) { .avatar-player-box { width: 58px; height: 58px; } }
+        @media (min-width: 640px) { .avatar-player-box { width: 50px; height: 50px; } }
         .avatar-player-box img { width: 100%; height: 100%; object-fit: cover; object-position: center top; transform: scale(1.35); }
 
         .turn-active-glow {
@@ -104,9 +97,7 @@
             0%, 100% { transform: scale(1); opacity: 1; }
             50% { transform: scale(1.03); opacity: 0.9; }
         }
-        .action-alert-banner {
-            animation: pulseAlert 1.2s infinite ease-in-out;
-        }
+        .action-alert-banner { animation: pulseAlert 1.2s infinite ease-in-out; }
     </style>
 </head>
 <body class="bg-gradient-to-br from-emerald-600 via-teal-700 to-cyan-900 text-slate-900 flex flex-col items-center justify-start min-h-screen p-0 m-0">
@@ -116,7 +107,7 @@
         <div class="bg-slate-900 p-8 rounded-3xl border-4 border-amber-400 max-w-md shadow-2xl space-y-4">
             <div class="text-4xl text-amber-400 animate-bounce"><i class="fa-solid fa-expand"></i></div>
             <h2 class="text-2xl font-black text-white">啟動完整遊戲畫面</h2>
-            <p class="text-xs text-slate-300 font-bold leading-relaxed">為了完美體驗手牌極大化與 1:1 牌背還原，請點擊下方按鈕進入遊戲。</p>
+            <p class="text-xs text-slate-300 font-bold leading-relaxed">為了完美體驗手牌極大化與全螢幕無縫對戰，請點擊下方按鈕進入。</p>
             <button onclick="requestAppFullscreen()" class="w-full bg-gradient-to-r from-amber-500 to-orange-500 text-white font-black py-4 rounded-2xl shadow-lg text-lg animate-pulse">
                 進入遊戲大廳
             </button>
@@ -240,8 +231,8 @@
             </div>
         </div>
 
-        <!-- 麻將對戰桌介面 -->
-        <div id="game-view" class="hidden flex-1 relative p-2 sm:p-4 flex flex-col justify-between select-none bg-emerald-800 w-full min-h-[calc(100vh-50px)] gap-3">
+        <!-- 麻將對戰桌介面 (採用彈性高度與捲動，確保全螢幕下絕不切掉手牌) -->
+        <div id="game-view" class="hidden flex-1 relative p-2 sm:p-3 flex flex-col justify-between select-none bg-emerald-800 w-full min-h-[calc(100vh-50px)] overflow-y-auto box-sizing gap-2">
             
             <!-- 左上角控制按鈕 -->
             <div class="absolute top-2 left-2 z-30 flex items-center space-x-2">
@@ -257,10 +248,10 @@
             </div>
 
             <!-- 上方對家 -->
-            <div class="flex flex-col items-center z-20 mt-6">
+            <div class="flex flex-col items-center z-20 mt-6 shrink-0">
                 <div class="text-center mb-0.5">
-                    <div class="player-wind-badge text-base sm:text-lg font-black text-yellow-300 tracking-wider" id="p2-wind-display">東風南 曾國城</div>
-                    <div class="text-amber-400 font-black text-xs" id="p2-chips-display">$ 100,000</div>
+                    <div class="player-wind-badge text-sm sm:text-base font-black text-yellow-300 tracking-wider" id="p2-wind-display">東風南 曾國城</div>
+                    <div class="text-amber-400 font-black text-[11px]" id="p2-chips-display">$ 100,000</div>
                 </div>
                 <div id="avatar-box-2" class="avatar-box-giant shadow-2xl relative flex items-center justify-center mb-1">
                     <img id="avatar-img-2" src="" class="w-full h-full object-cover">
@@ -270,12 +261,12 @@
             </div>
 
             <!-- 左右對手與中央牌河 -->
-            <div class="flex justify-between items-center my-2 px-1 z-10 w-full">
+            <div class="flex justify-between items-center my-1 px-1 z-10 w-full shrink-0">
                 
                 <!-- 左邊上家 -->
-                <div id="avatar-box-3" class="flex flex-col items-center bg-slate-900/95 p-2 rounded-2xl border-3 border-amber-400 shadow-2xl">
+                <div id="avatar-box-3" class="flex flex-col items-center bg-slate-900/95 p-1.5 rounded-2xl border-3 border-amber-400 shadow-2xl">
                     <div class="text-center mb-1">
-                        <div class="player-wind-badge text-xs sm:text-sm font-black text-yellow-300" id="p3-wind-display">東風西 徐華鳳</div>
+                        <div class="player-wind-badge text-xs font-black text-yellow-300" id="p3-wind-display">東風西 徐華鳳</div>
                         <div class="text-amber-400 font-black text-[10px]" id="p3-chips-display">$ 100,000</div>
                     </div>
                     <div class="avatar-box-giant mb-1"><img id="avatar-img-3" src="" class="w-full h-full object-cover"></div>
@@ -284,26 +275,26 @@
                 </div>
 
                 <!-- 中央牌河 -->
-                <div class="bg-slate-950/85 p-3 rounded-2xl text-center shadow-2xl max-w-md mx-2 flex flex-col items-center border-2 border-amber-500/50 flex-1">
-                    <div class="flex justify-between w-full text-amber-300 text-xs font-black mb-1">
+                <div class="bg-slate-950/85 p-2.5 rounded-2xl text-center shadow-2xl max-w-md mx-2 flex flex-col items-center border-2 border-amber-500/50 flex-1">
+                    <div class="flex justify-between w-full text-amber-300 text-xs font-black mb-0.5">
                         <span id="table-stakes-info">對戰底台: 100/30</span>
                         <span>剩牌: <span id="tiles-left" class="text-white">56</span> 張</span>
                     </div>
                     
-                    <div id="action-alert-banner" class="hidden my-1 px-3 py-1 bg-red-600 text-white text-xs font-black rounded-lg shadow-lg action-alert-banner flex items-center space-x-1">
+                    <div id="action-alert-banner" class="hidden my-0.5 px-3 py-1 bg-red-600 text-white text-xs font-black rounded-lg shadow-lg action-alert-banner flex items-center space-x-1">
                         <i class="fa-solid fa-bell"></i><span id="action-alert-text">【提示】可進行碰牌/胡牌！</span>
                     </div>
 
-                    <div class="text-xs sm:text-sm font-black text-amber-200 my-0.5 animate-pulse" id="game-status-text">海底牌河 (已打出的牌)</div>
-                    <div class="w-full bg-slate-900/90 h-24 sm:h-28 rounded-xl p-2 border border-amber-500/40 flex flex-wrap gap-1.5 justify-center items-start overflow-y-auto" id="discards-river">
+                    <div class="text-xs font-black text-amber-200 my-0.5 animate-pulse" id="game-status-text">海底牌河 (已打出的牌)</div>
+                    <div class="w-full bg-slate-900/90 h-20 sm:h-24 rounded-xl p-1.5 border border-amber-500/40 flex flex-wrap gap-1 justify-center items-start overflow-y-auto" id="discards-river">
                         <span class="text-xs text-slate-400">尚無打出之牌</span>
                     </div>
                 </div>
 
                 <!-- 右邊下家 -->
-                <div id="avatar-box-1" class="flex flex-col items-center bg-slate-900/95 p-2 rounded-2xl border-3 border-amber-400 shadow-2xl">
+                <div id="avatar-box-1" class="flex flex-col items-center bg-slate-900/95 p-1.5 rounded-2xl border-3 border-amber-400 shadow-2xl">
                     <div class="text-center mb-1">
-                        <div class="player-wind-badge text-xs sm:text-sm font-black text-yellow-300" id="p1-wind-display">東風東 楊思敏</div>
+                        <div class="player-wind-badge text-xs font-black text-yellow-300" id="p1-wind-display">東風東 楊思敏</div>
                         <div class="text-amber-400 font-black text-[10px]" id="p1-chips-display">$ 100,000</div>
                     </div>
                     <div class="avatar-box-giant mb-1"><img id="avatar-img-1" src="" class="w-full h-full object-cover"></div>
@@ -312,24 +303,24 @@
                 </div>
             </div>
 
-            <!-- 下方自己 -->
-            <div id="avatar-box-0" class="p-2 sm:p-3 rounded-2xl shadow-2xl z-20 relative flex flex-col items-center justify-between border-2 border-amber-500/50 bg-slate-950/95 w-full gap-2 shrink-0">
+            <!-- 下方自己 (完美呈現絕不遮擋) -->
+            <div id="avatar-box-0" class="p-2 sm:p-2.5 rounded-2xl shadow-2xl z-20 relative flex flex-col items-center justify-between border-2 border-amber-500/50 bg-slate-950/95 w-full gap-1.5 shrink-0">
                 
                 <div class="flex items-center justify-between w-full px-2">
-                    <div class="flex items-center space-x-2 bg-slate-900 px-3 py-1.5 rounded-xl border border-amber-400 shrink-0">
+                    <div class="flex items-center space-x-2 bg-slate-900 px-3 py-1 rounded-xl border border-amber-400 shrink-0">
                         <div class="avatar-player-box" onclick="openAvatarModal()" title="點擊更換頭像">
                             <img id="player-avatar-display" src="" class="w-full h-full object-cover">
                         </div>
                         <div>
                             <div class="flex items-center space-x-1">
-                                <span class="player-wind-badge text-sm sm:text-lg font-black text-yellow-300" id="p0-wind-display">東風北 劉金勳</span>
+                                <span class="player-wind-badge text-sm sm:text-base font-black text-yellow-300" id="p0-wind-display">東風北 劉金勳</span>
                             </div>
-                            <div class="text-amber-400 font-black text-xs sm:text-sm" id="p0-chips-display">$ 100,000</div>
+                            <div class="text-amber-400 font-black text-xs" id="p0-chips-display">$ 100,000</div>
                         </div>
                         <div id="arrow-0" class="hidden bg-red-600 text-white px-1 py-0.5 rounded text-[9px] animate-pulse">⬆️ 換你出牌</div>
                     </div>
 
-                    <div class="flex items-center space-x-3 bg-slate-900/90 px-3 py-1.5 rounded-xl border border-amber-500/40">
+                    <div class="flex items-center space-x-3 bg-slate-900/90 px-3 py-1 rounded-xl border border-amber-500/40">
                         <div class="flex items-center space-x-1">
                             <span class="text-[11px] text-amber-300 font-bold">副露:</span>
                             <div id="player-melds-list" class="flex space-x-1">無</div>
@@ -341,7 +332,7 @@
                     </div>
                 </div>
 
-                <div id="player-tiles" class="flex items-center justify-center flex-wrap sm:flex-nowrap w-full py-1 px-1 gap-1"></div>
+                <div id="player-tiles" class="flex items-center justify-center flex-wrap sm:flex-nowrap w-full py-0.5 px-1 gap-1"></div>
             </div>
         </div>
     </div>
@@ -634,7 +625,7 @@
             const numCharMap = {'1':'一','2':'二','3':'三','4':'四','5':'伍','6':'六','7':'七','8':'八','9':'九'};
             const topChar = numCharMap[numStr] || numStr;
             return `
-            <svg viewBox="0 0 100 140" style="width:100%;height:100%;max-height:52px;display:block;margin:auto;">
+            <svg viewBox="0 0 100 140" style="width:100%;height:100%;max-height:48px;display:block;margin:auto;">
                 <text x="50" y="52" font-family="'Noto Serif TC', serif" font-weight="900" font-size="46" fill="#0f172a" text-anchor="middle" dominant-baseline="central">${topChar}</text>
                 <text x="50" y="104" font-family="'Noto Serif TC', serif" font-weight="900" font-size="42" fill="#dc2626" text-anchor="middle" dominant-baseline="central">萬</text>
             </svg>`;
@@ -642,7 +633,7 @@
 
         function createBambooStickSvg(color = '#16a34a') {
             return `
-            <svg viewBox="0 0 16 36" style="width:10px;height:22px;flex-shrink:0;">
+            <svg viewBox="0 0 16 36" style="width:9px;height:20px;flex-shrink:0;">
                 <rect x="3" y="1" width="10" height="34" rx="5" fill="${color}" stroke="#ffffff" stroke-width="1.5" />
                 <line x1="3" y1="12" x2="13" y2="12" stroke="#ffffff" stroke-width="1.5" />
                 <line x1="3" y1="24" x2="13" y2="24" stroke="#ffffff" stroke-width="1.5" />
@@ -655,7 +646,7 @@
         function createDotBallSvg(colorType = 'green') {
             const mainColor = colorType === 'red' ? '#dc2626' : (colorType === 'blue' ? '#2563eb' : '#0f766e');
             return `
-            <svg viewBox="0 0 100 100" style="width:11px;height:11px;flex-shrink:0;">
+            <svg viewBox="0 0 100 100" style="width:10px;height:10px;flex-shrink:0;">
                 <circle cx="50" cy="50" r="46" fill="${mainColor}" stroke="#ffffff" stroke-width="4" />
                 <path d="M 50 10 Q 30 30 10 50 Q 30 70 50 90 Q 70 70 90 50 Q 70 30 50 10 Z" fill="#ffffff" />
                 <circle cx="50" cy="50" r="14" fill="${mainColor}" />
@@ -665,7 +656,7 @@
 
         function createOneDotSvg() {
             return `
-            <svg viewBox="0 0 100 100" style="width:28px;height:28px;margin:auto;">
+            <svg viewBox="0 0 100 100" style="width:26px;height:26px;margin:auto;">
                 <circle cx="50" cy="50" r="48" fill="#0f766e" stroke="#ffffff" stroke-width="3" />
                 <circle cx="50" cy="50" r="38" fill="none" stroke="#ffffff" stroke-width="3" stroke-dasharray="6,3" />
                 <circle cx="50" cy="50" r="26" fill="#dc2626" stroke="#ffffff" stroke-width="3" />
@@ -677,17 +668,17 @@
         function createHonorSvg(typeNum) {
             if (typeNum === '5') {
                 return `
-                <svg viewBox="0 0 100 130" style="width:100%;height:100%;max-height:52px;margin:auto;">
+                <svg viewBox="0 0 100 130" style="width:100%;height:100%;max-height:48px;margin:auto;">
                     <text x="50" y="68" font-family="'Noto Serif TC', serif" font-weight="900" font-size="70" fill="#dc2626" text-anchor="middle" dominant-baseline="central">中</text>
                 </svg>`;
             } else if (typeNum === '6') {
                 return `
-                <svg viewBox="0 0 100 130" style="width:100%;height:100%;max-height:52px;margin:auto;">
+                <svg viewBox="0 0 100 130" style="width:100%;height:100%;max-height:48px;margin:auto;">
                     <text x="50" y="68" font-family="'Noto Serif TC', serif" font-weight="900" font-size="64" fill="#16a34a" text-anchor="middle" dominant-baseline="central">發</text>
                 </svg>`;
             } else if (typeNum === '7') {
                 return `
-                <div style="width:26px;height:38px;border:3px solid #0f172a;border-radius:4px;display:flex;flex-direction:column;justify-content:space-between;padding:3px;margin:auto;background:#fff;">
+                <div style="width:24px;height:34px;border:3px solid #0f172a;border-radius:4px;display:flex;flex-direction:column;justify-content:space-between;padding:3px;margin:auto;background:#fff;">
                     <div style="display:flex;justify-content:space-between;"><div style="width:3px;height:3px;background:#0f172a;"></div><div style="width:3px;height:3px;background:#0f172a;"></div></div>
                     <div style="display:flex;justify-content:space-between;"><div style="width:3px;height:3px;background:#0f172a;"></div><div style="width:3px;height:3px;background:#0f172a;"></div></div>
                 </div>`;
@@ -695,7 +686,7 @@
                 const windMap = {'1':'東','2':'南','3':'西','4':'北'};
                 const wChar = windMap[typeNum] || '東';
                 return `
-                <svg viewBox="0 0 100 130" style="width:100%;height:100%;max-height:52px;margin:auto;">
+                <svg viewBox="0 0 100 130" style="width:100%;height:100%;max-height:48px;margin:auto;">
                     <text x="50" y="68" font-family="'Noto Serif TC', serif" font-weight="900" font-size="65" fill="#0f172a" text-anchor="middle" dominant-baseline="central">${wChar}</text>
                 </svg>`;
             }
@@ -718,7 +709,7 @@
                 <div style="display:flex;justify-content:space-between;width:100%;padding:0 4px;font-size:10px;font-weight:900;">
                     <span style="color:#0f172a;">${f.name}</span><span style="color:${f.color};">${f.num}</span>
                 </div>
-                <div style="font-size:16px;margin:1px 0;">${f.icon}</div>
+                <div style="font-size:15px;margin:1px 0;">${f.icon}</div>
             </div>`;
         }
 
@@ -743,7 +734,7 @@
                 const n = parseInt(num);
                 let bambooHtml = '';
                 if (n === 1) {
-                    return `<div class="mahjong-panel-box" style="justify-content:center;background:#fffaf0;"><svg viewBox="0 0 100 150" style="width:100%;height:100%;max-height:48px;"><path d="M 25 32 Q 40 45 68 18 Q 55 52 64 52" fill="none" stroke="#dc2626" stroke-width="4.5" stroke-linecap="round" /><circle cx="50" cy="48" r="9" fill="none" stroke="#dc2626" stroke-width="4.5" /><circle cx="50" cy="48" r="2.5" fill="#dc2626" /><path d="M 20 105 C 40 100 70 85 92 58" fill="none" stroke="#166534" stroke-width="4.5" stroke-linecap="round" /></svg></div>`;
+                    return `<div class="mahjong-panel-box" style="justify-content:center;background:#fffaf0;"><svg viewBox="0 0 100 150" style="width:100%;height:100%;max-height:44px;"><path d="M 25 32 Q 40 45 68 18 Q 55 52 64 52" fill="none" stroke="#dc2626" stroke-width="4.5" stroke-linecap="round" /><circle cx="50" cy="48" r="9" fill="none" stroke="#dc2626" stroke-width="4.5" /><circle cx="50" cy="48" r="2.5" fill="#dc2626" /><path d="M 20 105 C 40 100 70 85 92 58" fill="none" stroke="#166534" stroke-width="4.5" stroke-linecap="round" /></svg></div>`;
                 } else if (n === 2) bambooHtml = `<div style="display:flex;flex-direction:column;justify-content:space-between;height:100%;align-items:center;">${createBambooStickSvg('#16a34a')}${createBambooStickSvg('#16a34a')}</div>`;
                 else if (n === 3) bambooHtml = `<div style="display:flex;flex-direction:column;justify-content:space-between;height:100%;width:100%;align-items:center;"><div style="margin-top:1px;">${createBambooStickSvg('#dc2626')}</div><div style="display:flex;justify-content:space-between;width:100%;margin-bottom:1px;">${createBambooStickSvg('#16a34a')}${createBambooStickSvg('#16a34a')}</div></div>`;
                 else if (n === 4) bambooHtml = `<div style="display:flex;flex-direction:column;justify-content:space-between;height:100%;width:100%;"><div style="display:flex;justify-content:space-between;width:100%;">${createBambooStickSvg('#16a34a')}${createBambooStickSvg('#16a34a')}</div><div style="display:flex;justify-content:space-between;width:100%;">${createBambooStickSvg('#16a34a')}${createBambooStickSvg('#16a34a')}</div></div>`;
@@ -817,7 +808,7 @@
 
             const flowerListDiv = document.getElementById("flower-tiles-list");
             if (playerFlowers.length > 0) {
-                flowerListDiv.innerHTML = playerFlowers.map(f => `<div style="width:22px;height:32px;background:#fff;border:1px solid #fecdd3;border-radius:3px;display:flex;align-items:center;justify-content:center;font-size:10px;">${createTileHtml(f)}</div>`).join('');
+                flowerListDiv.innerHTML = playerFlowers.map(f => `<div style="width:20px;height:30px;background:#fff;border:1px solid #fecdd3;border-radius:3px;display:flex;align-items:center;justify-content:center;font-size:10px;">${createTileHtml(f)}</div>`).join('');
             } else {
                 flowerListDiv.innerHTML = '<span class="text-slate-400 text-xs">無</span>';
             }
@@ -1121,19 +1112,23 @@
             document.getElementById("auth-submit-btn").textContent = isRegisterMode ? "註冊帳號並進入" : "登入遊戲大廳";
         };
 
+        // 強化登入/註冊非同步處理與錯誤例外捕捉
         document.getElementById("login-form").addEventListener("submit", async (e) => {
             e.preventDefault();
-            const email = document.getElementById("login-email").value;
+            const email = document.getElementById("login-email").value.trim();
             const pass = document.getElementById("login-password").value;
             const errDiv = document.getElementById("login-error");
             errDiv.classList.add("hidden");
+            
+            const submitBtn = document.getElementById("auth-submit-btn");
+            submitBtn.disabled = true;
+            submitBtn.textContent = "處理中...";
+
             try {
                 if (isRegisterMode) {
                     const nick = document.getElementById("reg-nickname").value.trim();
                     if (!nick) {
-                        errDiv.textContent = "失敗: 註冊時必須輸入玩家綽號！";
-                        errDiv.classList.remove("hidden");
-                        return;
+                        throw new Error("註冊時必須輸入玩家綽號！");
                     }
                     const cred = await createUserWithEmailAndPassword(auth, email, pass);
                     await set(ref(database, `users/${cred.user.uid}`), { nickname: nick, chips: 100000, avatar: selectedAvatarUrl });
@@ -1142,22 +1137,42 @@
                 }
             } catch (err) {
                 console.error("Auth Error Code:", err.code, err.message);
-                errDiv.textContent = `登入失敗 (${err.code}): ${err.message}`;
+                let msg = err.message;
+                if (err.code === 'auth/invalid-email') msg = "電子郵件格式錯誤";
+                else if (err.code === 'auth/user-not-found' || err.code === 'auth/invalid-credential') msg = "找不到此帳號或密碼錯誤";
+                else if (err.code === 'auth/wrong-password') msg = "密碼錯誤";
+                else if (err.code === 'auth/email-already-in-use') msg = "此 Email 已經被註冊過了";
+                else if (err.code === 'auth/weak-password') msg = "密碼強度不足（至少需 6 個字元）";
+                
+                errDiv.textContent = `登入失敗：${msg}`;
                 errDiv.classList.remove("hidden");
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = isRegisterMode ? "註冊帳號並進入" : "登入遊戲大廳";
             }
         });
 
-        window.logoutUser = function() { signOut(auth); };
+        window.logoutUser = function() { 
+            signOut(auth).catch(err => console.log(err)); 
+        };
 
         onAuthStateChanged(auth, async (user) => {
             if (user) {
                 currentUser = user;
                 document.getElementById("login-screen").classList.add("hidden");
                 document.getElementById("app-screen").classList.remove("hidden");
-                const snap = await get(ref(database, `users/${user.uid}`));
-                if (snap.exists()) {
-                    userData = snap.val();
-                    if (!userData.avatar) userData.avatar = AVATAR_LIST[0];
+                try {
+                    const snap = await get(ref(database, `users/${user.uid}`));
+                    if (snap.exists()) {
+                        userData = snap.val();
+                        if (!userData.avatar) userData.avatar = AVATAR_LIST[0];
+                    } else {
+                        // 若無資料庫紀錄則自動初始化預設資料
+                        userData = { nickname: user.email.split('@')[0], chips: 100000, avatar: AVATAR_LIST[0] };
+                        await set(ref(database, `users/${user.uid}`), userData);
+                    }
+                } catch (e) {
+                    console.log("Load user data error, using fallback", e);
                 }
                 playerNames[0] = userData.nickname || "劉金勳";
                 updateUI();
@@ -1165,15 +1180,15 @@
                 currentUser = null;
                 document.getElementById("login-screen").classList.remove("hidden");
                 document.getElementById("app-screen").classList.add("hidden");
-                if (unsubscribeRoom) unsubscribeRoom();
+                if (unsubscribeRoom) { unsubscribeRoom(); unsubscribeRoom = null; }
             }
         });
 
         function updateUI() {
-            document.getElementById("header-nickname").textContent = userData.nickname;
+            document.getElementById("header-nickname").textContent = userData.nickname || "玩家";
             document.getElementById("header-chips").textContent = (userData.chips || 100000).toLocaleString();
-            document.getElementById("header-avatar-img").src = userData.avatar;
-            document.getElementById("player-avatar-display").src = userData.avatar;
+            document.getElementById("header-avatar-img").src = userData.avatar || AVATAR_LIST[0];
+            document.getElementById("player-avatar-display").src = userData.avatar || AVATAR_LIST[0];
             document.getElementById("p0-chips-display").textContent = `$ ${(userData.chips || 100000).toLocaleString()}`;
         }
 
