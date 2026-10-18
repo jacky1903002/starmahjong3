@@ -2,127 +2,117 @@
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>明星三缺一 - 四人麻將大對決</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>明星三缺一 - 邀請碼線上對戰</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&family=M+PLUS+Rounded+1c:wght@700;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
     <style>
         .mahjong-tile-real {
-            width: 68px;
-            height: 110px;
+            width: 52px; height: 82px;
             background: linear-gradient(135deg, #ffffff 0%, #fffbeb 50%, #fef3c7 100%);
-            border: 3.5px solid #f59e0b;
-            border-bottom: 8px solid #d97706;
-            border-radius: 14px;
-            box-shadow: 0 8px 16px rgba(0,0,0,0.5), inset 0 2px 4px rgba(255,255,255,0.9);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            user-select: none;
-            transition: all 0.15s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            margin: 0 1.5px;
-            cursor: pointer;
-            flex-shrink: 0;
+            border: 3px solid #d97706; border-bottom: 6px solid #b45309; border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.4), inset 0 2px 3px rgba(255,255,255,0.9);
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            user-select: none; transition: all 0.15s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            margin: 0 1px; cursor: pointer; flex-shrink: 0;
         }
-        .mahjong-tile-real:hover {
-            transform: translateY(-12px) scale(1.06);
-            box-shadow: 0 16px 24px rgba(245, 158, 11, 0.7);
-            border-color: #fbbf24;
+        @media (min-width: 640px) {
+            .mahjong-tile-real { width: 64px; height: 100px; border: 3.5px solid #f59e0b; border-bottom: 7px solid #d97706; border-radius: 12px; margin: 0 2px; }
         }
-
-        .tile-number { font-size: 2.1rem; font-weight: 900; line-height: 1; }
-        .tile-suit { font-size: 1.05rem; font-weight: 900; margin-top: -1px; }
+        .mahjong-tile-real:hover, .mahjong-tile-real:active {
+            transform: translateY(-8px) scale(1.05); box-shadow: 0 12px 20px rgba(245, 158, 11, 0.7); border-color: #fbbf24;
+        }
+        .tile-number { font-size: 1.6rem; font-weight: 900; line-height: 1; }
+        @media (min-width: 640px) { .tile-number { font-size: 2rem; } }
+        .tile-suit { font-size: 0.9rem; font-weight: 900; margin-top: -1px; }
+        @media (min-width: 640px) { .tile-suit { font-size: 1.05rem; } }
         .tile-red { color: #dc2626 !important; }
         .tile-green { color: #16a34a !important; }
         .tile-blue { color: #2563eb !important; }
         .tile-dark { color: #0f172a !important; }
 
         .mahjong-dot-container {
-            width: 40px; height: 48px; background: #eff6ff; border: 2px solid #3b82f6; border-radius: 8px;
-            display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 2px; padding: 2px;
-            box-shadow: inset 0 1px 3px rgba(0,0,0,0.15);
+            width: 32px; height: 38px; background: #eff6ff; border: 2px solid #3b82f6; border-radius: 6px;
+            display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 1.5px; padding: 2px;
         }
-        .m-dot { width: 9px; height: 9px; border-radius: 50%; background: #dc2626; box-shadow: 0 1px 2px rgba(0,0,0,0.3); }
-        .m-dot.green { background: #16a34a; }
-        .m-dot.blue { background: #2563eb; }
+        @media (min-width: 640px) { .mahjong-dot-container { width: 38px; height: 44px; gap: 2px; } }
+        .m-dot { width: 7px; height: 7px; border-radius: 50%; background: #dc2626; }
+        @media (min-width: 640px) { .m-dot { width: 9px; height: 9px; } }
+        .m-dot.green { background: #16a34a; } .m-dot.blue { background: #2563eb; }
 
         .mahjong-bamboo-container {
-            width: 40px; height: 48px; background: #f0fdf4; border: 2px solid #22c55e; border-radius: 8px;
-            display: flex; flex-direction: row; align-items: center; justify-content: center; gap: 2px; padding: 2px;
-            box-shadow: inset 0 1px 3px rgba(0,0,0,0.15);
+            width: 32px; height: 38px; background: #f0fdf4; border: 2px solid #22c55e; border-radius: 6px;
+            display: flex; flex-direction: row; align-items: center; justify-content: center; gap: 1.5px; padding: 2px;
         }
-        .m-stick { width: 4.5px; height: 34px; background: #16a34a; border-radius: 3px; box-shadow: 0 1px 2px rgba(0,0,0,0.3); }
+        @media (min-width: 640px) { .mahjong-bamboo-container { width: 38px; height: 44px; gap: 2px; } }
+        .m-stick { width: 3.5px; height: 28px; background: #16a34a; border-radius: 2px; }
+        @media (min-width: 640px) { .m-stick { width: 4.5px; height: 34px; } }
 
         .mahjong-white-board {
-            width: 34px; height: 46px; background: #ffffff; border: 3px solid #94a3b8; border-radius: 6px;
-            box-shadow: inset 0 0 8px rgba(37, 99, 235, 0.4);
+            width: 28px; height: 38px; background: #ffffff; border: 2.5px solid #94a3b8; border-radius: 5px;
         }
+        @media (min-width: 640px) { .mahjong-white-board { width: 34px; height: 44px; } }
 
         .mahjong-tile-river-real {
-            width: 48px; height: 66px; background: linear-gradient(135deg, #ffffff 0%, #fef3c7 100%);
-            border: 2px solid #f59e0b; border-bottom: 4px solid #d97706; border-radius: 8px;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.4); margin: 3px;
+            width: 36px; height: 50px; background: linear-gradient(135deg, #ffffff 0%, #fef3c7 100%);
+            border: 2px solid #f59e0b; border-bottom: 3px solid #d97706; border-radius: 6px;
+            display: flex; flex-direction: column; align-items: center; justify-content: center; margin: 2px;
         }
-        .river-num { font-size: 1.25rem; font-weight: 900; line-height: 1; }
-        .river-suit { font-size: 0.8rem; font-weight: 900; }
+        @media (min-width: 640px) { .mahjong-tile-river-real { width: 46px; height: 62px; margin: 3px; } }
+        .river-num { font-size: 1rem; font-weight: 900; line-height: 1; }
+        @media (min-width: 640px) { .river-num { font-size: 1.2rem; } }
+        .river-suit { font-size: 0.65rem; font-weight: 900; }
 
         .avatar-box-giant {
-            width: 128px; height: 128px; border-radius: 50%; border: 5px solid #f59e0b;
-            box-shadow: 0 0 30px rgba(245, 158, 11, 0.8), 0 8px 16px rgba(0,0,0,0.6);
-            overflow: hidden; background-color: #1e293b; position: relative;
+            width: 65px; height: 65px; border-radius: 50%; border: 3px solid #f59e0b;
+            box-shadow: 0 0 15px rgba(245, 158, 11, 0.8); overflow: hidden; background-color: #1e293b; flex-shrink: 0;
         }
+        @media (min-width: 640px) { .avatar-box-giant { width: 100px; height: 100px; border: 4px solid #f59e0b; } }
         .avatar-box-giant img { width: 100%; height: 100%; object-fit: cover; object-position: center top; transform: scale(1.35); }
 
         .avatar-player-box {
-            width: 85px; height: 85px; border-radius: 50%; border: 4px solid #10b981;
-            box-shadow: 0 0 20px rgba(16, 185, 129, 0.8), 0 6px 12px rgba(0,0,0,0.6);
-            overflow: hidden; position: relative; flex-shrink: 0;
+            width: 45px; height: 45px; border-radius: 50%; border: 3px solid #10b981; overflow: hidden; flex-shrink: 0;
         }
+        @media (min-width: 640px) { .avatar-player-box { width: 70px; height: 70px; } }
         .avatar-player-box img { width: 100%; height: 100%; object-fit: cover; object-position: center top; transform: scale(1.35); }
 
         .turn-active-glow {
             border-color: #ef4444 !important;
-            box-shadow: 0 0 35px rgba(239, 68, 68, 0.9), inset 0 0 15px rgba(239, 68, 68, 0.5) !important;
+            box-shadow: 0 0 25px rgba(239, 68, 68, 0.9) !important;
             background-color: rgba(239, 68, 68, 0.12);
         }
     </style>
 </head>
 <body class="bg-gradient-to-br from-emerald-600 via-teal-700 to-cyan-900 min-h-screen text-slate-900 flex flex-col items-center justify-center p-0 m-0 overflow-hidden">
 
-    <!-- 登入與註冊畫面 -->
-    <div id="login-screen" class="fixed inset-0 bg-slate-950/90 backdrop-blur-md flex items-center justify-center z-50 p-4">
-        <div class="bg-white/95 p-8 rounded-3xl shadow-2xl w-full max-w-md border-4 border-amber-400 relative overflow-hidden">
-            <div class="absolute -top-10 -right-10 bg-amber-400 text-amber-900 w-32 h-32 rounded-full flex items-end justify-start p-6 text-2xl font-black rotate-12 shadow-inner">麻將王</div>
+    <!-- 登入畫面 -->
+    <div id="login-screen" class="fixed inset-0 bg-slate-950/90 backdrop-blur-md flex items-center justify-center z-50 p-4 overflow-y-auto">
+        <div class="bg-white/95 p-6 sm:p-8 rounded-3xl shadow-2xl w-full max-w-md border-4 border-amber-400 relative overflow-hidden my-auto">
             <div class="text-center mb-6">
-                <div class="bg-gradient-to-r from-amber-500 to-orange-500 text-white w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-3 text-4xl shadow-lg shadow-orange-500/40 animate-bounce">
+                <div class="bg-gradient-to-r from-amber-500 to-orange-500 text-white w-16 h-16 sm:w-20 sm:h-20 rounded-2xl flex items-center justify-center mx-auto mb-3 text-3xl sm:text-4xl shadow-lg animate-bounce">
                     <i class="fa-solid fa-dice-one"></i>
                 </div>
-                <h2 class="text-3xl font-black text-slate-900 tracking-tight">明星三缺一 4人對決</h2>
-                <p class="text-sm text-slate-500 mt-1 font-bold">吃碰槓判定全面修復版！</p>
+                <h2 class="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">明星三缺一 邀請碼對決</h2>
             </div>
             <form id="login-form" class="space-y-4">
                 <div id="nickname-field" class="hidden">
-                    <label class="block text-xs font-black text-slate-700 mb-1 uppercase tracking-wider">遊戲玩家綽號 (Nickname)</label>
-                    <input type="text" id="reg-nickname" class="w-full px-4 py-3 border-2 border-slate-300 rounded-2xl focus:ring-4 focus:ring-amber-400 focus:outline-none font-bold text-slate-900" placeholder="例如：賭神高進">
+                    <label class="block text-xs font-black text-slate-700 mb-1 uppercase">玩家綽號 (Nickname)</label>
+                    <input type="text" id="reg-nickname" class="w-full px-4 py-3 border-2 border-slate-300 rounded-2xl font-bold text-slate-900 text-sm" placeholder="例如：賭神高進">
                 </div>
                 <div>
-                    <label class="block text-xs font-black text-slate-700 mb-1 uppercase tracking-wider">電子郵件 (Email)</label>
-                    <input type="email" id="login-email" required class="w-full px-4 py-3 border-2 border-slate-300 rounded-2xl focus:ring-4 focus:ring-amber-400 focus:outline-none font-bold text-slate-900" placeholder="player@mahjong.com">
+                    <label class="block text-xs font-black text-slate-700 mb-1 uppercase">電子郵件 (Email)</label>
+                    <input type="email" id="login-email" required class="w-full px-4 py-3 border-2 border-slate-300 rounded-2xl font-bold text-slate-900 text-sm" placeholder="player@mahjong.com">
                 </div>
                 <div>
-                    <label class="block text-xs font-black text-slate-700 mb-1 uppercase tracking-wider">密碼 (Password)</label>
-                    <input type="password" id="login-password" required class="w-full px-4 py-3 border-2 border-slate-300 rounded-2xl focus:ring-4 focus:ring-amber-400 focus:outline-none font-bold text-slate-900" placeholder="••••••••">
+                    <label class="block text-xs font-black text-slate-700 mb-1 uppercase">密碼 (Password)</label>
+                    <input type="password" id="login-password" required class="w-full px-4 py-3 border-2 border-slate-300 rounded-2xl font-bold text-slate-900 text-sm" placeholder="••••••••">
                 </div>
                 <div id="login-error" class="text-red-600 text-xs font-bold text-center hidden"></div>
-                
-                <button type="submit" id="auth-submit-btn" class="w-full bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-black py-3.5 rounded-2xl transition duration-200 shadow-lg shadow-orange-500/40 text-lg">
+                <button type="submit" id="auth-submit-btn" class="w-full bg-gradient-to-r from-amber-500 to-orange-500 text-white font-black py-3.5 rounded-2xl shadow-lg text-base">
                     登入遊戲大廳
                 </button>
                 <div class="text-center pt-2">
@@ -134,220 +124,149 @@
         </div>
     </div>
 
-    <!-- 主遊戲大廳與牌桌介面 -->
+    <!-- 主選單大廳畫面 -->
     <div id="app-screen" class="hidden flex flex-col w-screen h-screen bg-slate-900/95 overflow-hidden">
-        
-        <!-- 頂端資訊導覽列 -->
-        <header class="bg-slate-950 px-6 py-2 flex flex-wrap justify-between items-center gap-3 border-b-2 border-amber-500/40 text-white shrink-0 z-40">
-            <div class="flex items-center space-x-3">
-                <div class="bg-amber-500 text-slate-950 w-10 h-10 rounded-xl flex items-center justify-center text-xl font-black shadow-md">麻</div>
-                <div>
-                    <h1 class="text-lg font-black text-amber-400 tracking-wider">明星三缺一 | 4人爆笑對決</h1>
-                    <p class="text-[10px] text-slate-400 font-bold">玩家: <span id="header-nickname" class="text-white">載入中...</span></p>
-                </div>
+        <header class="bg-slate-950 px-4 py-2 flex justify-between items-center border-b-2 border-amber-500/40 text-white shrink-0 z-40">
+            <div class="flex items-center space-x-2">
+                <div class="bg-amber-500 text-slate-950 w-8 h-8 rounded-xl flex items-center justify-center font-black">麻</div>
+                <h1 class="text-sm sm:text-base font-black text-amber-400">玩家: <span id="header-nickname" class="text-white">載入中...</span></h1>
             </div>
-
-            <!-- CODE 密碼輸入送籌碼區 -->
-            <div class="flex items-center space-x-2 bg-slate-900 px-3 py-1.5 rounded-2xl border border-amber-500/40">
-                <span class="text-xs text-amber-300 font-black"><i class="fa-solid fa-key mr-1"></i>CODE:</span>
-                <input type="text" id="cheat-code-input" class="px-2.5 py-1 text-xs rounded-xl bg-slate-950 text-white font-bold border border-slate-700 focus:outline-none focus:border-amber-400 w-28" placeholder="輸入 jacky">
-                <button onclick="submitCheatCode()" class="bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-slate-950 font-black px-3 py-1 rounded-xl text-xs transition shadow">
-                    領取籌碼
-                </button>
-            </div>
-
-            <div class="flex items-center space-x-3">
-                <div class="bg-slate-900 px-3.5 py-1.5 rounded-2xl border border-amber-500/30 text-xs font-bold flex items-center text-amber-300">
-                    <i class="fa-solid fa-coins mr-1.5 text-yellow-400"></i>籌碼: <span id="header-chips" class="text-white ml-1 text-sm font-black">100,000</span>
-                </div>
-                <button onclick="cycleVoiceMode()" id="voice-mode-btn" class="bg-amber-500 hover:bg-amber-600 text-slate-950 px-3 py-1.5 rounded-xl text-xs font-black transition flex items-center shadow">
-                    <i class="fa-solid fa-user-group mr-1"></i>音色: 老人音
-                </button>
-                <button onclick="toggleAudio()" id="audio-toggle-btn" class="bg-slate-800 hover:bg-slate-700 text-amber-400 px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center">
-                    <i class="fa-solid fa-volume-high mr-1"></i>語音: 開
-                </button>
-            </div>
-
             <div class="flex items-center space-x-3 text-xs font-bold">
-                <button onclick="openModal('ranking-modal')" class="bg-amber-500 hover:bg-amber-600 text-slate-950 px-3.5 py-2 rounded-xl transition font-black shadow-md flex items-center">
-                    <i class="fa-solid fa-trophy mr-1.5"></i>排行榜
-                </button>
-                <button onclick="openModal('badge-modal')" class="bg-purple-600 hover:bg-purple-700 text-white px-3.5 py-2 rounded-xl transition font-black shadow-md flex items-center">
-                    <i class="fa-solid fa-medal mr-1.5"></i>成就徽章
-                </button>
-                <button onclick="logoutUser()" class="bg-red-600 hover:bg-red-700 text-white px-3 py-2 rounded-xl transition font-black shadow-md">
-                    <i class="fa-solid fa-right-from-bracket mr-1"></i>登出
-                </button>
+                <div class="text-amber-300"><i class="fa-solid fa-coins mr-1 text-yellow-400"></i><span id="header-chips" class="text-white font-black">100,000</span></div>
+                <button onclick="logoutUser()" class="bg-red-600 text-white px-3 py-1.5 rounded-xl font-black">登出</button>
             </div>
         </header>
 
-        <!-- 即時連線狀態列 -->
-        <div class="bg-slate-900 px-6 py-1 flex justify-between items-center text-[11px] text-slate-400 border-b border-slate-800 shrink-0 z-40">
-            <div class="flex items-center space-x-2">
-                <span id="conn-dot" class="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block animate-pulse"></span>
-                <span id="conn-text">已連線至 Firebase Realtime Database</span>
-            </div>
-            <div>上次同步: <span id="last-saved-time" class="text-amber-400 font-bold">尚未同步</span></div>
-        </div>
-
-        <!-- 遊戲大廳 / 選擇底台區 -->
-        <div id="lobby-view" class="flex-1 p-8 flex flex-col items-center justify-center space-y-8 overflow-y-auto">
-            <div class="text-center space-y-2">
-                <h2 class="text-4xl font-black text-amber-400 drop-shadow-md">請選擇對戰底台</h2>
-                <p class="text-sm text-slate-300 font-bold">輸入 CODE 【jacky】即可獲得 +999,999 籌碼大獎！</p>
-            </div>
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 w-full max-w-4xl">
-                <button onclick="startTable(50, 20)" class="bg-gradient-to-b from-teal-500 to-teal-700 hover:from-teal-400 hover:to-teal-600 p-6 rounded-3xl shadow-xl border-4 border-teal-300 text-white text-center transform hover:-translate-y-1 transition duration-200">
-                    <div class="text-2xl font-black mb-1">新手練習桌</div>
-                    <div class="text-3xl font-black text-amber-300 my-2">50 / 20 台</div>
-                    <div class="text-xs opacity-80">適合新手輕鬆胡牌</div>
+        <!-- 模式選擇選單 -->
+        <div id="lobby-mode-view" class="flex-1 p-6 flex flex-col items-center justify-center space-y-6 overflow-y-auto">
+            <h2 class="text-3xl font-black text-amber-400">請選擇遊戲模式</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 w-full max-w-2xl">
+                <button onclick="openTableSelect('ai')" class="bg-gradient-to-b from-teal-600 to-teal-800 p-8 rounded-3xl shadow-xl border-4 border-teal-300 text-white text-center transform hover:scale-105 transition">
+                    <div class="text-3xl font-black mb-2"><i class="fa-solid fa-robot mr-2"></i>電腦對戰</div>
+                    <div class="text-xs opacity-90">單人挑戰 AI 機器人</div>
                 </button>
-                <button onclick="startTable(100, 30)" class="bg-gradient-to-b from-blue-600 to-blue-800 hover:from-blue-500 hover:to-blue-700 p-6 rounded-3xl shadow-xl border-4 border-blue-300 text-white text-center transform hover:-translate-y-1 transition duration-200">
-                    <div class="text-2xl font-black mb-1">高手進階桌</div>
-                    <div class="text-3xl font-black text-amber-300 my-2">100 / 30 台</div>
-                    <div class="text-xs opacity-80">刺激對決人氣首選</div>
-                </button>
-                <button onclick="startTable(300, 100)" class="bg-gradient-to-b from-purple-600 to-purple-800 hover:from-purple-500 hover:to-purple-700 p-6 rounded-3xl shadow-xl border-4 border-purple-300 text-white text-center transform hover:-translate-y-1 transition duration-200">
-                    <div class="text-2xl font-black mb-1">土豪大亨桌</div>
-                    <div class="text-3xl font-black text-amber-300 my-2">300 / 100 台</div>
-                    <div class="text-xs opacity-80">高風險高報酬</div>
-                </button>
-                <button onclick="startTable(500, 100)" class="bg-gradient-to-b from-amber-600 to-orange-700 hover:from-amber-500 hover:to-orange-600 p-6 rounded-3xl shadow-xl border-4 border-amber-300 text-white text-center transform hover:-translate-y-1 transition duration-200">
-                    <div class="text-2xl font-black mb-1">至尊賭神桌</div>
-                    <div class="text-3xl font-black text-yellow-300 my-2">500 / 100 台</div>
-                    <div class="text-xs opacity-80">頂尖高手決戰之地</div>
+                <button onclick="openRoomLobby()" class="bg-gradient-to-b from-purple-600 to-indigo-800 p-8 rounded-3xl shadow-xl border-4 border-purple-300 text-white text-center transform hover:scale-105 transition">
+                    <div class="text-3xl font-black mb-2"><i class="fa-solid fa-users mr-2"></i>四人線上對戰房</div>
+                    <div class="text-xs opacity-90">建立或輸入邀請碼與真人同桌</div>
                 </button>
             </div>
         </div>
 
-        <!-- 滿版 4 人對戰麻將桌介面 -->
-        <div id="game-view" class="hidden flex-1 relative p-2 sm:p-3 flex flex-col justify-between select-none table-felt-bg overflow-hidden">
-            
-            <!-- 上方對手 (對家 AI) -->
+        <!-- AI 底台選擇畫面 -->
+        <div id="ai-table-view" class="hidden flex-1 p-6 flex flex-col items-center justify-center space-y-6 overflow-y-auto">
+            <div class="text-center">
+                <h2 class="text-3xl font-black text-amber-400">選擇電腦桌底台</h2>
+                <button onclick="backToModeSelect()" class="text-xs text-slate-300 underline mt-1">⬅️ 返回模式選擇</button>
+            </div>
+            <div class="grid grid-cols-2 gap-4 w-full max-w-xl">
+                <button onclick="startAiTable(50, 20)" class="bg-teal-700 p-5 rounded-2xl border-2 border-teal-300 text-white font-black text-xl">新手桌 (50/20)</button>
+                <button onclick="startAiTable(100, 30)" class="bg-blue-700 p-5 rounded-2xl border-2 border-blue-300 text-white font-black text-xl">高手桌 (100/30)</button>
+            </div>
+        </div>
+
+        <!-- 邀請碼線上房間大廳 -->
+        <div id="online-room-view" class="hidden flex-1 p-6 flex flex-col items-center justify-center space-y-4 overflow-y-auto max-w-md mx-auto w-full">
+            <div class="text-center mb-2">
+                <h2 class="text-2xl font-black text-amber-400">四人線上邀請碼對戰</h2>
+                <button onclick="backToModeSelect()" class="text-xs text-slate-300 underline mt-1">⬅️ 返回模式選擇</button>
+            </div>
+
+            <!-- 未加入房間前的選項 -->
+            <div id="room-action-panel" class="w-full space-y-3">
+                <button onclick="createRoom()" class="w-full bg-gradient-to-r from-amber-500 to-orange-500 text-slate-950 font-black py-4 rounded-2xl text-lg shadow-lg">
+                    <i class="fa-solid fa-plus-circle mr-2"></i>建立新房間 (取得邀請碼)
+                </button>
+                <div class="flex space-x-2">
+                    <input type="text" id="join-code-input" placeholder="輸入 6 位數邀請碼" class="flex-1 px-4 py-3 rounded-2xl bg-slate-950 text-white font-black border-2 border-slate-700 focus:border-amber-400 text-center uppercase tracking-widest text-lg">
+                    <button onclick="joinRoomByCode()" class="bg-purple-600 hover:bg-purple-700 text-white font-black px-5 py-3 rounded-2xl text-base shadow">加入</button>
+                </div>
+            </div>
+
+            <!-- 已在房間內等待畫面 -->
+            <div id="room-waiting-panel" class="hidden w-full bg-slate-950 p-6 rounded-3xl border-2 border-amber-500/50 space-y-4 text-center">
+                <div class="text-sm text-slate-400 font-bold">本局邀請碼</div>
+                <div id="display-invite-code" class="text-4xl font-black text-amber-400 tracking-widest bg-slate-900 py-3 rounded-2xl border border-amber-500/30">------</div>
+                <p class="text-xs text-slate-300">請將邀請碼告訴其他三位玩家，滿 4 人即可開局</p>
+                
+                <div class="text-left bg-slate-900 p-4 rounded-2xl">
+                    <h3 class="text-amber-300 text-xs font-black mb-2">目前房間玩家 (<span id="room-player-count">0</span>/4)：</h3>
+                    <div id="room-players-list" class="space-y-1 text-xs text-white">載入中...</div>
+                </div>
+
+                <button id="start-online-btn" onclick="startOnlineGame()" class="hidden w-full bg-gradient-to-r from-red-600 to-orange-600 text-white font-black py-3 rounded-2xl text-base shadow-lg animate-pulse">
+                    房主開始對局！
+                </button>
+                <button onclick="leaveRoom()" class="w-full bg-slate-800 text-slate-300 font-bold py-2 rounded-xl text-xs">離開房間</button>
+            </div>
+        </div>
+
+        <!-- 滿版 4 人麻將對戰桌介面 -->
+        <div id="game-view" class="hidden flex-1 relative p-1 sm:p-3 flex flex-col justify-between select-none overflow-hidden bg-emerald-800">
+            <!-- 上方對手 -->
             <div class="flex flex-col items-center z-20 mt-1">
-                <div id="avatar-box-2" class="flex items-center space-x-4 bg-slate-900/95 px-6 py-2 rounded-3xl border-4 border-amber-400 shadow-2xl relative transition-all duration-300">
-                    <div class="relative">
-                        <div class="avatar-box-giant avatar-float">
-                            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80" alt="對家頭貼">
-                        </div>
-                        <div id="ai-top-speech" class="absolute -bottom-10 left-1/2 transform -translate-x-1/2 bg-yellow-300 text-slate-950 text-base font-black px-4 py-1.5 rounded-2xl shadow-2xl whitespace-nowrap hidden border-2 border-amber-500 animate-bounce">哇胡矣！發財！</div>
-                    </div>
-                    <div class="text-lg font-black text-amber-300 flex items-center space-x-3">
-                        <div>
-                            <div class="text-xl text-white">對家 ➔ 賭俠阿強 (AI)</div>
-                            <div class="text-sm text-slate-200 font-bold mt-0.5">籌碼: <span class="text-amber-400 font-black">98,000</span></div>
-                        </div>
-                        <div id="arrow-2" class="hidden bg-red-600 text-white px-3 py-1 rounded-2xl text-lg font-black shadow-lg border-2 border-yellow-300">⬇️ 換伊出牌</div>
+                <div id="avatar-box-2" class="flex items-center space-x-3 bg-slate-900/95 px-4 py-1.5 rounded-3xl border-3 border-amber-400 shadow-2xl relative">
+                    <div class="avatar-box-giant"><img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80" alt="對家"></div>
+                    <div class="text-sm font-black text-amber-300">
+                        <div id="player-name-2" class="text-xs sm:text-lg text-white">對家</div>
+                        <div id="arrow-2" class="hidden bg-red-600 text-white px-2 py-0.5 rounded text-[10px]">⬇️ 換伊</div>
                     </div>
                 </div>
-                <div id="ai-top-tiles" class="flex space-x-1.5 mt-1.5"></div>
+                <div id="ai-top-tiles" class="flex space-x-1 mt-1"></div>
             </div>
 
-            <!-- 左右對手與中央海底牌河區 -->
-            <div class="flex justify-between items-center my-auto px-2 z-10">
-                <!-- 左方對手 (上家 AI) -->
-                <div id="avatar-box-3" class="flex flex-col items-center bg-slate-900/95 p-3 rounded-3xl border-4 border-amber-400 shadow-2xl relative transition-all duration-300">
-                    <div class="relative mb-2">
-                        <div class="avatar-box-giant avatar-float">
-                            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=300&q=80" alt="上家頭貼">
-                        </div>
-                        <div id="ai-left-speech" class="absolute left-32 top-2 bg-yellow-300 text-slate-950 text-base font-black px-4 py-1.5 rounded-2xl shadow-2xl whitespace-nowrap hidden border-2 border-amber-500">害我放槍矣！</div>
-                    </div>
-                    <span class="text-white text-base font-black">上家 ➔ 雀后小莉</span>
-                    <span class="text-xs text-amber-400 font-extrabold mb-1">105,000 籌碼</span>
-                    <div id="arrow-3" class="hidden bg-red-600 text-white px-2.5 py-1 rounded-2xl text-sm font-black shadow-lg border-2 border-yellow-300">➡️ 換伊</div>
+            <!-- 左右對手與中央牌河 -->
+            <div class="flex justify-between items-center my-auto px-1 z-10">
+                <div id="avatar-box-3" class="flex flex-col items-center bg-slate-900/95 p-2 rounded-2xl border-3 border-amber-400 shadow-2xl">
+                    <div class="avatar-box-giant mb-1"><img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=300&q=80" alt="上家"></div>
+                    <span id="player-name-3" class="text-white text-xs font-black">上家</span>
+                    <div id="arrow-3" class="hidden bg-red-600 text-white px-1 rounded text-[10px]">➡️</div>
                 </div>
 
-                <!-- 中央牌桌資訊與極致寬大海底 -->
-                <div class="glass-panel p-3 rounded-3xl text-center shadow-2xl w-full max-w-5xl mx-2 flex flex-col items-center border-4 border-amber-500/50">
-                    <div class="flex justify-between w-full text-amber-300 text-sm font-black mb-1">
-                        <span id="table-stakes-info">底台: 100 / 30</span>
-                        <span>剩餘牌數: <span id="tiles-left" class="text-white font-black text-base">56</span> 張</span>
+                <div class="bg-slate-950/85 p-2 rounded-2xl text-center shadow-2xl w-full max-w-3xl mx-1 flex flex-col items-center border-2 border-amber-500/50">
+                    <div class="flex justify-between w-full text-amber-300 text-xs font-black mb-1">
+                        <span id="table-stakes-info">對戰桌</span>
+                        <span>剩牌: <span id="tiles-left" class="text-white">56</span>張</span>
                     </div>
-                    <div class="text-xl font-black text-amber-200 my-1 animate-pulse" id="game-status-text">牌局開始！請開牌</div>
-                    <div class="w-full bg-slate-950/85 h-44 rounded-2xl p-3 border-2 border-amber-500/40 flex flex-wrap gap-2 justify-center items-start shadow-inner overflow-y-auto" id="discards-river">
-                        <span class="text-xs text-slate-400 font-bold self-center">海底牌河尚無打出之牌</span>
+                    <div class="text-sm sm:text-lg font-black text-amber-200 my-0.5 animate-pulse" id="game-status-text">牌局開始！</div>
+                    <div class="w-full bg-slate-900/90 h-32 rounded-xl p-2 border border-amber-500/40 flex flex-wrap gap-1.5 justify-center items-start overflow-y-auto" id="discards-river">
+                        <span class="text-[11px] text-slate-400">尚無打出之牌</span>
                     </div>
                 </div>
 
-                <!-- 右方對手 (下家 AI) -->
-                <div id="avatar-box-1" class="flex flex-col items-center bg-slate-900/95 p-3 rounded-3xl border-4 border-amber-400 shadow-2xl relative transition-all duration-300">
-                    <div class="relative mb-2">
-                        <div class="avatar-box-giant avatar-float">
-                            <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=300&q=80" alt="下家頭貼">
-                        </div>
-                        <div id="ai-right-speech" class="absolute right-32 top-2 bg-yellow-300 text-slate-950 text-base font-black px-4 py-1.5 rounded-2xl shadow-2xl whitespace-nowrap hidden border-2 border-amber-500">摸著好牌矣！</div>
-                    </div>
-                    <span class="text-white text-base font-black">下家 ➔ 賭神大飛</span>
-                    <span class="text-xs text-amber-400 font-extrabold mb-1">92,000 籌碼</span>
-                    <div id="arrow-1" class="hidden bg-red-600 text-white px-2.5 py-1 rounded-2xl text-sm font-black shadow-lg border-2 border-yellow-300">⬅️ 換伊</div>
+                <div id="avatar-box-1" class="flex flex-col items-center bg-slate-900/95 p-2 rounded-2xl border-3 border-amber-400 shadow-2xl">
+                    <div class="avatar-box-giant mb-1"><img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=300&q=80" alt="下家"></div>
+                    <span id="player-name-1" class="text-white text-xs font-black">下家</span>
+                    <div id="arrow-1" class="hidden bg-red-600 text-white px-1 rounded text-[10px]">⬅️</div>
                 </div>
             </div>
 
             <!-- 吃碰槓動作按鈕區 -->
-            <div id="action-buttons-container" class="absolute bottom-40 left-1/2 transform -translate-x-1/2 flex space-x-4 z-30"></div>
+            <div id="action-buttons-container" class="absolute bottom-36 left-1/2 transform -translate-x-1/2 flex space-x-2 z-30"></div>
 
             <!-- 下方玩家手牌區 -->
-            <div id="avatar-box-0" class="glass-panel p-2.5 rounded-3xl shadow-2xl z-20 relative flex items-center justify-between border-4 border-amber-500/50 bg-slate-950/90 transition-all duration-300 w-full overflow-hidden">
-                
-                <div class="flex items-center space-x-3 bg-slate-900/90 px-3.5 py-2 rounded-2xl border-2 border-amber-400 shadow-xl shrink-0">
-                    <div class="avatar-player-box">
-                        <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=300&q=80" alt="玩家頭貼">
-                    </div>
-                    <div class="flex flex-col justify-center">
-                        <div class="text-amber-300 text-sm font-black">玩家: <span id="player-nickname-display" class="text-white text-base">賭神高進</span></div>
-                        <div id="arrow-0" class="hidden mt-1 bg-red-600 text-white px-2.5 py-0.5 rounded-xl text-xs font-black shadow-md border border-yellow-300 text-center animate-pulse">
-                            ⬆️ 換你出牌
-                        </div>
+            <div id="avatar-box-0" class="p-2 rounded-2xl shadow-2xl z-20 relative flex flex-col sm:flex-row items-center justify-between border-2 border-amber-500/50 bg-slate-950/95 w-full gap-2">
+                <div class="flex items-center space-x-2 bg-slate-900 px-3 py-1.5 rounded-xl border border-amber-400">
+                    <div class="avatar-player-box"><img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=300&q=80" alt="玩家"></div>
+                    <div>
+                        <div class="text-amber-300 text-xs font-black"><span id="player-nickname-display" class="text-white">玩家</span></div>
+                        <div id="arrow-0" class="hidden bg-red-600 text-white px-1.5 py-0.5 rounded text-[10px] animate-pulse">⬆️ 換你出牌</div>
                     </div>
                 </div>
-
-                <div id="player-tiles" class="flex items-center justify-center flex-1 mx-2 overflow-hidden py-1"></div>
-
-                <div class="flex flex-col space-y-1.5 shrink-0">
-                    <button id="draw-btn" onclick="playerDrawAndPlay()" class="btn-star-gold px-5 py-2.5 rounded-2xl font-black text-sm transition shadow-lg animate-pulse">
-                        開牌 / 出牌
-                    </button>
-                    <button onclick="playerDeclareWin()" class="btn-star-red px-5 py-2.5 rounded-2xl font-black text-sm transition win-text-glow shadow-lg">
-                        胡矣！
-                    </button>
-                    <button onclick="leaveTable()" class="bg-slate-800 hover:bg-slate-700 text-slate-300 text-[11px] font-black px-3 py-1.5 rounded-xl transition shadow">
-                        返回大廳
-                    </button>
+                <div id="player-tiles" class="flex items-center justify-start sm:justify-center flex-1 w-full overflow-x-auto py-1 px-1 gap-1"></div>
+                <div class="flex space-x-2 shrink-0">
+                    <button id="draw-btn" onclick="playerDrawAndPlay()" class="bg-amber-500 text-slate-950 px-4 py-2 rounded-xl font-black text-xs shadow animate-pulse">摸牌/出牌</button>
+                    <button onclick="playerDeclareWin()" class="bg-red-600 text-white px-4 py-2 rounded-xl font-black text-xs shadow">胡矣！</button>
+                    <button onclick="leaveTable()" class="bg-slate-800 text-slate-300 text-xs font-black px-3 py-2 rounded-xl">大廳</button>
                 </div>
             </div>
-
-        </div>
-
-    </div>
-
-    <!-- 排行榜 Modal -->
-    <div id="ranking-modal" class="fixed inset-0 bg-slate-950/80 hidden items-center justify-center z-50 p-4 backdrop-blur-sm">
-        <div class="bg-white p-6 rounded-3xl shadow-2xl w-full max-w-lg border-4 border-amber-400">
-            <div class="flex justify-between items-center mb-4 border-b pb-3">
-                <h3 class="text-xl font-black text-slate-900 flex items-center"><i class="fa-solid fa-trophy text-amber-500 mr-2"></i>全伺服器富豪排行榜</h3>
-                <button onclick="closeModal('ranking-modal')" class="text-slate-400 hover:text-slate-700 font-black text-lg">✕</button>
-            </div>
-            <div id="ranking-list" class="space-y-2 max-h-80 overflow-y-auto"></div>
         </div>
     </div>
 
-    <!-- 成就徽章 Modal -->
-    <div id="badge-modal" class="fixed inset-0 bg-slate-950/80 hidden items-center justify-center z-50 p-4 backdrop-blur-sm">
-        <div class="bg-white p-6 rounded-3xl shadow-2xl w-full max-w-lg border-4 border-purple-400">
-            <div class="flex justify-between items-center mb-4 border-b pb-3">
-                <h3 class="text-xl font-black text-slate-900 flex items-center"><i class="fa-solid fa-medal text-purple-600 mr-2"></i>我的成就徽章</h3>
-                <button onclick="closeModal('badge-modal')" class="text-slate-400 hover:text-slate-700 font-black text-lg">✕</button>
-            </div>
-            <div class="grid grid-cols-2 gap-4" id="badge-grid"></div>
-        </div>
-    </div>
-
-    <!-- Firebase SDKs & 修復吃碰槓判定邏輯 -->
+    <!-- Firebase SDKs & 遊戲核心 -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-        import { getDatabase, ref, set, get, update, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+        import { getDatabase, ref, set, get, update, onValue, remove } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
         import MahjongEngine from "./script.js";
 
         const firebaseConfig = {
@@ -367,279 +286,336 @@
         const mahjongGame = new MahjongEngine();
         let currentUser = null;
         let isRegisterMode = false;
-        let soundEnabled = true;
-        let currentVoiceMode = 'old'; 
+        let gameMode = 'ai';
+        let currentRoomCode = null;
+        let mySeatIndex = 0;
+        let roomData = null;
+        let unsubscribeRoom = null;
         let hasDrawnThisTurn = false;
-        let currentTurnPlayer = 0; 
-        let userData = {
-            nickname: "麻將大老千",
-            chips: 100000,
-            lastLoginDate: "",
-            winCount: 0,
-            loginCount: 0,
-            selfDrawCount: 0
+        let currentTurnPlayer = 0;
+        let userData = { nickname: "麻將新手", chips: 100000 };
+
+        window.toggleAuthMode = function() {
+            isRegisterMode = !isRegisterMode;
+            document.getElementById("nickname-field").classList.toggle("hidden", !isRegisterMode);
+            document.getElementById("auth-submit-btn").textContent = isRegisterMode ? "註冊帳號並進入" : "登入遊戲大廳";
         };
 
-        window.submitCheatCode = function() {
-            playSound('click');
-            const codeInput = document.getElementById("cheat-code-input").value.trim();
-            if (codeInput === 'jacky') {
-                userData.chips += 999999;
-                updateUI();
-                saveUserDataToFirebase();
-                speakVoice("恭喜得著密碼大獎！發財矣！");
-                alert("🎉 CODE 輸入正確！成功獲得籌碼 +999,999！");
-                document.getElementById("cheat-code-input").value = "";
-            } else {
-                alert("❌ 錯誤的 CODE 代碼！");
-            }
-        };
-
-        window.cycleVoiceMode = function() {
-            if (currentVoiceMode === 'old') {
-                currentVoiceMode = 'child';
-                document.getElementById("voice-mode-btn").innerHTML = `<i class="fa-solid fa-child mr-1"></i>音色: 小孩音`;
-                speakVoice("換囡仔語音囉！");
-            } else {
-                currentVoiceMode = 'old';
-                document.getElementById("voice-mode-btn").innerHTML = `<i class="fa-solid fa-user-group mr-1"></i>音色: 老人音`;
-                speakVoice("換老大人語音囉！");
-            }
-        };
-
-        let currentVoice = null;
-        function initVoices() {
-            if ('speechSynthesis' in window) {
-                const voices = window.speechSynthesis.getVoices();
-                currentVoice = voices.find(v => v.lang.includes('zh') || v.lang.includes('TW')) || voices[0];
-            }
-        }
-        if ('speechSynthesis' in window) {
-            window.speechSynthesis.onvoiceschanged = initVoices;
-            initVoices();
-        }
-
-        function translateToPhonetics(text) {
-            if (!text) return "";
-            let t = text;
-            const wanMap = {'1':'一萬','2':'二萬','3':'三萬','4':'四萬','5':'五萬','6':'六萬','7':'七萬','8':'八萬','9':'九萬'};
-            const tongMap = {'1':'一餅','2':'二餅','3':'三餅','4':'四餅','5':'五餅','6':'六餅','7':'七餅','8':'八餅','9':'九餅'};
-            const tiaoMap = {'1':'一索','2':'二索','3':'三索','4':'四索','5':'五索','6':'六索','7':'七索','8':'八索','9':'九索'};
-
-            t = t.replace(/(\d)萬/g, (m, p) => wanMap[p] || m);
-            t = t.replace(/(\d)筒/g, (m, p) => tongMap[p] || m);
-            t = t.replace(/(\d)條/g, (m, p) => tiaoMap[p] || m);
-
-            t = t.replace("東", "東風").replace("南", "南風").replace("西", "西風").replace("北", "北風");
-            t = t.replace("牌局開始，請開牌", "牌局開展，緊來開牌！");
-            t = t.replace("胡啦", "胡矣！大吉大利！");
-            t = t.replace("碰", "碰！");
-            t = t.replace("吃", "吃！");
-            t = t.replace("槓", "槓！開花！");
-            return t;
-        }
-
-        function speakVoice(text) {
-            if (!soundEnabled) return;
-            if ('speechSynthesis' in window) {
-                window.speechSynthesis.cancel();
-                const spokenText = translateToPhonetics(text);
-                const utterance = new SpeechSynthesisUtterance(spokenText);
-                if (currentVoice) utterance.voice = currentVoice;
-                utterance.lang = 'zh-TW';
-
-                if (currentVoiceMode === 'old') {
-                    utterance.pitch = 0.75;
-                    utterance.rate = 0.95;
-                } else if (currentVoiceMode === 'child') {
-                    utterance.pitch = 1.65;
-                    utterance.rate = 1.25;
+        document.getElementById("login-form").addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const email = document.getElementById("login-email").value;
+            const pass = document.getElementById("login-password").value;
+            const errDiv = document.getElementById("login-error");
+            errDiv.classList.add("hidden");
+            try {
+                if (isRegisterMode) {
+                    const nick = document.getElementById("reg-nickname").value.trim() || "玩家";
+                    const cred = await createUserWithEmailAndPassword(auth, email, pass);
+                    await set(ref(database, `users/${cred.user.uid}`), { nickname: nick, chips: 100000 });
+                } else {
+                    await signInWithEmailAndPassword(auth, email, pass);
                 }
-
-                window.speechSynthesis.speak(utterance);
-            }
-        }
-
-        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        function playSound(type) {
-            if (!soundEnabled) return;
-            if (audioCtx.state === 'suspended') audioCtx.resume();
-            const osc = audioCtx.createOscillator();
-            const gain = audioCtx.createGain();
-            osc.connect(gain);
-            gain.connect(audioCtx.destination);
-
-            if (type === 'click') {
-                osc.frequency.setValueAtTime(500, audioCtx.currentTime);
-                gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.05);
-                osc.start(); osc.stop(audioCtx.currentTime + 0.05);
-            } else if (type === 'win') {
-                const now = audioCtx.currentTime;
-                [400, 550, 700, 900, 1200].forEach((freq, idx) => {
-                    const o = audioCtx.createOscillator();
-                    const g = audioCtx.createGain();
-                    o.connect(g); g.connect(audioCtx.destination);
-                    o.frequency.value = freq;
-                    g.gain.setValueAtTime(0.15, now + idx * 0.08);
-                    g.gain.exponentialRampToValueAtTime(0.01, now + idx * 0.08 + 0.2);
-                    o.start(now + idx * 0.08); o.stop(now + idx * 0.08 + 0.2);
-                });
-            }
-        }
-
-        window.toggleAudio = function() {
-            soundEnabled = !soundEnabled;
-            document.getElementById("audio-toggle-btn").innerHTML = `<i class="fa-solid fa-volume-${soundEnabled ? 'high' : 'xmark'} mr-1"></i>語音: ${soundEnabled ? '開' : '關'}`;
-        };
-
-        const connectedRef = ref(database, ".info/connected");
-        onValue(connectedRef, (snap) => {
-            const dot = document.getElementById("conn-dot");
-            const text = document.getElementById("conn-text");
-            if (snap.val() === true) {
-                dot.className = "w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block animate-pulse";
-                text.textContent = "已連線至 Firebase Realtime Database";
-            } else {
-                dot.className = "w-2.5 h-2.5 rounded-full bg-red-500 inline-block";
-                text.textContent = "連線中斷 / 離線";
+            } catch (err) {
+                errDiv.textContent = "失敗: " + err.message;
+                errDiv.classList.remove("hidden");
             }
         });
+
+        window.logoutUser = function() { signOut(auth); };
 
         onAuthStateChanged(auth, async (user) => {
             if (user) {
                 currentUser = user;
                 document.getElementById("login-screen").classList.add("hidden");
                 document.getElementById("app-screen").classList.remove("hidden");
-                await loadUserData(user.uid);
+                const snap = await get(ref(database, `users/${user.uid}`));
+                if (snap.exists()) userData = snap.val();
+                updateUI();
             } else {
                 currentUser = null;
                 document.getElementById("login-screen").classList.remove("hidden");
                 document.getElementById("app-screen").classList.add("hidden");
+                if (unsubscribeRoom) unsubscribeRoom();
             }
         });
-
-        window.toggleAuthMode = function() {
-            isRegisterMode = !isRegisterMode;
-            const nickField = document.getElementById("nickname-field");
-            const submitBtn = document.getElementById("auth-submit-btn");
-            const toggleBtn = document.getElementById("auth-toggle-btn");
-            if (isRegisterMode) {
-                nickField.classList.remove("hidden");
-                submitBtn.textContent = "註冊帳號並進入遊戲";
-                toggleBtn.textContent = "已有帳號？點此登入";
-            } else {
-                nickField.classList.add("hidden");
-                submitBtn.textContent = "登入遊戲大廳";
-                toggleBtn.textContent = "沒有帳號？點此註冊新帳號與綽號";
-            }
-        };
-
-        document.getElementById("login-form").addEventListener("submit", async (e) => {
-            e.preventDefault();
-            playSound('click');
-            const email = document.getElementById("login-email").value;
-            const pass = document.getElementById("login-password").value;
-            const errDiv = document.getElementById("login-error");
-            errDiv.classList.add("hidden");
-
-            try {
-                if (isRegisterMode) {
-                    const nickname = document.getElementById("reg-nickname").value.trim() || "麻將新手";
-                    const cred = await createUserWithEmailAndPassword(auth, email, pass);
-                    const todayStr = new Date().toISOString().split('T')[0];
-                    const initialData = {
-                        nickname: nickname,
-                        chips: 100000,
-                        lastLoginDate: todayStr,
-                        winCount: 0,
-                        loginCount: 1,
-                        selfDrawCount: 0
-                    };
-                    await set(ref(database, `users/${cred.user.uid}`), initialData);
-                } else {
-                    await signInWithEmailAndPassword(auth, email, pass);
-                }
-            } catch (err) {
-                errDiv.textContent = "操作失敗: " + err.message;
-                errDiv.classList.remove("hidden");
-            }
-        });
-
-        window.logoutUser = function() {
-            playSound('click');
-            signOut(auth);
-        };
-
-        async function loadUserData(uid) {
-            const userRef = ref(database, `users/${uid}`);
-            const snap = await get(userRef);
-            const todayStr = new Date().toISOString().split('T')[0];
-
-            if (snap.exists()) {
-                userData = snap.val();
-                userData.loginCount = (userData.loginCount || 0) + 1;
-                if (userData.lastLoginDate !== todayStr) {
-                    userData.chips = (userData.chips || 0) + 100000;
-                    userData.lastLoginDate = todayStr;
-                    alert("新的一天開始！系統已自動為您補充 100,000 籌碼！");
-                }
-            } else {
-                userData = {
-                    nickname: currentUser.email.split('@')[0],
-                    chips: 100000,
-                    lastLoginDate: todayStr,
-                    winCount: 0,
-                    loginCount: 1,
-                    selfDrawCount: 0
-                };
-            }
-            await set(userRef, userData);
-            updateUI();
-            updateLastSavedTime();
-        }
 
         function updateUI() {
             document.getElementById("header-nickname").textContent = userData.nickname;
             document.getElementById("player-nickname-display").textContent = userData.nickname;
-            document.getElementById("header-chips").textContent = userData.chips.toLocaleString();
+            document.getElementById("header-chips").textContent = (userData.chips || 100000).toLocaleString();
         }
 
-        function updateLastSavedTime() {
-            document.getElementById("last-saved-time").textContent = new Date().toLocaleTimeString();
-        }
+        window.openTableSelect = function(mode) {
+            gameMode = mode;
+            document.getElementById("lobby-mode-view").classList.add("hidden");
+            document.getElementById("ai-table-view").classList.remove("hidden");
+        };
 
-        let currentStakes = { base: 100, tai: 30 };
+        window.openRoomLobby = function() {
+            gameMode = 'online';
+            document.getElementById("lobby-mode-view").classList.add("hidden");
+            document.getElementById("online-room-view").classList.remove("hidden");
+            document.getElementById("room-action-panel").classList.remove("hidden");
+            document.getElementById("room-waiting-panel").classList.add("hidden");
+        };
 
-        window.startTable = function(base, tai) {
-            playSound('click');
-            if (userData.chips < base * 10) {
-                alert("您的籌碼不足以進入此桌！請等待明天 00:00 自動補幣。");
-                return;
-            }
-            currentStakes = { base, tai };
-            document.getElementById("lobby-view").classList.add("hidden");
+        window.backToModeSelect = function() {
+            if (unsubscribeRoom) { unsubscribeRoom(); unsubscribeRoom = null; }
+            document.getElementById("ai-table-view").classList.add("hidden");
+            document.getElementById("online-room-view").classList.add("hidden");
+            document.getElementById("game-view").classList.add("hidden");
+            document.getElementById("lobby-mode-view").classList.remove("hidden");
+        };
+
+        // --- 電腦對戰模式 ---
+        window.startAiTable = function(base, tai) {
+            gameMode = 'ai';
+            document.getElementById("ai-table-view").classList.add("hidden");
             document.getElementById("game-view").classList.remove("hidden");
-            document.getElementById("table-stakes-info").textContent = `底台: ${base} / ${tai}`;
+            document.getElementById("table-stakes-info").textContent = `電腦桌: ${base}/${tai}`;
+            document.getElementById("player-name-1").textContent = "下家大飛";
+            document.getElementById("player-name-2").textContent = "對家阿強";
+            document.getElementById("player-name-3").textContent = "上家小莉";
 
             mahjongGame.deal();
             hasDrawnThisTurn = false;
             currentTurnPlayer = 0;
             renderGameTable();
-            speakVoice("牌局開始，請開牌！");
+        };
+
+        // --- 邀請碼房間邏輯 ---
+        window.createRoom = async function() {
+            const code = Math.floor(100000 + Math.random() * 900000).toString();
+            currentRoomCode = code;
+            const roomRef = ref(database, `rooms/${code}`);
+            
+            const newRoom = {
+                status: 'waiting',
+                host: currentUser.uid,
+                players: {}
+            };
+            newRoom.players[currentUser.uid] = { nickname: userData.nickname, seat: 0 };
+            await set(roomRef, newRoom);
+            
+            enterWaitingRoom(code);
+        };
+
+        window.joinRoomByCode = async function() {
+            const code = document.getElementById("join-code-input").value.trim();
+            if (code.length !== 6) {
+                alert("請輸入正確的 6 位數邀請碼！");
+                return;
+            }
+            const roomRef = ref(database, `rooms/${code}`);
+            const snap = await get(roomRef);
+            if (!snap.exists()) {
+                alert("找不到此房間，請確認邀請碼是否正確！");
+                return;
+            }
+
+            const room = snap.val();
+            const players = room.players || {};
+            const existingSeats = Object.values(players).map(p => p.seat);
+            
+            if (Object.keys(players).length >= 4 && !players[currentUser.uid]) {
+                alert("房間已滿（4人）！");
+                return;
+            }
+
+            currentRoomCode = code;
+            if (!players[currentUser.uid]) {
+                let assignedSeat = 0;
+                for (let s = 0; s < 4; s++) {
+                    if (!existingSeats.includes(s)) { assignedSeat = s; break; }
+                }
+                players[currentUser.uid] = { nickname: userData.nickname, seat: assignedSeat };
+                await update(roomRef, { players });
+            }
+
+            enterWaitingRoom(code);
+        };
+
+        function enterWaitingRoom(code) {
+            document.getElementById("room-action-panel").classList.add("hidden");
+            document.getElementById("room-waiting-panel").classList.remove("hidden");
+            document.getElementById("display-invite-code").textContent = code;
+            listenToRoom(code);
+        }
+
+        function listenToRoom(code) {
+            if (unsubscribeRoom) unsubscribeRoom();
+            const roomRef = ref(database, `rooms/${code}`);
+            unsubscribeRoom = onValue(roomRef, (snap) => {
+                const room = snap.val();
+                if (!room) return;
+                roomData = room;
+                updateRoomUI();
+
+                if (room.status === 'playing' && room.gameState) {
+                    syncOnlineGameState(room.gameState);
+                }
+            });
+        }
+
+        function updateRoomUI() {
+            if (!roomData || !roomData.players) return;
+            const playersArr = Object.entries(roomData.players);
+            document.getElementById("room-player-count").textContent = playersArr.length;
+            document.getElementById("room-players-list").innerHTML = playersArr.map(([uid, p]) => `<div>座位 ${p.seat + 1}: ${p.nickname} ${uid === currentUser.uid ? '(你自己)' : ''}</div>`).join('');
+            
+            const isHost = roomData.host === currentUser.uid;
+            const startBtn = document.getElementById("start-online-btn");
+            if (isHost && playersArr.length >= 1) { // 測試時 1 人即可，正式可改 players.length === 4
+                startBtn.classList.remove("hidden");
+            } else {
+                startBtn.classList.add("hidden");
+            }
+        }
+
+        window.startOnlineGame = async function() {
+            const roomRef = ref(database, `rooms/${currentRoomCode}`);
+            mahjongGame.deal();
+            const initialState = {
+                deck: mahjongGame.deck,
+                players: mahjongGame.players,
+                discards: mahjongGame.discards,
+                currentTurn: 0,
+                status: 'playing'
+            };
+            await update(roomRef, { status: 'playing', gameState: initialState });
+        };
+
+        window.leaveRoom = function() {
+            if (unsubscribeRoom) { unsubscribeRoom(); unsubscribeRoom = null; }
+            openRoomLobby();
+        };
+
+        function syncOnlineGameState(state) {
+            document.getElementById("online-room-view").classList.add("hidden");
+            document.getElementById("game-view").classList.remove("hidden");
+            document.getElementById("table-stakes-info").textContent = `線上邀請房 (${currentRoomCode})`;
+
+            const pEntries = Object.entries(roomData.players);
+            const myEntry = pEntries.find(([uid]) => uid === currentUser.uid);
+            mySeatIndex = myEntry ? myEntry[1].seat : 0;
+
+            mahjongGame.deck = state.deck;
+            mahjongGame.players = state.players;
+            mahjongGame.discards = state.discards;
+            currentTurnPlayer = state.currentTurn;
+
+            pEntries.forEach(([uid, p]) => {
+                const relSeat = (p.seat - mySeatIndex + 4) % 4;
+                if (relSeat > 0) {
+                    document.getElementById(`player-name-${relSeat}`).textContent = p.nickname;
+                }
+            });
+
+            renderGameTable();
+        }
+
+        // --- 牌局與共用渲染 ---
+        function renderGameTable() {
+            const container = document.getElementById("player-tiles");
+            container.innerHTML = "";
+            const playerHand = mahjongGame.players[mySeatIndex];
+
+            playerHand.forEach((t, idx) => {
+                const tileDiv = document.createElement("div");
+                tileDiv.className = "mahjong-tile-real";
+                tileDiv.innerHTML = createTileHtml(t);
+                tileDiv.onclick = () => playerDiscardTile(idx);
+                container.appendChild(tileDiv);
+            });
+
+            const topSeat = (mySeatIndex + 2) % 4;
+            document.getElementById("ai-top-tiles").innerHTML = mahjongGame.players[topSeat].map(() => `<div class="w-4 h-6 bg-amber-100 rounded border border-slate-400"></div>`).join('');
+            document.getElementById("tiles-left").textContent = mahjongGame.deck.length;
+
+            updateTurnIndicator();
+        }
+
+        function createTileHtml(code) {
+            const num = code[0], type = code[1];
+            if (type === 'm') {
+                const chineseNums = {'1':'一','2':'二','3':'三','4':'四','5':'五','6':'六','7':'七','8':'八','9':'九'};
+                return `<span class="tile-number tile-red">${chineseNums[num] || num}</span><span class="tile-suit tile-red">萬</span>`;
+            } else if (type === 'p') {
+                return `<div class="mahjong-dot-container"><div class="m-dot"></div></div><span class="tile-suit tile-blue" style="font-size:0.55rem;">${num}筒</span>`;
+            } else if (type === 's') {
+                return `<div class="mahjong-bamboo-container"><div class="m-stick"></div></div><span class="tile-suit tile-green" style="font-size:0.55rem;">${num}條</span>`;
+            } else if (type === 'z') {
+                if (num === '7') return `<div class="mahjong-white-board"></div>`;
+                const winds = ['東', '南', '西', '北', '中', '發', '白'];
+                return `<span class="tile-number tile-dark">${winds[parseInt(num) - 1]}</span>`;
+            }
+            return `<span class="tile-number">${code}</span>`;
+        }
+
+        window.playerDrawAndPlay = function() {
+            if (currentTurnPlayer !== mySeatIndex) return;
+            if (hasDrawnThisTurn) return;
+            const drawn = mahjongGame.drawTile(mySeatIndex);
+            if (!drawn) { alert("流局！"); leaveTable(); return; }
+            hasDrawnThisTurn = true;
+            mahjongGame.sortHand(mahjongGame.players[mySeatIndex]);
+            renderGameTable();
+        };
+
+        function playerDiscardTile(index) {
+            if (currentTurnPlayer !== mySeatIndex || !hasDrawnThisTurn) {
+                alert("還沒輪到您或尚未摸牌！"); return;
+            }
+            const playerHand = mahjongGame.players[mySeatIndex];
+            const discarded = playerHand.splice(index, 1)[0];
+            mahjongGame.sortHand(playerHand);
+            mahjongGame.discards[mySeatIndex].push(discarded);
+            
+            hasDrawnThisTurn = false;
+            currentTurnPlayer = (currentTurnPlayer + 1) % 4;
+
+            if (gameMode === 'online') {
+                update(ref(database, `rooms/${currentRoomCode}/gameState`), {
+                    deck: mahjongGame.deck,
+                    players: mahjongGame.players,
+                    discards: mahjongGame.discards,
+                    currentTurn: currentTurnPlayer
+                });
+            } else {
+                renderGameTable();
+                setTimeout(() => aiTurnAction(currentTurnPlayer), 1000);
+            }
+        }
+
+        function aiTurnAction(aiIdx) {
+            currentTurnPlayer = aiIdx;
+            const aiHand = mahjongGame.players[aiIdx];
+            if (aiHand && aiHand.length > 0) {
+                const aiDisc = aiHand.pop();
+                mahjongGame.discards[aiIdx].push(aiDisc);
+                currentTurnPlayer = (aiIdx + 1) % 4;
+                renderGameTable();
+                if (currentTurnPlayer !== 0) {
+                    setTimeout(() => aiTurnAction(currentTurnPlayer), 1000);
+                }
+            }
+        }
+
+        window.playerDeclareWin = function() {
+            alert("🎉 恭喜胡牌！");
+            leaveTable();
         };
 
         window.leaveTable = function() {
-            playSound('click');
             document.getElementById("game-view").classList.add("hidden");
-            document.getElementById("lobby-view").classList.remove("hidden");
-            saveUserDataToFirebase();
+            document.getElementById("lobby-mode-view").classList.remove("hidden");
         };
 
         function updateTurnIndicator() {
             for (let i = 0; i <= 3; i++) {
-                const box = document.getElementById(`avatar-box-${i}`);
-                const arrow = document.getElementById(`arrow-${i}`);
+                const relSeat = (i - mySeatIndex + 4) % 4;
+                const box = document.getElementById(`avatar-box-${relSeat}`);
+                const arrow = document.getElementById(`arrow-${relSeat}`);
                 if (box && arrow) {
                     if (i === currentTurnPlayer) {
                         box.classList.add("turn-active-glow");
@@ -650,398 +626,6 @@
                     }
                 }
             }
-        }
-
-        function renderGameTable() {
-            const container = document.getElementById("player-tiles");
-            container.innerHTML = "";
-            const playerHand = mahjongGame.players[0];
-
-            playerHand.forEach((t, idx) => {
-                const tileDiv = document.createElement("div");
-                tileDiv.className = "mahjong-tile-real";
-                tileDiv.innerHTML = createTileHtml(t);
-                tileDiv.onclick = () => playerDiscardTile(idx);
-                container.appendChild(tileDiv);
-            });
-
-            document.getElementById("ai-top-tiles").innerHTML = mahjongGame.players[2].map(() => `<div class="w-6 h-9 bg-amber-100 rounded border border-slate-400 shadow"></div>`).join('');
-            document.getElementById("tiles-left").textContent = mahjongGame.deck.length;
-
-            const drawBtn = document.getElementById("draw-btn");
-            if (hasDrawnThisTurn || currentTurnPlayer !== 0) {
-                drawBtn.disabled = true;
-                drawBtn.classList.add("opacity-40", "cursor-not-allowed");
-                drawBtn.classList.remove("animate-pulse");
-            } else {
-                drawBtn.disabled = false;
-                drawBtn.classList.remove("opacity-40", "cursor-not-allowed");
-                drawBtn.classList.add("animate-pulse");
-            }
-
-            updateTurnIndicator();
-            checkPlayerActions();
-        }
-
-        function createTileHtml(code) {
-            const num = code[0];
-            const type = code[1];
-
-            if (type === 'm') {
-                const chineseNums = {'1':'一','2':'二','3':'三','4':'四','5':'五','6':'六','7':'七','8':'八','9':'九'};
-                return `<span class="tile-number tile-red">${chineseNums[num] || num}</span><span class="tile-suit tile-red">萬</span>`;
-            } else if (type === 'p') {
-                const n = parseInt(num);
-                let dotsHtml = '';
-                for (let i = 0; i < n; i++) {
-                    let dotColor = '';
-                    if (i % 3 === 1) dotColor = 'green';
-                    else if (i % 3 === 2) dotColor = 'blue';
-                    dotsHtml += `<div class="m-dot ${dotColor}"></div>`;
-                }
-                return `<div class="mahjong-dot-container">${dotsHtml}</div><span class="tile-suit tile-blue" style="font-size:0.6rem; margin-top:2px;">${num}筒</span>`;
-            } else if (type === 's') {
-                const n = parseInt(num);
-                let sticksHtml = '';
-                for (let i = 0; i < n; i++) {
-                    sticksHtml += `<div class="m-stick"></div>`;
-                }
-                return `<div class="mahjong-bamboo-container">${sticksHtml}</div><span class="tile-suit tile-green" style="font-size:0.6rem; margin-top:2px;">${num}條</span>`;
-            } else if (type === 'z') {
-                if (num === '7') {
-                    return `<div class="mahjong-white-board"></div>`;
-                }
-                const winds = ['東', '南', '西', '北', '中', '發', '白'];
-                const txt = winds[parseInt(num) - 1];
-                let colorClass = 'tile-dark';
-                if (num === '5') colorClass = 'tile-red';
-                else if (num === '6') colorClass = 'tile-green';
-                return `<span class="tile-number ${colorClass}">${txt}</span>`;
-            }
-            return `<span class="tile-number tile-dark">${code}</span>`;
-        }
-
-        function formatTileName(code) {
-            const num = code[0];
-            const type = code[1];
-            if (type === 'm') return num + '萬';
-            if (type === 'p') return num + '筒';
-            if (type === 's') return num + '條';
-            if (type === 'z') {
-                const winds = ['東', '南', '西', '北', '中', '發', '白'];
-                return winds[parseInt(num) - 1];
-            }
-            return code;
-        }
-
-        window.playerDrawAndPlay = function() {
-            if (currentTurnPlayer !== 0) {
-                alert("目前不是您的回合！");
-                return;
-            }
-            if (hasDrawnThisTurn) {
-                alert("您已經摸過牌了，請從手牌中點擊一張打出！");
-                return;
-            }
-            playSound('click');
-            const drawn = mahjongGame.drawTile(0);
-            if (!drawn) {
-                alert("牌局已流局！");
-                leaveTable();
-                return;
-            }
-            hasDrawnThisTurn = true;
-            mahjongGame.sortHand(mahjongGame.players[0]);
-
-            const tileName = formatTileName(drawn);
-            document.getElementById("game-status-text").textContent = `摸了一張【${tileName}】，請點擊手牌打出一張`;
-            renderGameTable();
-            speakVoice(tileName);
-        };
-
-        function playerDiscardTile(index) {
-            if (currentTurnPlayer !== 0 || !hasDrawnThisTurn) {
-                alert("請先點擊右側「摸牌 / 出牌」摸一張牌後才能出牌！");
-                return;
-            }
-            playSound('click');
-            const playerHand = mahjongGame.players[0];
-            const discarded = playerHand.splice(index, 1)[0];
-            mahjongGame.sortHand(playerHand);
-            
-            mahjongGame.discards[0].push(discarded);
-            updateDiscardsRiver();
-
-            const tileName = formatTileName(discarded);
-            document.getElementById("game-status-text").textContent = `你打出了【${tileName}】，換下家 AI 摸牌...`;
-            
-            hasDrawnThisTurn = false;
-            currentTurnPlayer = 1; 
-            renderGameTable();
-            speakVoice(tileName);
-
-            setTimeout(() => {
-                aiTurnAction(1);
-            }, 1200);
-        }
-
-        function updateDiscardsRiver() {
-            const river = document.getElementById("discards-river");
-            const allDiscards = mahjongGame.discards.flat();
-            if (allDiscards.length === 0) {
-                river.innerHTML = `<span class="text-xs text-slate-400 font-bold self-center">海底牌河尚無打出之牌</span>`;
-                return;
-            }
-            river.innerHTML = allDiscards.map(t => {
-                const num = t[0];
-                const type = t[1];
-                let innerHtml = '';
-                if (type === 'm') {
-                    const chineseNums = {'1':'一','2':'二','3':'三','4':'四','5':'五','6':'六','7':'七','8':'八','9':'九'};
-                    innerHtml = `<span class="river-num tile-red">${chineseNums[num] || num}</span><span class="river-suit tile-red">萬</span>`;
-                } else if (type === 'p') {
-                    innerHtml = `<div class="mahjong-dot-container" style="width:24px;height:30px;padding:1px;"><div class="m-dot" style="width:4px;height:4px;"></div></div><span class="river-suit tile-blue" style="font-size:0.5rem;">${num}筒</span>`;
-                } else if (type === 's') {
-                    innerHtml = `<div class="mahjong-bamboo-container" style="width:24px;height:30px;padding:1px;gap:1px;"><div class="m-stick" style="width:2.5px;height:22px;"></div></div><span class="river-suit tile-green" style="font-size:0.5rem;">${num}條</span>`;
-                } else if (type === 'z') {
-                    if (num === '7') {
-                        innerHtml = `<div class="mahjong-white-board" style="width:22px;height:30px;"></div>`;
-                    } else {
-                        const winds = ['東', '南', '西', '北', '中', '發', '白'];
-                        const txt = winds[parseInt(num) - 1];
-                        let c = 'tile-dark';
-                        if (num === '5') c = 'tile-red';
-                        else if (num === '6') c = 'tile-green';
-                        innerHtml = `<span class="river-num ${c}" style="font-size:1rem;">${txt}</span>`;
-                    }
-                }
-                return `<div class="mahjong-tile-river-real">${innerHtml}</div>`;
-            }).join('');
-        }
-
-        function aiTurnAction(aiIdx) {
-            currentTurnPlayer = aiIdx;
-            updateTurnIndicator();
-
-            const aiHand = mahjongGame.players[aiIdx];
-            if (aiHand && aiHand.length > 0) {
-                const aiDiscard = aiHand.pop();
-                mahjongGame.discards[aiIdx].push(aiDiscard);
-                updateDiscardsRiver();
-                
-                const names = ["玩家", "下家 ➔ 賭神大飛 (AI)", "對家 ➔ 賭俠阿強 (AI)", "上家 ➔ 雀后小莉 (AI)"];
-                const tileName = formatTileName(aiDiscard);
-                document.getElementById("game-status-text").textContent = `${names[aiIdx]} 打出了【${tileName}】`;
-                speakVoice(tileName);
-                triggerAiSpeech(aiIdx);
-
-                // 檢查玩家是否可以吃、碰、槓、胡
-                setTimeout(() => {
-                    checkPlayerActions();
-                    if (currentTurnPlayer !== 0) {
-                        currentTurnPlayer = (aiIdx + 1) % 4;
-                        if (currentTurnPlayer === 0) {
-                            document.getElementById("game-status-text").textContent = "輪到你了！請點擊右側摸牌";
-                        } else {
-                            aiTurnAction(currentTurnPlayer);
-                        }
-                        renderGameTable();
-                    }
-                }, 1500);
-            }
-        }
-
-        function triggerAiSpeech(aiIdx) {
-            const speechIds = ["", "ai-right-speech", "ai-top-speech", "ai-left-speech"];
-            const msgs = ["哈哈！看我的厲害！", "這張安全啦！", "碰！換我聽牌囉！", "小心我胡牌啦！"];
-            const chosenMsg = msgs[Math.floor(Math.random() * msgs.length)];
-            const el = document.getElementById(speechIds[aiIdx]);
-            if (el) {
-                el.textContent = chosenMsg;
-                el.classList.remove("hidden");
-                setTimeout(() => el.classList.add("hidden"), 2500);
-            }
-        }
-
-        function checkPlayerActions() {
-            const container = document.getElementById("action-buttons-container");
-            container.innerHTML = "";
-            const playerHand = mahjongGame.players[0];
-            const allDiscards = mahjongGame.discards.flat();
-            const lastDisc = allDiscards[allDiscards.length - 1];
-
-            if (!lastDisc) return;
-
-            // 確保每次判定前都進行函式安全檢查
-            let actionsHtml = '';
-            
-            try {
-                if (typeof mahjongGame.canWin === 'function' && mahjongGame.canWin(playerHand, lastDisc)) {
-                    actionsHtml += `<button onclick="playerDeclareWin()" class="bounce-action btn-star-red px-6 py-3 rounded-2xl text-lg font-black animate-pulse shadow-2xl">胡矣！</button>`;
-                }
-                if (typeof mahjongGame.canPeng === 'function' && mahjongGame.canPeng(playerHand, lastDisc)) {
-                    actionsHtml += `<button onclick="performPeng('${lastDisc}')" class="bounce-action bg-amber-500 hover:bg-amber-600 text-white font-black px-5 py-2.5 rounded-2xl shadow-xl border-2 border-amber-300 text-base">碰！</button>`;
-                }
-                if (typeof mahjongGame.canChi === 'function') {
-                    const chiCombos = mahjongGame.canChi(playerHand, lastDisc);
-                    if (chiCombos && chiCombos.length > 0) {
-                        actionsHtml += `<button onclick="performChi('${lastDisc}')" class="bounce-action bg-blue-600 hover:bg-blue-700 text-white font-black px-5 py-2.5 rounded-2xl shadow-xl border-2 border-blue-300 text-base">吃！</button>`;
-                    }
-                }
-                if (typeof mahjongGame.canGang === 'function' && mahjongGame.canGang(playerHand, lastDisc)) {
-                    actionsHtml += `<button onclick="performGang('${lastDisc}')" class="bounce-action bg-purple-600 hover:bg-purple-700 text-white font-black px-5 py-2.5 rounded-2xl shadow-xl border-2 border-purple-300 text-base">槓！</button>`;
-                }
-            } catch (err) {
-                console.error("Action check error:", err);
-            }
-
-            container.innerHTML = actionsHtml;
-        }
-
-        window.performPeng = function(tile) {
-            speakVoice("碰！");
-            const playerHand = mahjongGame.players[0];
-            let count = 0;
-            for (let i = playerHand.length - 1; i >= 0; i--) {
-                if (playerHand[i] === tile && count < 2) {
-                    playerHand.splice(i, 1);
-                    count++;
-                }
-            }
-            currentTurnPlayer = 0; // 碰牌後輪到玩家出牌
-            hasDrawnThisTurn = true; // 碰牌後可以直接打出一張牌
-            renderGameTable();
-            document.getElementById("action-buttons-container").innerHTML = "";
-            alert(`🎉 成功碰牌【${formatTileName(tile)}】！請打出一張牌。`);
-        };
-
-        window.performChi = function(tile) {
-            speakVoice("吃！");
-            const playerHand = mahjongGame.players[0];
-            const chiCombos = mahjongGame.canChi ? mahjongGame.canChi(playerHand, tile) : [];
-            if (chiCombos.length > 0) {
-                const targetCombo = chiCombos[0];
-                targetCombo.forEach(t => {
-                    if (t !== tile) {
-                        const idx = playerHand.indexOf(t);
-                        if (idx !== -1) playerHand.splice(idx, 1);
-                    }
-                });
-                currentTurnPlayer = 0;
-                hasDrawnThisTurn = true;
-                renderGameTable();
-                document.getElementById("action-buttons-container").innerHTML = "";
-                alert(`🎉 成功吃牌【${formatTileName(tile)}】！請打出一張牌。`);
-            }
-        };
-
-        window.performGang = function(tile) {
-            speakVoice("槓！");
-            const playerHand = mahjongGame.players[0];
-            let count = 0;
-            for (let i = playerHand.length - 1; i >= 0; i--) {
-                if (playerHand[i] === tile && count < 3) {
-                    playerHand.splice(i, 1);
-                    count++;
-                }
-            }
-            mahjongGame.drawTile(0);
-            currentTurnPlayer = 0;
-            hasDrawnThisTurn = true;
-            renderGameTable();
-            document.getElementById("action-buttons-container").innerHTML = "";
-            alert(`🎉 成功槓牌【${formatTileName(tile)}】！`);
-        };
-
-        window.playerDeclareWin = function() {
-            const playerHand = mahjongGame.players[0];
-            const allDiscards = mahjongGame.discards.flat();
-            const lastDisc = allDiscards[allDiscards.length - 1];
-
-            if (!mahjongGame.canWin(playerHand, lastDisc)) {
-                speakVoice("牌型毋著");
-                alert("❌ 牌型未符合胡牌條件（需要4組面子+1組眼牌），目前無法胡牌！請繼續湊牌。");
-                return;
-            }
-
-            speakVoice("胡矣！恭喜發財！");
-            playSound('win');
-            const winAmount = currentStakes.base * currentStakes.tai * 2;
-            userData.chips += winAmount;
-            userData.winCount = (userData.winCount || 0) + 1;
-            userData.selfDrawCount = (userData.selfDrawCount || 0) + 1;
-            updateUI();
-            saveUserDataToFirebase();
-            alert(`🎉 恭喜胡牌！牌型檢定完全正確！獲得獎金 +${winAmount.toLocaleString()} 籌碼！`);
-            leaveTable();
-        };
-
-        async function saveUserDataToFirebase() {
-            if (!currentUser) return;
-            const userRef = ref(database, `users/${currentUser.uid}`);
-            await update(userRef, userData);
-            updateLastSavedTime();
-        }
-
-        window.openModal = async function(modalId) {
-            playSound('click');
-            document.getElementById(modalId).classList.remove("hidden");
-            document.getElementById(modalId).classList.add("flex");
-            if (modalId === 'ranking-modal') await loadRankingList();
-            else if (modalId === 'badge-modal') loadBadges();
-        };
-
-        window.closeModal = function(modalId) {
-            playSound('click');
-            document.getElementById(modalId).classList.remove("flex");
-            document.getElementById(modalId).classList.add("hidden");
-        };
-
-        async function loadRankingList() {
-            const usersRef = ref(database, 'users');
-            const snap = await get(usersRef);
-            const listContainer = document.getElementById("ranking-list");
-            listContainer.innerHTML = "";
-            if (snap.exists()) {
-                const usersArr = Object.values(snap.val()).sort((a, b) => b.chips - a.chips);
-                usersArr.forEach((u, idx) => {
-                    const row = document.createElement("div");
-                    row.className = "flex justify-between items-center p-3 bg-slate-100 rounded-2xl font-bold text-sm";
-                    row.innerHTML = `
-                        <div class="flex items-center space-x-3">
-                            <span class="w-7 h-7 rounded-full bg-amber-400 text-slate-950 flex items-center justify-center font-black text-xs">${idx + 1}</span>
-                            <span class="text-slate-800">${u.nickname}</span>
-                        </div>
-                        <span class="text-emerald-600 font-black">${(u.chips || 0).toLocaleString()} 籌碼</span>
-                    `;
-                    listContainer.appendChild(row);
-                });
-            }
-        }
-
-        function loadBadges() {
-            const grid = document.getElementById("badge-grid");
-            const wins = userData.winCount || 0;
-            const logins = userData.loginCount || 0;
-            const selfDraws = userData.selfDrawCount || 0;
-
-            const badges = [
-                { name: "初試啼聲", desc: "胡牌達 1 次", unlocked: wins >= 1, icon: "fa-star" },
-                { name: "雀神降臨", desc: "胡牌達 5 次", unlocked: wins >= 5, icon: "fa-crown" },
-                { name: "天天登入", desc: "登入達 3 次", unlocked: logins >= 3, icon: "fa-calendar-check" },
-                { name: "自摸高手", desc: "自摸達 3 次", unlocked: selfDraws >= 3, icon: "fa-hand-sparkles" }
-            ];
-
-            grid.innerHTML = badges.map(b => `
-                <div class="p-4 rounded-2xl border-2 ${b.unlocked ? 'border-amber-400 bg-amber-50/50' : 'border-slate-200 bg-slate-50 opacity-50'} flex flex-col items-center text-center">
-                    <div class="w-12 h-12 rounded-2xl ${b.unlocked ? 'bg-amber-500 text-white shadow-lg' : 'bg-slate-300 text-slate-500'} flex items-center justify-center text-xl mb-2">
-                        <i class="fa-solid ${b.icon}"></i>
-                    </div>
-                    <h4 class="font-black text-slate-900 text-sm">${b.name}</h4>
-                    <p class="text-[11px] text-slate-500 font-bold mt-0.5">${b.desc}</p>
-                    <span class="text-[10px] font-extrabold mt-2 px-2 py-0.5 rounded-full ${b.unlocked ? 'bg-emerald-100 text-emerald-700' : 'bg-slate-200 text-slate-600'}">${b.unlocked ? '已解鎖' : '未解鎖'}</span>
-                </div>
-            `).join('');
         }
     </script>
 </body>
