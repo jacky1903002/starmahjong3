@@ -35,34 +35,34 @@
         .tile-blue { color: #2563eb !important; }
         .tile-dark { color: #0f172a !important; }
 
-        /* 筒子面板與圖騰精細化 (對應標準圖解) */
+        /* 筒子面板與圖騰精細化 (確保內部完全不溢出) */
         .mahjong-dot-container {
-            width: 38px; height: 58px; background: #f8fafc; border: 2px solid #cbd5e1; border-radius: 6px;
-            display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 2px; padding: 3px;
-            box-shadow: inset 0 1px 3px rgba(0,0,0,0.1); position: relative; overflow: hidden;
+            width: 36px; height: 54px; background: #f8fafc; border: 2px solid #cbd5e1; border-radius: 6px;
+            display: flex; flex-direction: column; align-items: center; justify-content: space-between; padding: 4px 2px;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.1); box-sizing: border-box; overflow: hidden;
         }
-        @media (min-width: 640px) { .mahjong-dot-container { width: 46px; height: 70px; gap: 3px; padding: 4px; } }
-        .m-dot { width: 8px; height: 8px; border-radius: 50%; background: #dc2626; box-shadow: 0 1px 2px rgba(0,0,0,0.2); flex-shrink: 0; }
-        @media (min-width: 640px) { .m-dot { width: 10px; height: 10px; } }
+        @media (min-width: 640px) { .mahjong-dot-container { width: 44px; height: 66px; padding: 5px 3px; } }
+        .m-dot { width: 7px; height: 7px; border-radius: 50%; background: #dc2626; box-shadow: 0 1px 2px rgba(0,0,0,0.2); flex-shrink: 0; }
+        @media (min-width: 640px) { .m-dot { width: 9px; height: 9px; } }
         .m-dot.green { background: #16a34a; } 
         .m-dot.blue { background: #2563eb; }
 
-        /* 條子面板與竹節精細化 (對應標準圖解) */
+        /* 條子面板與竹節精細化 */
         .mahjong-bamboo-container {
-            width: 38px; height: 58px; background: #f0fdf4; border: 2px solid #bbf7d0; border-radius: 6px;
-            display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1.5px; padding: 2px;
-            box-shadow: inset 0 1px 3px rgba(0,0,0,0.1); position: relative; overflow: hidden;
+            width: 36px; height: 54px; background: #f0fdf4; border: 2px solid #bbf7d0; border-radius: 6px;
+            display: flex; flex-direction: column; align-items: center; justify-content: space-between; padding: 4px 2px;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.1); box-sizing: border-box; overflow: hidden;
         }
-        @media (min-width: 640px) { .mahjong-bamboo-container { width: 46px; height: 70px; gap: 2px; } }
-        .m-stick { width: 5px; height: 12px; background: #16a34a; border-radius: 2px; box-shadow: 0 1px 2px rgba(0,0,0,0.2); flex-shrink: 0; }
-        @media (min-width: 640px) { .m-stick { width: 7px; height: 16px; } }
+        @media (min-width: 640px) { .mahjong-bamboo-container { width: 44px; height: 66px; padding: 5px 3px; } }
+        .m-stick { width: 5px; height: 11px; background: #16a34a; border-radius: 2px; box-shadow: 0 1px 2px rgba(0,0,0,0.2); flex-shrink: 0; }
+        @media (min-width: 640px) { .m-stick { width: 6px; height: 14px; } }
         .m-stick.red { background: #dc2626; }
         .m-stick.blue { background: #2563eb; }
 
         .mahjong-white-board {
-            width: 32px; height: 48px; background: #ffffff; border: 2.5px solid #2563eb; border-radius: 6px;
+            width: 30px; height: 46px; background: #ffffff; border: 2.5px solid #2563eb; border-radius: 6px;
         }
-        @media (min-width: 640px) { .mahjong-white-board { width: 40px; height: 58px; } }
+        @media (min-width: 640px) { .mahjong-white-board { width: 38px; height: 56px; } }
 
         .avatar-box-giant {
             width: 65px; height: 65px; border-radius: 50%; border: 3px solid #f59e0b;
@@ -406,7 +406,7 @@
         }
 
         // =========================================================================
-        // 嚴格對照標準圖解 (`image_a10df7.jpg`) 的一～九萬、一～九筒、一～九索圖解
+        // 嚴格對照標準圖解的排版邏輯（全面採用置中與安全內距，絕不溢出遮蔽）
         // =========================================================================
         function createTileHtml(code) {
             const num = code[0], type = code[1];
@@ -416,53 +416,52 @@
                 const chineseNums = {'1':'一','2':'二','3':'三','4':'四','5':'五','6':'六','7':'七','8':'八','9':'九'};
                 return `<span class="tile-number tile-blue">${chineseNums[num] || num}</span><span class="tile-suit tile-red">萬</span>`;
             } 
-            // 2. 筒子 (DOTS) - 精確對應圖解中的一～九餅花紋與色彩配置
+            // 2. 筒子 (DOTS) - 安全排版，確保所有圓點在容器內完整顯示
             else if (type === 'p') {
                 const n = parseInt(num);
                 let dotsHtml = '';
                 if (n === 1) {
-                    dotsHtml = `<div style="width:30px;height:30px;border-radius:50%;border:3px solid #dc2626;display:flex;align-items:center;justify-content:center;background:#0d9488;box-shadow:inset 0 1px 3px rgba(0,0,0,0.3);"><div style="width:10px;height:10px;border-radius:50%;background:#ffffff;border:1px solid #0f766e;"></div></div>`;
+                    dotsHtml = `<div style="width:28px;height:28px;border-radius:50%;border:3px solid #dc2626;display:flex;align-items:center;justify-content:center;background:#0d9488;box-shadow:inset 0 1px 3px rgba(0,0,0,0.3);margin:auto;"><div style="width:9px;height:9px;border-radius:50%;background:#ffffff;"></div></div>`;
                 } else if (n === 2) {
-                    dotsHtml = `<div class="m-dot green" style="width:13px;height:13px;border:2px solid #fff;"></div><div class="m-dot blue" style="width:13px;height:13px;border:2px solid #fff;"></div>`;
+                    dotsHtml = `<div style="display:flex;flex-direction:column;justify-content:space-between;align-items:center;height:100%;py-1;"><div class="m-dot green" style="width:11px;height:11px;border:2px solid #fff;"></div><div class="m-dot blue" style="width:11px;height:11px;border:2px solid #fff;"></div></div>`;
                 } else if (n === 3) {
-                    dotsHtml = `<div class="m-dot blue" style="position:absolute;top:5px;left:5px;"></div><div class="m-dot red" style="position:absolute;top:22px;left:14px;"></div><div class="m-dot green" style="position:absolute;bottom:5px;right:5px;"></div>`;
+                    dotsHtml = `<div style="display:flex;flex-direction:column;justify-content:space-between;align-items:center;height:100%;width:100%;position:relative;"><div class="m-dot blue" style="align-self:flex-start;"></div><div class="m-dot red" style="align-self:center;"></div><div class="m-dot green" style="align-self:flex-end;"></div></div>`;
                 } else if (n === 4) {
-                    dotsHtml = `<div style="display:flex;flex-direction:column;gap:14px;"><div style="display:flex;gap:14px;"><div class="m-dot green"></div><div class="m-dot blue"></div></div><div style="display:flex;gap:14px;"><div class="m-dot green"></div><div class="m-dot blue"></div></div></div>`;
+                    dotsHtml = `<div style="display:flex;flex-direction:column;justify-content:space-between;height:100%;width:100%;"><div style="display:flex;justify-content:space-between;"><div class="m-dot green"></div><div class="m-dot blue"></div></div><div style="display:flex;justify-content:space-between;"><div class="m-dot green"></div><div class="m-dot blue"></div></div></div>`;
                 } else if (n === 5) {
-                    dotsHtml = `<div class="m-dot green" style="position:absolute;top:6px;left:6px;"></div><div class="m-dot blue" style="position:absolute;top:6px;right:6px;"></div><div class="m-dot red" style="position:absolute;top:22px;left:14px;"></div><div class="m-dot blue" style="position:absolute;bottom:6px;left:6px;"></div><div class="m-dot green" style="position:absolute;bottom:6px;right:6px;"></div>`;
+                    dotsHtml = `<div style="display:flex;flex-direction:column;justify-content:space-between;height:100%;width:100%;"><div style="display:flex;justify-content:space-between;"><div class="m-dot green"></div><div class="m-dot blue"></div></div><div style="display:flex;justify-content:center;"><div class="m-dot red"></div></div><div style="display:flex;justify-content:space-between;"><div class="m-dot blue"></div><div class="m-dot green"></div></div></div>`;
                 } else if (n === 6) {
-                    // 修正六筒排版：上下各三顆整齊置中排列
-                    dotsHtml = `<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;gap:12px;"><div style="display:flex;gap:10px;"><div class="m-dot green"></div><div class="m-dot green"></div><div class="m-dot green"></div></div><div style="display:flex;gap:10px;"><div class="m-dot red"></div><div class="m-dot red"></div><div class="m-dot red"></div></div></div>`;
+                    dotsHtml = `<div style="display:flex;flex-direction:column;justify-content:space-between;height:100%;width:100%;"><div style="display:flex;justify-content:space-around;"><div class="m-dot green"></div><div class="m-dot green"></div><div class="m-dot green"></div></div><div style="display:flex;justify-content:space-around;"><div class="m-dot red"></div><div class="m-dot red"></div><div class="m-dot red"></div></div></div>`;
                 } else if (n === 7) {
-                    dotsHtml = `<div class="m-dot green" style="width:9px;height:9px;position:absolute;top:5px;left:8px;"></div><div class="m-dot green" style="width:9px;height:9px;position:absolute;top:12px;left:16px;"></div><div class="m-dot green" style="width:9px;height:9px;position:absolute;top:19px;left:24px;"></div><div style="display:flex;gap:6px;position:absolute;bottom:6px;left:8px;"><div class="m-dot red" style="width:9px;height:9px;"></div><div class="m-dot red" style="width:9px;height:9px;"></div><div class="m-dot red" style="width:9px;height:9px;"></div></div>`;
+                    dotsHtml = `<div style="display:flex;flex-direction:column;justify-content:space-between;height:100%;width:100%;"><div style="display:flex;justify-content:space-around;"><div class="m-dot green" style="width:7px;height:7px;"></div><div class="m-dot green" style="width:7px;height:7px;"></div><div class="m-dot green" style="width:7px;height:7px;"></div></div><div style="display:flex;justify-content:space-around;"><div class="m-dot red" style="width:7px;height:7px;"></div><div class="m-dot red" style="width:7px;height:7px;"></div><div class="m-dot red" style="width:7px;height:7px;"></div></div></div>`;
                 } else if (n === 8) {
-                    dotsHtml = `<div style="display:flex;flex-direction:column;gap:6px;"><div style="display:flex;gap:8px;"><div class="m-dot blue"></div><div class="m-dot blue"></div></div><div style="display:flex;gap:8px;"><div class="m-dot blue"></div><div class="m-dot blue"></div></div><div style="display:flex;gap:8px;"><div class="m-dot blue"></div><div class="m-dot blue"></div></div><div style="display:flex;gap:8px;"><div class="m-dot blue"></div><div class="m-dot blue"></div></div></div>`;
+                    dotsHtml = `<div style="display:flex;flex-direction:column;justify-content:space-between;height:100%;width:100%;"><div style="display:flex;justify-content:space-between;"><div class="m-dot blue"></div><div class="m-dot blue"></div></div><div style="display:flex;justify-content:space-between;"><div class="m-dot blue"></div><div class="m-dot blue"></div></div><div style="display:flex;justify-content:space-between;"><div class="m-dot blue"></div><div class="m-dot blue"></div></div><div style="display:flex;justify-content:space-between;"><div class="m-dot blue"></div><div class="m-dot blue"></div></div></div>`;
                 } else if (n === 9) {
-                    dotsHtml = `<div style="display:flex;gap:4px;"><div style="display:flex;flex-direction:column;gap:3px;"><div class="m-dot green"></div><div class="m-dot green"></div><div class="m-dot green"></div></div><div style="display:flex;flex-direction:column;gap:3px;"><div class="m-dot red"></div><div class="m-dot red"></div><div class="m-dot red"></div></div><div style="display:flex;flex-direction:column;gap:3px;"><div class="m-dot blue"></div><div class="m-dot blue"></div><div class="m-dot blue"></div></div></div>`;
+                    dotsHtml = `<div style="display:flex;justify-content:space-between;height:100%;width:100%;"><div style="display:flex;flex-direction:column;justify-content:space-between;"><div class="m-dot green"></div><div class="m-dot green"></div><div class="m-dot green"></div></div><div style="display:flex;flex-direction:column;justify-content:space-between;"><div class="m-dot red"></div><div class="m-dot red"></div><div class="m-dot red"></div></div><div style="display:flex;flex-direction:column;justify-content:space-between;"><div class="m-dot blue"></div><div class="m-dot blue"></div><div class="m-dot blue"></div></div></div>`;
                 }
                 return `<div class="mahjong-dot-container">${dotsHtml}</div>`;
             } 
-            // 3. 索子 (BAMBOO) - 精確對應標準圖解中的一～九索竹節與經典配色
+            // 3. 索子 (BAMBOO) - 安全排版
             else if (type === 's') {
                 const n = parseInt(num);
                 if (n === 1) {
-                    return `<div class="mahjong-bamboo-container" style="justify-content:center;background:#fff1f2;"><div style="width:14px;height:24px;background:#dc2626;border-radius:4px;box-shadow:0 1px 3px rgba(0,0,0,0.3);position:relative;display:flex;align-items:center;justify-content:center;"><div style="width:4px;height:12px;background:#ffffff;border-radius:2px;"></div></div></div>`;
+                    return `<div class="mahjong-bamboo-container" style="justify-content:center;background:#fff1f2;"><div style="width:12px;height:22px;background:#dc2626;border-radius:4px;box-shadow:0 1px 3px rgba(0,0,0,0.3);display:flex;align-items:center;justify-content:center;margin:auto;"><div style="width:3px;height:10px;background:#ffffff;border-radius:2px;"></div></div></div>`;
                 } else if (n === 2) {
-                    return `<div class="mahjong-bamboo-container" style="justify-content:center;gap:8px;"><div class="m-stick"></div><div class="m-stick"></div></div>`;
+                    return `<div class="mahjong-bamboo-container" style="justify-content:space-around;"><div class="m-stick"></div><div class="m-stick"></div></div>`;
                 } else if (n === 3) {
-                    return `<div class="mahjong-bamboo-container" style="justify-content:center;position:relative;"><div class="m-stick green" style="position:absolute;top:8px;left:8px;"></div><div class="m-stick green" style="position:absolute;top:8px;right:8px;"></div><div class="m-stick red" style="position:absolute;bottom:8px;"></div></div>`;
+                    return `<div class="mahjong-bamboo-container" style="justify-content:space-between;"><div style="display:flex;justify-content:space-between;width:100%;"><div class="m-stick green"></div><div class="m-stick green"></div></div><div class="m-stick red"></div></div>`;
                 } else if (n === 4) {
-                    return `<div class="mahjong-bamboo-container" style="flex-direction:row;justify-content:center;gap:8px;"><div style="display:flex;flex-direction:column;gap:4px;"><div class="m-stick"></div><div class="m-stick"></div></div><div style="display:flex;flex-direction:column;gap:4px;"><div class="m-stick"></div><div class="m-stick"></div></div></div>`;
+                    return `<div class="mahjong-bamboo-container" style="flex-direction:row;justify-content:space-around;align-items:center;"><div style="display:flex;flex-direction:column;justify-content:space-between;height:80%;"><div class="m-stick"></div><div class="m-stick"></div></div><div style="display:flex;flex-direction:column;justify-content:space-between;height:80%;"><div class="m-stick"></div><div class="m-stick"></div></div></div>`;
                 } else if (n === 5) {
-                    return `<div class="mahjong-bamboo-container" style="position:relative;"><div class="m-stick" style="position:absolute;top:6px;left:6px;"></div><div class="m-stick" style="position:absolute;top:6px;right:6px;"></div><div class="m-stick red" style="position:absolute;top:20px;left:15px;"></div><div class="m-stick" style="position:absolute;bottom:6px;left:6px;"></div><div class="m-stick" style="position:absolute;bottom:6px;right:6px;"></div></div>`;
+                    return `<div class="mahjong-bamboo-container" style="justify-content:space-between;"><div style="display:flex;justify-content:space-between;width:100%;"><div class="m-stick"></div><div class="m-stick"></div></div><div class="m-stick red" style="margin:auto;"></div><div style="display:flex;justify-content:space-between;width:100%;"><div class="m-stick"></div><div class="m-stick"></div></div></div>`;
                 } else if (n === 6) {
-                    return `<div class="mahjong-bamboo-container" style="justify-content:center;gap:6px;"><div style="display:flex;gap:4px;"><div class="m-stick"></div><div class="m-stick"></div><div class="m-stick"></div></div><div style="display:flex;gap:4px;"><div class="m-stick"></div><div class="m-stick"></div><div class="m-stick"></div></div></div>`;
+                    return `<div class="mahjong-bamboo-container" style="justify-content:space-around;"><div style="display:flex;justify-content:space-between;width:100%;"><div class="m-stick"></div><div class="m-stick"></div><div class="m-stick"></div></div><div style="display:flex;justify-content:space-between;width:100%;"><div class="m-stick"></div><div class="m-stick"></div><div class="m-stick"></div></div></div>`;
                 } else if (n === 7) {
-                    return `<div class="mahjong-bamboo-container" style="justify-content:center;position:relative;"><div class="m-stick red" style="position:absolute;top:5px;"></div><div style="display:flex;gap:4px;position:absolute;bottom:6px;"><div style="display:flex;flex-direction:column;gap:2px;"><div class="m-stick"></div><div class="m-stick"></div></div><div style="display:flex;flex-direction:column;gap:2px;"><div class="m-stick"></div><div class="m-stick"></div></div><div style="display:flex;flex-direction:column;gap:2px;"><div class="m-stick"></div><div class="m-stick"></div></div></div></div>`;
+                    return `<div class="mahjong-bamboo-container" style="justify-content:space-between;"><div class="m-stick red" style="margin:auto;"></div><div style="display:flex;justify-content:space-between;width:100%;"><div style="display:flex;flex-direction:column;justify-content:space-between;height:100%;"><div class="m-stick"></div><div class="m-stick"></div></div><div style="display:flex;flex-direction:column;justify-content:space-between;height:100%;"><div class="m-stick"></div><div class="m-stick"></div></div><div style="display:flex;flex-direction:column;justify-content:space-between;height:100%;"><div class="m-stick"></div><div class="m-stick"></div></div></div></div>`;
                 } else if (n === 8) {
-                    return `<div class="mahjong-bamboo-container" style="flex-direction:row;justify-content:center;gap:6px;"><div style="display:flex;flex-direction:column;gap:3px;"><div class="m-stick"></div><div class="m-stick"></div><div class="m-stick"></div><div class="m-stick"></div></div><div style="display:flex;flex-direction:column;gap:3px;"><div class="m-stick"></div><div class="m-stick"></div><div class="m-stick"></div><div class="m-stick"></div></div></div>`;
+                    return `<div class="mahjong-bamboo-container" style="flex-direction:row;justify-content:space-around;align-items:center;"><div style="display:flex;flex-direction:column;justify-content:space-between;height:100%;"><div class="m-stick"></div><div class="m-stick"></div><div class="m-stick"></div><div class="m-stick"></div></div><div style="display:flex;flex-direction:column;justify-content:space-between;height:100%;"><div class="m-stick"></div><div class="m-stick"></div><div class="m-stick"></div><div class="m-stick"></div></div></div>`;
                 } else if (n === 9) {
-                    return `<div class="mahjong-bamboo-container" style="flex-direction:row;justify-content:center;gap:4px;"><div style="display:flex;flex-direction:column;gap:2px;"><div class="m-stick red"></div><div class="m-stick red"></div><div class="m-stick red"></div></div><div style="display:flex;flex-direction:column;gap:2px;"><div class="m-stick green"></div><div class="m-stick green"></div><div class="m-stick green"></div></div><div style="display:flex;flex-direction:column;gap:2px;"><div class="m-stick blue"></div><div class="m-stick blue"></div><div class="m-stick blue"></div></div></div>`;
+                    return `<div class="mahjong-bamboo-container" style="flex-direction:row;justify-content:space-between;align-items:center;"><div style="display:flex;flex-direction:column;justify-content:space-between;height:100%;"><div class="m-stick red"></div><div class="m-stick red"></div><div class="m-stick red"></div></div><div style="display:flex;flex-direction:column;justify-content:space-between;height:100%;"><div class="m-stick green"></div><div class="m-stick green"></div><div class="m-stick green"></div></div><div style="display:flex;flex-direction:column;justify-content:space-between;height:100%;"><div class="m-stick blue"></div><div class="m-stick blue"></div><div class="m-stick blue"></div></div></div>`;
                 }
             } 
             // 4. 字牌 (WINDS & DRAGONS)
