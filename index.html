@@ -34,6 +34,11 @@
         }
         @media (min-width: 640px) { .mahjong-panel-box { width: 40px; height: 60px; padding: 3px 2px; } }
 
+        .melds-tile-box {
+            width: 26px; height: 38px; background: #fffcf8; border: 1.5px solid #fed7aa; border-radius: 4px;
+            display: flex; flex-direction: column; align-items: center; justify-content: center; box-sizing: border-box; font-size: 10px;
+        }
+
         .player-wind-badge {
             font-family: 'ZCOOL KuaiLe', cursive, sans-serif;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.9), 0 0 12px rgba(251, 191, 36, 0.9);
@@ -89,7 +94,6 @@
             border-color: #ef4444 !important; box-shadow: 0 0 25px rgba(239, 68, 68, 0.9) !important; background-color: rgba(239, 68, 68, 0.15);
         }
 
-        /* 提醒通知橫幅動畫 */
         @keyframes pulseAlert {
             0%, 100% { transform: scale(1); opacity: 1; }
             50% { transform: scale(1.03); opacity: 0.9; }
@@ -230,10 +234,13 @@
         <!-- 麻將對戰桌介面 -->
         <div id="game-view" class="hidden flex-1 relative p-1 sm:p-2 flex flex-col justify-between select-none overflow-hidden bg-emerald-800">
             
-            <!-- 左上角大廳返回控制按鈕 -->
+            <!-- 左上角控制按鈕 (大廳 + 電腦代打切換) -->
             <div class="absolute top-2 left-2 z-30 flex items-center space-x-2">
                 <button onclick="backToModeSelect()" class="bg-slate-900/90 text-slate-200 hover:text-white px-3 py-1.5 rounded-xl border-2 border-slate-700 font-black text-xs shadow-lg flex items-center space-x-1 transition">
                     <i class="fa-solid fa-house"></i><span>大廳</span>
+                </button>
+                <button id="ai-auto-toggle-btn" onclick="toggleAiAutoPlay()" class="bg-teal-600 hover:bg-teal-500 text-white px-3 py-1.5 rounded-xl border-2 border-teal-400 font-black text-xs shadow-lg flex items-center space-x-1 transition">
+                    <i class="fa-solid fa-robot"></i><span id="ai-auto-text">電腦代打: 關閉</span>
                 </button>
             </div>
 
@@ -320,7 +327,7 @@
                 </button>
             </div>
 
-            <!-- 下方自己 -->
+            <!-- 下方自己 (包含門前副露區與手牌) -->
             <div id="avatar-box-0" class="p-2 rounded-2xl shadow-2xl z-20 relative flex flex-col sm:flex-row items-center justify-between border-2 border-amber-500/50 bg-slate-950/95 w-full gap-2">
                 <div class="flex items-center space-x-3 bg-slate-900 px-3 py-1.5 rounded-xl border border-amber-400 shrink-0">
                     <div class="avatar-player-box" onclick="openAvatarModal()" title="點擊更換頭像">
@@ -334,6 +341,13 @@
                     </div>
                     <div id="arrow-0" class="hidden bg-red-600 text-white px-1.5 py-0.5 rounded text-[10px] animate-pulse">⬆️ 換你出牌</div>
                 </div>
+
+                <!-- 玩家門前副露區 -->
+                <div id="player-melds-area" class="flex items-center space-x-1 bg-slate-900/80 px-2 py-1 rounded-xl border border-amber-500/30 min-h-[46px]">
+                    <span class="text-[10px] text-amber-300 font-bold">副露:</span>
+                    <div id="player-melds-list" class="flex space-x-1">無</div>
+                </div>
+
                 <div id="player-tiles" class="flex items-center justify-start sm:justify-center flex-1 w-full overflow-x-auto py-1 px-1 gap-1"></div>
             </div>
         </div>
@@ -403,10 +417,12 @@
         let currentBaseStake = 100;
         let currentTaiStake = 30;
         let playerFlowers = [];
+        let playerMelds = [];
         let dealerSeatIndex = 0;
         let lastDiscardedTile = null;
         let lastDiscarderSeat = null;
         let isTingState = false;
+        let isAiAutoPlay = false; // 電腦代打狀態
         
         let userData = {
             nickname: "麻將玩家",
@@ -618,7 +634,7 @@
                 else if (n === 6) bambooHtml = `<div style="display:flex;flex-direction:column;justify-content:space-between;height:100%;width:100%;"><div style="display:flex;justify-content:space-around;width:100%;">${createBambooStickSvg('#16a34a')}${createBambooStickSvg('#16a34a')}${createBambooStickSvg('#16a34a')}</div><div style="display:flex;justify-content:space-around;width:100%;">${createBambooStickSvg('#16a34a')}${createBambooStickSvg('#16a34a')}${createBambooStickSvg('#16a34a')}</div></div>`;
                 else if (n === 7) bambooHtml = `<div style="display:flex;flex-direction:column;justify-content:space-between;height:100%;width:100%;align-items:center;"><div style="transform:scale(0.85);">${createBambooStickSvg('#dc2626')}</div><div style="display:flex;justify-content:space-between;width:100%;"><div style="display:flex;flex-direction:column;justify-content:space-between;height:100%;">${createBambooStickSvg('#16a34a')}${createBambooStickSvg('#16a34a')}</div><div style="display:flex;flex-direction:column;justify-content:space-between;height:100%;">${createBambooStickSvg('#16a34a')}${createBambooStickSvg('#16a34a')}</div><div style="display:flex;flex-direction:column;justify-content:space-between;height:100%;">${createBambooStickSvg('#16a34a')}${createBambooStickSvg('#16a34a')}</div></div></div>`;
                 else if (n === 8) bambooHtml = `<div style="display:flex;flex-direction:column;justify-content:space-around;height:100%;width:100%;"><div style="display:flex;justify-content:space-around;width:100%;">${createBambooStickSvg('#16a34a')}${createBambooStickSvg('#16a34a')}${createBambooStickSvg('#16a34a')}${createBambooStickSvg('#16a34a')}</div><div style="display:flex;justify-content:space-around;width:100%;">${createBambooStickSvg('#16a34a')}${createBambooStickSvg('#16a34a')}${createBambooStickSvg('#16a34a')}${createBambooStickSvg('#16a34a')}</div></div>`;
-                else if (n === 9) bambooHtml = `<div style="display:flex;justify-content:space-between;height:100%;width:100%;"><div style="display:flex;flex-direction:column;justify-content:space-between;height:100%;">${createBambooStickSvg('#16a34a')}${createBambooStickSvg('#16a34a')}${createBambooStickSvg('#16a34a')}</div><div style="display:flex;flex-direction:column;justify-content:space-between;height:100%;">${createBambooStickSvg('#dc2626')}${createBambooStickSvg('#dc2626')}${createBambooStickSvg('#dc2626')}</div><div style="display:flex;flex-direction:column;justify-content:space-between;height:100%;">${createBambooStickSvg('#16a34a')}${createBambooStickSvg('#16a34a')}${createBambooStickSvg('#16a34a')}</div></div>`;
+                else if (n === 9) bambooHtml = `<div style="display:flex;flex-direction:space-between;height:100%;width:100%;"><div style="display:flex;flex-direction:column;justify-content:space-between;height:100%;">${createBambooStickSvg('#16a34a')}${createBambooStickSvg('#16a34a')}${createBambooStickSvg('#16a34a')}</div><div style="display:flex;flex-direction:column;justify-content:space-between;height:100%;">${createBambooStickSvg('#dc2626')}${createBambooStickSvg('#dc2626')}${createBambooStickSvg('#dc2626')}</div><div style="display:flex;flex-direction:column;justify-content:space-between;height:100%;">${createBambooStickSvg('#16a34a')}${createBambooStickSvg('#16a34a')}${createBambooStickSvg('#16a34a')}</div></div>`;
                 return `<div class="mahjong-panel-box" style="background:#f0fdf4;border-color:#bbf7d0;">${bambooHtml}</div>`;
             } else if (type === 'z') {
                 return `<div class="mahjong-panel-box">${createHonorSvg(num)}</div>`;
@@ -626,6 +642,10 @@
                 return `<div class="mahjong-panel-box" style="background:#fff1f2;border-color:#fecdd3;">${createFlowerSvg(code)}</div>`;
             }
             return `<span class="tile-number">${code}</span>`;
+        }
+
+        function createMeldsTileHtml(code) {
+            return `<div class="melds-tile-box">${createTileHtml(code)}</div>`;
         }
 
         function updatePlayerWindsAndNames() {
@@ -663,6 +683,17 @@
                 container.appendChild(tileDiv);
             });
 
+            const meldsListDiv = document.getElementById("player-melds-list");
+            if (playerMelds.length > 0) {
+                meldsListDiv.innerHTML = playerMelds.map(meld => `
+                    <div class="flex space-x-0.5 bg-slate-950 p-1 rounded border border-amber-500/40">
+                        ${meld.map(t => createMeldsTileHtml(t)).join('')}
+                    </div>
+                `).join('');
+            } else {
+                meldsListDiv.innerHTML = '<span class="text-slate-400 text-xs">無</span>';
+            }
+
             const flowerListDiv = document.getElementById("flower-tiles-list");
             if (playerFlowers.length > 0) {
                 flowerListDiv.innerHTML = playerFlowers.map(f => `<div style="width:28px;height:42px;background:#fff;border:1px solid #fecdd3;border-radius:4px;display:flex;align-items:center;justify-content:center;">${createTileHtml(f)}</div>`).join('');
@@ -677,9 +708,54 @@
             updatePlayerWindsAndNames();
             updateTurnIndicator();
             checkAvailableActionsAndNotify();
+
+            // 若開啟電腦代打且輪到玩家，自動幫玩家摸牌並出牌
+            if (isAiAutoPlay && currentTurnPlayer === mySeatIndex) {
+                setTimeout(() => {
+                    if (checkCanWin(mahjongGame.players[mySeatIndex])) {
+                        playerDeclareWin();
+                    } else {
+                        if (!hasDrawnThisTurn) {
+                            const drawn = mahjongGame.drawTile(mySeatIndex);
+                            if (drawn) {
+                                if (drawn[1] === 'f') {
+                                    playerFlowers.push(drawn);
+                                    const nextDrawn = mahjongGame.drawTile(mySeatIndex);
+                                    if (nextDrawn) mahjongGame.players[mySeatIndex].push(nextDrawn);
+                                } else {
+                                    mahjongGame.players[mySeatIndex].push(drawn);
+                                }
+                                hasDrawnThisTurn = true;
+                            }
+                        }
+                        // 自動打最後一張牌
+                        const hand = mahjongGame.players[mySeatIndex];
+                        if (hand.length > 0) {
+                            playerDiscardTile(hand.length - 1);
+                        }
+                    }
+                }, 1000);
+            }
         }
 
-        // 自動摸牌邏輯：當輪到玩家且未摸牌時自動執行
+        window.toggleAiAutoPlay = function() {
+            isAiAutoPlay = !isAiAutoPlay;
+            const btnText = document.getElementById("ai-auto-text");
+            const btn = document.getElementById("ai-auto-toggle-btn");
+            if (isAiAutoPlay) {
+                btnText.textContent = "電腦代打: 開啟";
+                btn.classList.remove("bg-teal-600", "border-teal-400");
+                btn.classList.add("bg-amber-600", "border-amber-400", "animate-pulse");
+                speakVoice("已開啟電腦代打", getVoicePresetByAvatar(userData.avatar));
+                renderGameTable();
+            } else {
+                btnText.textContent = "電腦代打: 關閉";
+                btn.classList.remove("bg-amber-600", "border-amber-400", "animate-pulse");
+                btn.classList.add("bg-teal-600", "border-teal-400");
+                speakVoice("已關閉電腦代打", getVoicePresetByAvatar(userData.avatar));
+            }
+        };
+
         function checkAndAutoDraw() {
             if (currentTurnPlayer === mySeatIndex && !hasDrawnThisTurn) {
                 const drawn = mahjongGame.drawTile(mySeatIndex);
@@ -702,7 +778,8 @@
 
         function playerDiscardTile(index) {
             if (currentTurnPlayer !== mySeatIndex || !hasDrawnThisTurn) {
-                alert("還沒輪到您或尚未摸牌！"); return;
+                if (!isAiAutoPlay) alert("還沒輪到您或尚未摸牌！"); 
+                return;
             }
             const playerHand = mahjongGame.players[mySeatIndex];
             const discarded = playerHand.splice(index, 1)[0];
@@ -767,7 +844,6 @@
             }
         }
 
-        // 嚴格胡牌判定 (5個面子 + 1個對子)
         function checkCanWin(hand) {
             if (!hand || hand.length === 0) return false;
             if ((hand.length - 2) % 3 !== 0) return false;
@@ -819,7 +895,6 @@
             return false;
         }
 
-        // 嚴格聽牌判定：假設任意一張牌加入後能胡牌即為聽牌
         function checkCanTing(hand) {
             const possibleTiles = [];
             ['m','p','s'].forEach(type => {
@@ -834,7 +909,6 @@
             return false;
         }
 
-        // 智慧檢查可用動作並發出提醒通知
         function checkAvailableActionsAndNotify() {
             const playerHand = mahjongGame.players[mySeatIndex];
             const alertBanner = document.getElementById("action-alert-banner");
@@ -842,17 +916,14 @@
             
             let notifications = [];
 
-            // 檢查胡牌
             if (checkCanWin(playerHand)) {
                 notifications.push("可胡牌！");
             }
 
-            // 檢查聽牌
             if (!isTingState && checkCanTing(playerHand)) {
                 notifications.push("可聽牌！");
             }
 
-            // 檢查碰與槓 (針對別人打出的牌)
             if (lastDiscardedTile && lastDiscarderSeat !== mySeatIndex) {
                 const sameCount = playerHand.filter(t => t === lastDiscardedTile).length;
                 if (sameCount >= 2) notifications.push(`可碰 ${formatTileName(lastDiscardedTile)}！`);
@@ -882,10 +953,16 @@
                 }
                 playerHand.splice(playerHand.indexOf(lastDiscardedTile), 1);
                 playerHand.splice(playerHand.indexOf(lastDiscardedTile), 1);
+                
+                playerMelds.push([lastDiscardedTile, lastDiscardedTile, lastDiscardedTile]);
+
                 speakVoice("碰！", getVoicePresetByAvatar(userData.avatar));
+                
                 hasDrawnThisTurn = true;
                 currentTurnPlayer = mySeatIndex;
                 renderGameTable();
+                document.getElementById("action-alert-banner").classList.add("hidden");
+                alert("碰牌成功！請點選手牌打出一張牌。");
             } else if (type === 'gang') {
                 if (!lastDiscardedTile || lastDiscarderSeat === mySeatIndex) {
                     alert("目前牌桌上沒有可以槓的牌！");
@@ -899,8 +976,15 @@
                 for (let i = 0; i < 3; i++) {
                     playerHand.splice(playerHand.indexOf(lastDiscardedTile), 1);
                 }
+                playerMelds.push([lastDiscardedTile, lastDiscardedTile, lastDiscardedTile, lastDiscardedTile]);
+
                 speakVoice("槓！", getVoicePresetByAvatar(userData.avatar));
+                
+                currentTurnPlayer = mySeatIndex;
+                hasDrawnThisTurn = false;
                 checkAndAutoDraw();
+                document.getElementById("action-alert-banner").classList.add("hidden");
+                alert("槓牌成功！已自動從海底補牌，請點選手牌打出一張牌。");
             } else if (type === 'chi') {
                 const upperSeat = (mySeatIndex + 3) % 4;
                 if (!lastDiscardedTile || lastDiscarderSeat !== upperSeat) {
@@ -916,6 +1000,7 @@
                 isTingState = true;
                 speakVoice("聽牌！", getVoicePresetByAvatar(userData.avatar));
                 alert("聽牌成功！");
+                document.getElementById("action-alert-banner").classList.add("hidden");
             }
         };
 
@@ -1060,7 +1145,14 @@
             dealerSeatIndex = Math.floor(Math.random() * 4);
 
             playerFlowers = [];
+            playerMelds = [];
             isTingState = false;
+            isAiAutoPlay = false;
+            document.getElementById("ai-auto-text").textContent = "電腦代打: 關閉";
+            const btn = document.getElementById("ai-auto-toggle-btn");
+            btn.classList.remove("bg-amber-600", "border-amber-400", "animate-pulse");
+            btn.classList.add("bg-teal-600", "border-teal-400");
+
             mahjongGame.deal();
             hasDrawnThisTurn = false;
             currentTurnPlayer = dealerSeatIndex;
@@ -1183,7 +1275,7 @@
             const playerHand = [...mahjongGame.players[mySeatIndex]];
 
             if (!checkCanWin(playerHand)) {
-                alert("尚未達到胡牌條件，無法胡牌！");
+                if (!isAiAutoPlay) alert("尚未達到胡牌條件，無法胡牌！");
                 return;
             }
 
