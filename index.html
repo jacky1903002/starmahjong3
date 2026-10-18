@@ -406,7 +406,7 @@
         }
 
         // =========================================================================
-        // 嚴格對照標準圖解的排版邏輯（已修正一索寬度比例，防止變形）
+        // 嚴格對照標準圖解的排版邏輯（一索重構成傳統竹枝貓頭鷹圖騰）
         // =========================================================================
         function createTileHtml(code) {
             const num = code[0], type = code[1];
@@ -441,11 +441,36 @@
                 }
                 return `<div class="mahjong-dot-container">${dotsHtml}</div>`;
             } 
-            // 3. 索子 (BAMBOO) - 修正一索比例，確保呈現正確紅中鳥造型
+            // 3. 索子 (BAMBOO) - 一索完全比照傳統「竹枝棲鳥／貓頭鷹」SVG線條繪製
             else if (type === 's') {
                 const n = parseInt(num);
                 if (n === 1) {
-                    return `<div class="mahjong-bamboo-container" style="justify-content:center;background:#fff1f2;"><div style="width:16px;height:24px;background:#dc2626;border-radius:4px;box-shadow:0 1px 3px rgba(0,0,0,0.3);display:flex;align-items:center;justify-content:center;margin:auto;"><div style="width:4px;height:14px;background:#ffffff;border-radius:2px;"></div></div></div>`;
+                    return `
+                    <div class="mahjong-bamboo-container" style="justify-content:center;background:#fffaf0;padding:2px;">
+                        <svg viewBox="0 0 100 150" style="width:100%;height:100%;max-height:50px;">
+                            <!-- 上方紅色鳥頭/羽角與眼睛 -->
+                            <path d="M 25 32 Q 40 45 68 18 Q 55 52 64 52" fill="none" stroke="#dc2626" stroke-width="4.5" stroke-linecap="round" />
+                            <circle cx="50" cy="48" r="9" fill="none" stroke="#dc2626" stroke-width="4.5" />
+                            <circle cx="50" cy="48" r="2.5" fill="#dc2626" />
+                            <!-- 鳥腹三個圓點與胸身弧線 -->
+                            <circle cx="39" cy="66" r="3" fill="none" stroke="#dc2626" stroke-width="3" />
+                            <circle cx="39" cy="78" r="3" fill="none" stroke="#dc2626" stroke-width="3" />
+                            <circle cx="39" cy="90" r="3" fill="none" stroke="#dc2626" stroke-width="3" />
+                            <path d="M 37 54 C 31 66 31 84 28 98" fill="none" stroke="#dc2626" stroke-width="4" stroke-linecap="round" />
+                            <path d="M 52 58 C 68 62 67 85 42 88" fill="none" stroke="#dc2626" stroke-width="3.5" stroke-linecap="round" />
+                            <path d="M 54 66 C 63 68 62 82 46 84" fill="none" stroke="#dc2626" stroke-width="3" stroke-linecap="round" />
+                            <path d="M 55 74 C 60 75 59 80 50 81" fill="none" stroke="#dc2626" stroke-width="2.5" stroke-linecap="round" />
+
+                            <!-- 下方深綠色竹枝幹與葉脈 -->
+                            <path d="M 20 105 C 40 100 70 85 92 58 M 92 58 C 88 52 82 56 78 62" fill="none" stroke="#166534" stroke-width="4.5" stroke-linecap="round" />
+                            <path d="M 28 102 C 22 112 18 118 18 122" fill="none" stroke="#166534" stroke-width="3" stroke-linecap="round" />
+                            <path d="M 33 100 C 28 112 25 120 25 124" fill="none" stroke="#166534" stroke-width="3" stroke-linecap="round" />
+                            <path d="M 38 98 C 36 112 34 121 34 125" fill="none" stroke="#166534" stroke-width="3" stroke-linecap="round" />
+                            <path d="M 44 95 C 45 110 46 120 46 125" fill="none" stroke="#166534" stroke-width="3" stroke-linecap="round" />
+                            <path d="M 52 91 C 56 106 58 118 58 123" fill="none" stroke="#166534" stroke-width="3" stroke-linecap="round" />
+                            <path d="M 51 88 C 45 105 50 128 72 140" fill="none" stroke="#166534" stroke-width="4" stroke-linecap="round" />
+                        </svg>
+                    </div>`;
                 } else if (n === 2) {
                     return `<div class="mahjong-bamboo-container" style="justify-content:space-around;"><div class="m-stick"></div><div class="m-stick"></div></div>`;
                 } else if (n === 3) {
