@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>明星三缺一 - 邀請碼線上對戰</title>
+    <title>明星三缺一 - 自選頭像線上對決</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome Icons -->
@@ -36,37 +36,27 @@
         .tile-dark { color: #0f172a !important; }
 
         .mahjong-dot-container {
-            width: 32px; height: 38px; background: #eff6ff; border: 2px solid #3b82f6; border-radius: 6px;
-            display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 2px; padding: 3px;
+            width: 36px; height: 56px; background: #f8fafc; border: 2px solid #cbd5e1; border-radius: 6px;
+            display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 3px; padding: 4px;
         }
-        @media (min-width: 640px) { .mahjong-dot-container { width: 38px; height: 44px; gap: 2.5px; } }
-        .m-dot { width: 7px; height: 7px; border-radius: 50%; background: #dc2626; box-shadow: 0 1px 2px rgba(0,0,0,0.2); }
-        @media (min-width: 640px) { .m-dot { width: 9px; height: 9px; } }
-        .m-dot.green { background: #16a34a; } 
-        .m-dot.blue { background: #2563eb; }
+        @media (min-width: 640px) { .mahjong-dot-container { width: 44px; height: 68px; gap: 4px; padding: 5px; } }
+        .m-dot { width: 8px; height: 8px; border-radius: 50%; background: #dc2626; box-shadow: 0 1px 2px rgba(0,0,0,0.2); }
+        @media (min-width: 640px) { .m-dot { width: 11px; height: 11px; } }
+        .m-dot.green { background: #16a34a; } .m-dot.blue { background: #2563eb; }
 
         .mahjong-bamboo-container {
-            width: 32px; height: 38px; background: #f0fdf4; border: 2px solid #22c55e; border-radius: 6px;
-            display: flex; flex-direction: row; align-items: center; justify-content: center; gap: 2px; padding: 3px;
+            width: 36px; height: 56px; background: #f0fdf4; border: 2px solid #bbf7d0; border-radius: 6px;
+            display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; padding: 3px;
         }
-        @media (min-width: 640px) { .mahjong-bamboo-container { width: 38px; height: 44px; gap: 2.5px; } }
-        .m-stick { width: 4px; height: 26px; background: #16a34a; border-radius: 2px; box-shadow: 0 1px 2px rgba(0,0,0,0.2); }
-        @media (min-width: 640px) { .m-stick { width: 5px; height: 32px; } }
+        @media (min-width: 640px) { .mahjong-bamboo-container { width: 44px; height: 68px; gap: 3px; } }
+        .m-stick { width: 6px; height: 14px; background: #16a34a; border-radius: 3px; }
+        @media (min-width: 640px) { .m-stick { width: 8px; height: 18px; } }
+        .m-stick.red { background: #dc2626; }
 
         .mahjong-white-board {
-            width: 28px; height: 38px; background: #ffffff; border: 2.5px solid #94a3b8; border-radius: 5px;
+            width: 32px; height: 48px; background: #ffffff; border: 2.5px solid #2563eb; border-radius: 6px;
         }
-        @media (min-width: 640px) { .mahjong-white-board { width: 34px; height: 44px; } }
-
-        .mahjong-tile-river-real {
-            width: 36px; height: 50px; background: linear-gradient(135deg, #ffffff 0%, #fef3c7 100%);
-            border: 2px solid #f59e0b; border-bottom: 3px solid #d97706; border-radius: 6px;
-            display: flex; flex-direction: column; align-items: center; justify-content: center; margin: 2px;
-        }
-        @media (min-width: 640px) { .mahjong-tile-river-real { width: 46px; height: 62px; margin: 3px; } }
-        .river-num { font-size: 1rem; font-weight: 900; line-height: 1; }
-        @media (min-width: 640px) { .river-num { font-size: 1.2rem; } }
-        .river-suit { font-size: 0.65rem; font-weight: 900; }
+        @media (min-width: 640px) { .mahjong-white-board { width: 40px; height: 58px; } }
 
         .avatar-box-giant {
             width: 65px; height: 65px; border-radius: 50%; border: 3px solid #f59e0b;
@@ -76,15 +66,13 @@
         .avatar-box-giant img { width: 100%; height: 100%; object-fit: cover; object-position: center top; transform: scale(1.35); }
 
         .avatar-player-box {
-            width: 45px; height: 45px; border-radius: 50%; border: 3px solid #10b981; overflow: hidden; flex-shrink: 0;
+            width: 45px; height: 45px; border-radius: 50%; border: 3px solid #10b981; overflow: hidden; flex-shrink: 0; cursor: pointer;
         }
         @media (min-width: 640px) { .avatar-player-box { width: 70px; height: 70px; } }
         .avatar-player-box img { width: 100%; height: 100%; object-fit: cover; object-position: center top; transform: scale(1.35); }
 
         .turn-active-glow {
-            border-color: #ef4444 !important;
-            box-shadow: 0 0 25px rgba(239, 68, 68, 0.9) !important;
-            background-color: rgba(239, 68, 68, 0.12);
+            border-color: #ef4444 !important; box-shadow: 0 0 25px rgba(239, 68, 68, 0.9) !important; background-color: rgba(239, 68, 68, 0.12);
         }
     </style>
 </head>
@@ -94,15 +82,21 @@
     <div id="login-screen" class="fixed inset-0 bg-slate-950/90 backdrop-blur-md flex items-center justify-center z-50 p-4 overflow-y-auto">
         <div class="bg-white/95 p-6 sm:p-8 rounded-3xl shadow-2xl w-full max-w-md border-4 border-amber-400 relative overflow-hidden my-auto">
             <div class="text-center mb-6">
-                <div class="bg-gradient-to-r from-amber-500 to-orange-500 text-white w-16 h-16 sm:w-20 sm:h-20 rounded-2xl flex items-center justify-center mx-auto mb-3 text-3xl sm:text-4xl shadow-lg animate-bounce">
+                <div class="bg-gradient-to-r from-amber-500 to-orange-500 text-white w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-3 text-3xl shadow-lg animate-bounce">
                     <i class="fa-solid fa-dice-one"></i>
                 </div>
-                <h2 class="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">明星三缺一 邀請碼對決</h2>
+                <h2 class="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">明星三缺一 玩家登入</h2>
             </div>
             <form id="login-form" class="space-y-4">
-                <div id="nickname-field" class="hidden">
-                    <label class="block text-xs font-black text-slate-700 mb-1 uppercase">玩家綽號 (Nickname)</label>
-                    <input type="text" id="reg-nickname" class="w-full px-4 py-3 border-2 border-slate-300 rounded-2xl font-bold text-slate-900 text-sm" placeholder="例如：賭神高進">
+                <div id="nickname-field" class="hidden space-y-3">
+                    <div>
+                        <label class="block text-xs font-black text-slate-700 mb-1 uppercase">玩家綽號</label>
+                        <input type="text" id="reg-nickname" class="w-full px-4 py-3 border-2 border-slate-300 rounded-2xl font-bold text-slate-900 text-sm" placeholder="例如：賭神高進">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-black text-slate-700 mb-2 uppercase">選擇您的專屬頭像 (點擊選取)</label>
+                        <div class="grid grid-cols-5 gap-2 max-h-36 overflow-y-auto p-2 bg-slate-100 rounded-2xl border" id="reg-avatar-grid"></div>
+                    </div>
                 </div>
                 <div>
                     <label class="block text-xs font-black text-slate-700 mb-1 uppercase">電子郵件 (Email)</label>
@@ -118,7 +112,7 @@
                 </button>
                 <div class="text-center pt-2">
                     <button type="button" onclick="toggleAuthMode()" id="auth-toggle-btn" class="text-xs font-bold text-teal-700 hover:underline">
-                        沒有帳號？點此註冊新帳號與綽號
+                        沒有帳號？點此註冊新帳號與頭像
                     </button>
                 </div>
             </form>
@@ -129,8 +123,10 @@
     <div id="app-screen" class="hidden flex flex-col w-screen h-screen bg-slate-900/95 overflow-hidden">
         <header class="bg-slate-950 px-4 py-2 flex justify-between items-center border-b-2 border-amber-500/40 text-white shrink-0 z-40">
             <div class="flex items-center space-x-2">
-                <div class="bg-amber-500 text-slate-950 w-8 h-8 rounded-xl flex items-center justify-center font-black">麻</div>
-                <h1 class="text-sm sm:text-base font-black text-amber-400">玩家: <span id="header-nickname" class="text-white">載入中...</span></h1>
+                <div onclick="openAvatarModal()" class="w-9 h-9 rounded-full border-2 border-amber-400 overflow-hidden cursor-pointer shadow hover:scale-110 transition">
+                    <img id="header-avatar-img" src="" class="w-full h-full object-cover">
+                </div>
+                <h1 class="text-sm sm:text-base font-black text-amber-400"><span id="header-nickname">載入中...</span> (點頭像換圖)</h1>
             </div>
             <div class="flex items-center space-x-3 text-xs font-bold">
                 <div class="text-amber-300"><i class="fa-solid fa-coins mr-1 text-yellow-400"></i><span id="header-chips" class="text-white font-black">100,000</span></div>
@@ -138,7 +134,7 @@
             </div>
         </header>
 
-        <!-- 模式選擇選單 -->
+        <!-- 模式選擇 -->
         <div id="lobby-mode-view" class="flex-1 p-6 flex flex-col items-center justify-center space-y-6 overflow-y-auto">
             <h2 class="text-3xl font-black text-amber-400">請選擇遊戲模式</h2>
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 w-full max-w-2xl">
@@ -153,7 +149,7 @@
             </div>
         </div>
 
-        <!-- 底台選擇畫面 (更新為5種底台) -->
+        <!-- 底台選擇畫面 -->
         <div id="ai-table-view" class="hidden flex-1 p-6 flex flex-col items-center justify-center space-y-4 overflow-y-auto">
             <div class="text-center">
                 <h2 class="text-3xl font-black text-amber-400">選擇對戰底台</h2>
@@ -168,48 +164,39 @@
             </div>
         </div>
 
-        <!-- 邀請碼線上房間大廳 -->
+        <!-- 線上邀請碼房大廳 -->
         <div id="online-room-view" class="hidden flex-1 p-6 flex flex-col items-center justify-center space-y-4 overflow-y-auto max-w-md mx-auto w-full">
             <div class="text-center mb-2">
-                <h2 class="text-2xl font-black text-amber-400">四人線上邀請碼對戰</h2>
+                <h2 class="text-2xl font-black text-amber-400">四人線上邀請碼對決</h2>
                 <button onclick="backToModeSelect()" class="text-xs text-slate-300 underline mt-1">⬅️ 返回模式選擇</button>
             </div>
-
-            <!-- 未加入房間前的選項 -->
             <div id="room-action-panel" class="w-full space-y-3">
                 <button onclick="createRoom()" class="w-full bg-gradient-to-r from-amber-500 to-orange-500 text-slate-950 font-black py-4 rounded-2xl text-lg shadow-lg">
                     <i class="fa-solid fa-plus-circle mr-2"></i>建立新房間 (取得邀請碼)
                 </button>
                 <div class="flex space-x-2">
-                    <input type="text" id="join-code-input" placeholder="輸入 6 位數邀請碼" class="flex-1 px-4 py-3 rounded-2xl bg-slate-950 text-white font-black border-2 border-slate-700 focus:border-amber-400 text-center uppercase tracking-widest text-lg">
-                    <button onclick="joinRoomByCode()" class="bg-purple-600 hover:bg-purple-700 text-white font-black px-5 py-3 rounded-2xl text-base shadow">加入</button>
+                    <input type="text" id="join-code-input" placeholder="輸入 6 位數邀請碼" class="flex-1 px-4 py-3 rounded-2xl bg-slate-950 text-white font-black border-2 border-slate-700 text-center uppercase tracking-widest text-lg">
+                    <button onclick="joinRoomByCode()" class="bg-purple-600 text-white font-black px-5 py-3 rounded-2xl text-base shadow">加入</button>
                 </div>
             </div>
-
-            <!-- 已在房間內等待畫面 -->
             <div id="room-waiting-panel" class="hidden w-full bg-slate-950 p-6 rounded-3xl border-2 border-amber-500/50 space-y-4 text-center">
                 <div class="text-sm text-slate-400 font-bold">本局邀請碼</div>
-                <div id="display-invite-code" class="text-4xl font-black text-amber-400 tracking-widest bg-slate-900 py-3 rounded-2xl border border-amber-500/30">------</div>
-                <p class="text-xs text-slate-300">請將邀請碼告訴其他三位玩家，滿 4 人即可開局</p>
-                
+                <div id="display-invite-code" class="text-4xl font-black text-amber-400 tracking-widest bg-slate-900 py-3 rounded-2xl border">------</div>
                 <div class="text-left bg-slate-900 p-4 rounded-2xl">
                     <h3 class="text-amber-300 text-xs font-black mb-2">目前房間玩家 (<span id="room-player-count">0</span>/4)：</h3>
                     <div id="room-players-list" class="space-y-1 text-xs text-white">載入中...</div>
                 </div>
-
-                <button id="start-online-btn" onclick="startOnlineGame()" class="hidden w-full bg-gradient-to-r from-red-600 to-orange-600 text-white font-black py-3 rounded-2xl text-base shadow-lg animate-pulse">
-                    房主開始對局！
-                </button>
+                <button id="start-online-btn" onclick="startOnlineGame()" class="hidden w-full bg-gradient-to-r from-red-600 to-orange-600 text-white font-black py-3 rounded-2xl text-base shadow-lg animate-pulse">房主開始對局！</button>
                 <button onclick="leaveRoom()" class="w-full bg-slate-800 text-slate-300 font-bold py-2 rounded-xl text-xs">離開房間</button>
             </div>
         </div>
 
-        <!-- 滿版 4 人麻將對戰桌介面 -->
+        <!-- 麻將對戰桌介面 -->
         <div id="game-view" class="hidden flex-1 relative p-1 sm:p-3 flex flex-col justify-between select-none overflow-hidden bg-emerald-800">
-            <!-- 上方對手 -->
+            <!-- 上方對家 -->
             <div class="flex flex-col items-center z-20 mt-1">
                 <div id="avatar-box-2" class="flex items-center space-x-3 bg-slate-900/95 px-4 py-1.5 rounded-3xl border-3 border-amber-400 shadow-2xl relative">
-                    <div class="avatar-box-giant"><img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80" alt="對家"></div>
+                    <div class="avatar-box-giant"><img id="avatar-img-2" src="" class="w-full h-full object-cover"></div>
                     <div class="text-sm font-black text-amber-300">
                         <div id="player-name-2" class="text-xs sm:text-lg text-white">對家</div>
                         <div id="arrow-2" class="hidden bg-red-600 text-white px-2 py-0.5 rounded text-[10px]">⬇️ 換伊</div>
@@ -218,10 +205,10 @@
                 <div id="ai-top-tiles" class="flex space-x-1 mt-1"></div>
             </div>
 
-            <!-- 左右對手與中央牌河 -->
+            <!-- 左右對手與牌河 -->
             <div class="flex justify-between items-center my-auto px-1 z-10">
                 <div id="avatar-box-3" class="flex flex-col items-center bg-slate-900/95 p-2 rounded-2xl border-3 border-amber-400 shadow-2xl">
-                    <div class="avatar-box-giant mb-1"><img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=300&q=80" alt="上家"></div>
+                    <div class="avatar-box-giant mb-1"><img id="avatar-img-3" src="" class="w-full h-full object-cover"></div>
                     <span id="player-name-3" class="text-white text-xs font-black">上家</span>
                     <div id="arrow-3" class="hidden bg-red-600 text-white px-1 rounded text-[10px]">➡️</div>
                 </div>
@@ -238,19 +225,21 @@
                 </div>
 
                 <div id="avatar-box-1" class="flex flex-col items-center bg-slate-900/95 p-2 rounded-2xl border-3 border-amber-400 shadow-2xl">
-                    <div class="avatar-box-giant mb-1"><img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=300&q=80" alt="下家"></div>
+                    <div class="avatar-box-giant mb-1"><img id="avatar-img-1" src="" class="w-full h-full object-cover"></div>
                     <span id="player-name-1" class="text-white text-xs font-black">下家</span>
                     <div id="arrow-1" class="hidden bg-red-600 text-white px-1 rounded text-[10px]">⬅️</div>
                 </div>
             </div>
 
-            <!-- 吃碰槓動作按鈕區 -->
+            <!-- 動作按鈕 -->
             <div id="action-buttons-container" class="absolute bottom-36 left-1/2 transform -translate-x-1/2 flex space-x-2 z-30"></div>
 
-            <!-- 下方玩家手牌區 -->
+            <!-- 下方玩家手牌 -->
             <div id="avatar-box-0" class="p-2 rounded-2xl shadow-2xl z-20 relative flex flex-col sm:flex-row items-center justify-between border-2 border-amber-500/50 bg-slate-950/95 w-full gap-2">
                 <div class="flex items-center space-x-2 bg-slate-900 px-3 py-1.5 rounded-xl border border-amber-400">
-                    <div class="avatar-player-box"><img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=300&q=80" alt="玩家"></div>
+                    <div class="avatar-player-box" onclick="openAvatarModal()" title="點擊更換頭像">
+                        <img id="player-avatar-display" src="" class="w-full h-full object-cover">
+                    </div>
                     <div>
                         <div class="text-amber-300 text-xs font-black"><span id="player-nickname-display" class="text-white">玩家</span></div>
                         <div id="arrow-0" class="hidden bg-red-600 text-white px-1.5 py-0.5 rounded text-[10px] animate-pulse">⬆️ 換你出牌</div>
@@ -266,11 +255,22 @@
         </div>
     </div>
 
+    <!-- 20種頭像選擇 Modal -->
+    <div id="avatar-modal" class="fixed inset-0 bg-slate-950/80 hidden items-center justify-center z-50 p-4 backdrop-blur-sm">
+        <div class="bg-white p-6 rounded-3xl shadow-2xl w-full max-w-lg border-4 border-amber-400">
+            <div class="flex justify-between items-center mb-4 border-b pb-3">
+                <h3 class="text-xl font-black text-slate-900"><i class="fa-solid fa-user-gear text-amber-500 mr-2"></i>選擇您的 20 種特色頭像</h3>
+                <button onclick="closeAvatarModal()" class="text-slate-400 hover:text-slate-700 font-black text-lg">✕</button>
+            </div>
+            <div class="grid grid-cols-5 gap-3 max-h-96 overflow-y-auto p-2" id="modal-avatar-grid"></div>
+        </div>
+    </div>
+
     <!-- Firebase SDKs & 遊戲核心 -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-        import { getDatabase, ref, set, get, update, onValue, remove } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+        import { getDatabase, ref, set, get, update, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
         import MahjongEngine from "./script.js";
 
         const firebaseConfig = {
@@ -297,7 +297,79 @@
         let unsubscribeRoom = null;
         let hasDrawnThisTurn = false;
         let currentTurnPlayer = 0;
-        let userData = { nickname: "麻將新手", chips: 100000 };
+        
+        let userData = {
+            nickname: "麻將新手",
+            chips: 100000,
+            avatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=300&q=80"
+        };
+
+        // 20 種精選玩家頭像組合
+        const AVATAR_LIST = [
+            "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=300&q=80",
+            "https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?auto=format&fit=crop&w=300&q=80",
+            "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80",
+            "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=300&q=80",
+            "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=300&q=80",
+            "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=300&q=80",
+            "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=300&q=80",
+            "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=300&q=80",
+            "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=300&q=80",
+            "https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?auto=format&fit=crop&w=300&q=80",
+            "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=300&q=80",
+            "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=300&q=80",
+            "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=300&q=80",
+            "https://images.unsplash.com/photo-1501196354995-cbb51c65aaea?auto=format&fit=crop&w=300&q=80",
+            "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=300&q=80",
+            "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=300&q=80",
+            "https://images.unsplash.com/photo-1517423440428-a5a00ad493e8?auto=format&fit=crop&w=300&q=80",
+            "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?auto=format&fit=crop&w=300&q=80",
+            "https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?auto=format&fit=crop&w=300&q=80",
+            "https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=300&q=80"
+        ];
+        let selectedAvatarUrl = AVATAR_LIST[0];
+
+        // 初始化渲染 20 種頭像選項
+        function renderAvatarSelectors() {
+            const regGrid = document.getElementById("reg-avatar-grid");
+            const modalGrid = document.getElementById("modal-avatar-grid");
+            
+            const html = AVATAR_LIST.map((url, idx) => `
+                <div class="w-12 h-12 rounded-full border-3 border-slate-300 overflow-hidden cursor-pointer hover:border-amber-500 hover:scale-105 transition avatar-option" data-url="${url}" onclick="selectAvatar('${url}')">
+                    <img src="${url}" class="w-full h-full object-cover">
+                </div>
+            `).join('');
+
+            regGrid.innerHTML = html;
+            modalGrid.innerHTML = html;
+        }
+        renderAvatarSelectors();
+
+        window.selectAvatar = function(url) {
+            selectedAvatarUrl = url;
+            document.querySelectorAll('.avatar-option').forEach(el => {
+                if (el.getAttribute('data-url') === url) {
+                    el.classList.add('border-red-500', 'scale-110', 'ring-4', 'ring-amber-300');
+                } else {
+                    el.classList.remove('border-red-500', 'scale-110', 'ring-4', 'ring-amber-300');
+                }
+            });
+        };
+
+        window.openAvatarModal = function() {
+            document.getElementById("avatar-modal").classList.remove("hidden");
+            document.getElementById("avatar-modal").classList.add("flex");
+        };
+
+        window.closeAvatarModal = async function() {
+            document.getElementById("avatar-modal").classList.remove("flex");
+            document.getElementById("avatar-modal").classList.add("hidden");
+            userData.avatar = selectedAvatarUrl;
+            updateUI();
+            if (currentUser) {
+                await update(ref(database, `users/${currentUser.uid}`), { avatar: userData.avatar });
+            }
+        };
 
         window.toggleAuthMode = function() {
             isRegisterMode = !isRegisterMode;
@@ -315,7 +387,11 @@
                 if (isRegisterMode) {
                     const nick = document.getElementById("reg-nickname").value.trim() || "玩家";
                     const cred = await createUserWithEmailAndPassword(auth, email, pass);
-                    await set(ref(database, `users/${cred.user.uid}`), { nickname: nick, chips: 100000 });
+                    await set(ref(database, `users/${cred.user.uid}`), {
+                        nickname: nick,
+                        chips: 100000,
+                        avatar: selectedAvatarUrl
+                    });
                 } else {
                     await signInWithEmailAndPassword(auth, email, pass);
                 }
@@ -333,7 +409,10 @@
                 document.getElementById("login-screen").classList.add("hidden");
                 document.getElementById("app-screen").classList.remove("hidden");
                 const snap = await get(ref(database, `users/${user.uid}`));
-                if (snap.exists()) userData = snap.val();
+                if (snap.exists()) {
+                    userData = snap.val();
+                    if (!userData.avatar) userData.avatar = AVATAR_LIST[0];
+                }
                 updateUI();
             } else {
                 currentUser = null;
@@ -347,6 +426,8 @@
             document.getElementById("header-nickname").textContent = userData.nickname;
             document.getElementById("player-nickname-display").textContent = userData.nickname;
             document.getElementById("header-chips").textContent = (userData.chips || 100000).toLocaleString();
+            document.getElementById("header-avatar-img").src = userData.avatar;
+            document.getElementById("player-avatar-display").src = userData.avatar;
         }
 
         window.openTableSelect = function(mode) {
@@ -371,14 +452,17 @@
             document.getElementById("lobby-mode-view").classList.remove("hidden");
         };
 
-        // --- 啟動對戰桌 (支援 5 種底台設定) ---
         window.startTable = function(base, tai) {
             document.getElementById("ai-table-view").classList.add("hidden");
             document.getElementById("game-view").classList.remove("hidden");
             document.getElementById("table-stakes-info").textContent = `對戰底台: ${base}/${tai}`;
+            
             document.getElementById("player-name-1").textContent = "下家大飛";
             document.getElementById("player-name-2").textContent = "對家阿強";
             document.getElementById("player-name-3").textContent = "上家小莉";
+            document.getElementById("avatar-img-1").src = AVATAR_LIST[4];
+            document.getElementById("avatar-img-2").src = AVATAR_LIST[2];
+            document.getElementById("avatar-img-3").src = AVATAR_LIST[3];
 
             mahjongGame.deal();
             hasDrawnThisTurn = false;
@@ -386,44 +470,32 @@
             renderGameTable();
         };
 
-        // --- 邀請碼房間邏輯 ---
         window.createRoom = async function() {
             const code = Math.floor(100000 + Math.random() * 900000).toString();
             currentRoomCode = code;
             const roomRef = ref(database, `rooms/${code}`);
-            
             const newRoom = {
                 status: 'waiting',
                 host: currentUser.uid,
                 players: {}
             };
-            newRoom.players[currentUser.uid] = { nickname: userData.nickname, seat: 0 };
+            newRoom.players[currentUser.uid] = { nickname: userData.nickname, avatar: userData.avatar, seat: 0 };
             await set(roomRef, newRoom);
-            
             enterWaitingRoom(code);
         };
 
         window.joinRoomByCode = async function() {
             const code = document.getElementById("join-code-input").value.trim();
-            if (code.length !== 6) {
-                alert("請輸入正確的 6 位數邀請碼！");
-                return;
-            }
+            if (code.length !== 6) { alert("請輸入正確 6 位數邀請碼！"); return; }
             const roomRef = ref(database, `rooms/${code}`);
             const snap = await get(roomRef);
-            if (!snap.exists()) {
-                alert("找不到此房間，請確認邀請碼是否正確！");
-                return;
-            }
+            if (!snap.exists()) { alert("找不到此房間！"); return; }
 
             const room = snap.val();
             const players = room.players || {};
             const existingSeats = Object.values(players).map(p => p.seat);
             
-            if (Object.keys(players).length >= 4 && !players[currentUser.uid]) {
-                alert("房間已滿（4人）！");
-                return;
-            }
+            if (Object.keys(players).length >= 4 && !players[currentUser.uid]) { alert("房間已滿！"); return; }
 
             currentRoomCode = code;
             if (!players[currentUser.uid]) {
@@ -431,10 +503,9 @@
                 for (let s = 0; s < 4; s++) {
                     if (!existingSeats.includes(s)) { assignedSeat = s; break; }
                 }
-                players[currentUser.uid] = { nickname: userData.nickname, seat: assignedSeat };
+                players[currentUser.uid] = { nickname: userData.nickname, avatar: userData.avatar, seat: assignedSeat };
                 await update(roomRef, { players });
             }
-
             enterWaitingRoom(code);
         };
 
@@ -453,7 +524,6 @@
                 if (!room) return;
                 roomData = room;
                 updateRoomUI();
-
                 if (room.status === 'playing' && room.gameState) {
                     syncOnlineGameState(room.gameState);
                 }
@@ -464,7 +534,12 @@
             if (!roomData || !roomData.players) return;
             const playersArr = Object.entries(roomData.players);
             document.getElementById("room-player-count").textContent = playersArr.length;
-            document.getElementById("room-players-list").innerHTML = playersArr.map(([uid, p]) => `<div>座位 ${p.seat + 1}: ${p.nickname} ${uid === currentUser.uid ? '(你自己)' : ''}</div>`).join('');
+            document.getElementById("room-players-list").innerHTML = playersArr.map(([uid, p]) => `
+                <div class="flex items-center space-x-2 py-1">
+                    <img src="${p.avatar}" class="w-6 h-6 rounded-full object-cover">
+                    <span>座位 ${p.seat + 1}: ${p.nickname} ${uid === currentUser.uid ? '(你自己)' : ''}</span>
+                </div>
+            `).join('');
             
             const isHost = roomData.host === currentUser.uid;
             const startBtn = document.getElementById("start-online-btn");
@@ -511,13 +586,13 @@
                 const relSeat = (p.seat - mySeatIndex + 4) % 4;
                 if (relSeat > 0) {
                     document.getElementById(`player-name-${relSeat}`).textContent = p.nickname;
+                    document.getElementById(`avatar-img-${relSeat}`).src = p.avatar;
                 }
             });
 
             renderGameTable();
         }
 
-        // --- 修正後的麻將圖示產生器 (正確對應筒、條、萬、字牌) ---
         function createTileHtml(code) {
             const num = code[0], type = code[1];
             if (type === 'm') {
@@ -526,20 +601,35 @@
             } else if (type === 'p') {
                 const n = parseInt(num);
                 let dotsHtml = '';
-                for (let i = 0; i < n; i++) {
-                    let dotColor = '';
-                    if (i % 3 === 1) dotColor = 'green';
-                    else if (i % 3 === 2) dotColor = 'blue';
-                    dotsHtml += `<div class="m-dot ${dotColor}"></div>`;
+                if (n === 1) {
+                    dotsHtml = `<div class="m-dot blue" style="width:16px;height:16px;border-radius:50%;border:3px solid #dc2626;background:#2563eb;"></div>`;
+                } else if (n === 2) {
+                    dotsHtml = `<div class="m-dot green"></div><div class="m-dot blue"></div>`;
+                } else if (n === 3) {
+                    dotsHtml = `<div class="m-dot green"></div><div class="m-dot"></div><div class="m-dot blue"></div>`;
+                } else if (n === 4) {
+                    dotsHtml = `<div class="m-dot green"></div><div class="m-dot green"></div><div class="m-dot blue"></div><div class="m-dot blue"></div>`;
+                } else if (n === 5) {
+                    dotsHtml = `<div class="m-dot green"></div><div class="m-dot green"></div><div class="m-dot"></div><div class="m-dot blue"></div><div class="m-dot blue"></div>`;
+                } else if (n === 6) {
+                    dotsHtml = `<div class="m-dot green"></div><div class="m-dot green"></div><div class="m-dot green"></div><div class="m-dot"></div><div class="m-dot"></div><div class="m-dot"></div>`;
+                } else if (n === 7) {
+                    dotsHtml = `<div class="m-dot green"></div><div class="m-dot green"></div><div class="m-dot green"></div><div class="m-dot"></div><div class="m-dot"></div><div class="m-dot"></div><div class="m-dot blue"></div>`;
+                } else if (n === 8) {
+                    dotsHtml = `<div class="m-dot blue"></div><div class="m-dot blue"></div><div class="m-dot blue"></div><div class="m-dot blue"></div><div class="m-dot green"></div><div class="m-dot green"></div><div class="m-dot green"></div><div class="m-dot green"></div>`;
+                } else if (n === 9) {
+                    dotsHtml = `<div class="m-dot green"></div><div class="m-dot green"></div><div class="m-dot green"></div><div class="m-dot"></div><div class="m-dot"></div><div class="m-dot"></div><div class="m-dot blue"></div><div class="m-dot blue"></div><div class="m-dot blue"></div>`;
                 }
-                return `<div class="mahjong-dot-container">${dotsHtml}</div><span class="tile-suit tile-blue" style="font-size:0.5rem; margin-top:1px;">${num}筒</span>`;
+                return `<div class="mahjong-dot-container">${dotsHtml}</div>`;
             } else if (type === 's') {
                 const n = parseInt(num);
                 let sticksHtml = '';
-                for (let i = 0; i < n; i++) {
-                    sticksHtml += `<div class="m-stick"></div>`;
+                if (n === 1) {
+                    return `<div class="mahjong-bamboo-container" style="justify-content:center;"><div class="m-stick red" style="width:10px;height:32px;"></div></div>`;
+                } else {
+                    for (let i = 0; i < n; i++) sticksHtml += `<div class="m-stick"></div>`;
                 }
-                return `<div class="mahjong-bamboo-container">${sticksHtml}</div><span class="tile-suit tile-green" style="font-size:0.5rem; margin-top:1px;">${num}條</span>`;
+                return `<div class="mahjong-bamboo-container">${sticksHtml}</div>`;
             } else if (type === 'z') {
                 if (num === '7') return `<div class="mahjong-white-board"></div>`;
                 const winds = ['東', '南', '西', '北', '中', '發', '白'];
