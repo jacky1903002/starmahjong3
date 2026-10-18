@@ -37,20 +37,21 @@
 
         .mahjong-dot-container {
             width: 32px; height: 38px; background: #eff6ff; border: 2px solid #3b82f6; border-radius: 6px;
-            display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 1.5px; padding: 2px;
+            display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 2px; padding: 3px;
         }
-        @media (min-width: 640px) { .mahjong-dot-container { width: 38px; height: 44px; gap: 2px; } }
-        .m-dot { width: 7px; height: 7px; border-radius: 50%; background: #dc2626; }
+        @media (min-width: 640px) { .mahjong-dot-container { width: 38px; height: 44px; gap: 2.5px; } }
+        .m-dot { width: 7px; height: 7px; border-radius: 50%; background: #dc2626; box-shadow: 0 1px 2px rgba(0,0,0,0.2); }
         @media (min-width: 640px) { .m-dot { width: 9px; height: 9px; } }
-        .m-dot.green { background: #16a34a; } .m-dot.blue { background: #2563eb; }
+        .m-dot.green { background: #16a34a; } 
+        .m-dot.blue { background: #2563eb; }
 
         .mahjong-bamboo-container {
             width: 32px; height: 38px; background: #f0fdf4; border: 2px solid #22c55e; border-radius: 6px;
-            display: flex; flex-direction: row; align-items: center; justify-content: center; gap: 1.5px; padding: 2px;
+            display: flex; flex-direction: row; align-items: center; justify-content: center; gap: 2px; padding: 3px;
         }
-        @media (min-width: 640px) { .mahjong-bamboo-container { width: 38px; height: 44px; gap: 2px; } }
-        .m-stick { width: 3.5px; height: 28px; background: #16a34a; border-radius: 2px; }
-        @media (min-width: 640px) { .m-stick { width: 4.5px; height: 34px; } }
+        @media (min-width: 640px) { .mahjong-bamboo-container { width: 38px; height: 44px; gap: 2.5px; } }
+        .m-stick { width: 4px; height: 26px; background: #16a34a; border-radius: 2px; box-shadow: 0 1px 2px rgba(0,0,0,0.2); }
+        @media (min-width: 640px) { .m-stick { width: 5px; height: 32px; } }
 
         .mahjong-white-board {
             width: 28px; height: 38px; background: #ffffff; border: 2.5px solid #94a3b8; border-radius: 5px;
@@ -152,15 +153,18 @@
             </div>
         </div>
 
-        <!-- AI 底台選擇畫面 -->
-        <div id="ai-table-view" class="hidden flex-1 p-6 flex flex-col items-center justify-center space-y-6 overflow-y-auto">
+        <!-- 底台選擇畫面 (更新為5種底台) -->
+        <div id="ai-table-view" class="hidden flex-1 p-6 flex flex-col items-center justify-center space-y-4 overflow-y-auto">
             <div class="text-center">
-                <h2 class="text-3xl font-black text-amber-400">選擇電腦桌底台</h2>
+                <h2 class="text-3xl font-black text-amber-400">選擇對戰底台</h2>
                 <button onclick="backToModeSelect()" class="text-xs text-slate-300 underline mt-1">⬅️ 返回模式選擇</button>
             </div>
-            <div class="grid grid-cols-2 gap-4 w-full max-w-xl">
-                <button onclick="startAiTable(50, 20)" class="bg-teal-700 p-5 rounded-2xl border-2 border-teal-300 text-white font-black text-xl">新手桌 (50/20)</button>
-                <button onclick="startAiTable(100, 30)" class="bg-blue-700 p-5 rounded-2xl border-2 border-blue-300 text-white font-black text-xl">高手桌 (100/30)</button>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 w-full max-w-2xl">
+                <button onclick="startTable(50, 20)" class="bg-teal-700 p-4 rounded-2xl border-2 border-teal-300 text-white font-black text-lg">新手桌 (50/20)</button>
+                <button onclick="startTable(100, 30)" class="bg-blue-700 p-4 rounded-2xl border-2 border-blue-300 text-white font-black text-lg">高手桌 (100/30)</button>
+                <button onclick="startTable(200, 50)" class="bg-indigo-700 p-4 rounded-2xl border-2 border-indigo-300 text-white font-black text-lg">菁英桌 (200/50)</button>
+                <button onclick="startTable(500, 200)" class="bg-purple-700 p-4 rounded-2xl border-2 border-purple-300 text-white font-black text-lg">大亨桌 (500/200)</button>
+                <button onclick="startTable(1000, 300)" class="bg-amber-600 p-4 rounded-2xl border-2 border-amber-300 text-white font-black text-lg col-span-1 sm:col-span-2">至尊賭神桌 (1000/300)</button>
             </div>
         </div>
 
@@ -367,12 +371,11 @@
             document.getElementById("lobby-mode-view").classList.remove("hidden");
         };
 
-        // --- 電腦對戰模式 ---
-        window.startAiTable = function(base, tai) {
-            gameMode = 'ai';
+        // --- 啟動對戰桌 (支援 5 種底台設定) ---
+        window.startTable = function(base, tai) {
             document.getElementById("ai-table-view").classList.add("hidden");
             document.getElementById("game-view").classList.remove("hidden");
-            document.getElementById("table-stakes-info").textContent = `電腦桌: ${base}/${tai}`;
+            document.getElementById("table-stakes-info").textContent = `對戰底台: ${base}/${tai}`;
             document.getElementById("player-name-1").textContent = "下家大飛";
             document.getElementById("player-name-2").textContent = "對家阿強";
             document.getElementById("player-name-3").textContent = "上家小莉";
@@ -465,7 +468,7 @@
             
             const isHost = roomData.host === currentUser.uid;
             const startBtn = document.getElementById("start-online-btn");
-            if (isHost && playersArr.length >= 1) { // 測試時 1 人即可，正式可改 players.length === 4
+            if (isHost && playersArr.length >= 1) {
                 startBtn.classList.remove("hidden");
             } else {
                 startBtn.classList.add("hidden");
@@ -514,7 +517,40 @@
             renderGameTable();
         }
 
-        // --- 牌局與共用渲染 ---
+        // --- 修正後的麻將圖示產生器 (正確對應筒、條、萬、字牌) ---
+        function createTileHtml(code) {
+            const num = code[0], type = code[1];
+            if (type === 'm') {
+                const chineseNums = {'1':'一','2':'二','3':'三','4':'四','5':'五','6':'六','7':'七','8':'八','9':'九'};
+                return `<span class="tile-number tile-red">${chineseNums[num] || num}</span><span class="tile-suit tile-red">萬</span>`;
+            } else if (type === 'p') {
+                const n = parseInt(num);
+                let dotsHtml = '';
+                for (let i = 0; i < n; i++) {
+                    let dotColor = '';
+                    if (i % 3 === 1) dotColor = 'green';
+                    else if (i % 3 === 2) dotColor = 'blue';
+                    dotsHtml += `<div class="m-dot ${dotColor}"></div>`;
+                }
+                return `<div class="mahjong-dot-container">${dotsHtml}</div><span class="tile-suit tile-blue" style="font-size:0.5rem; margin-top:1px;">${num}筒</span>`;
+            } else if (type === 's') {
+                const n = parseInt(num);
+                let sticksHtml = '';
+                for (let i = 0; i < n; i++) {
+                    sticksHtml += `<div class="m-stick"></div>`;
+                }
+                return `<div class="mahjong-bamboo-container">${sticksHtml}</div><span class="tile-suit tile-green" style="font-size:0.5rem; margin-top:1px;">${num}條</span>`;
+            } else if (type === 'z') {
+                if (num === '7') return `<div class="mahjong-white-board"></div>`;
+                const winds = ['東', '南', '西', '北', '中', '發', '白'];
+                let colorClass = 'tile-dark';
+                if (num === '5') colorClass = 'tile-red';
+                else if (num === '6') colorClass = 'tile-green';
+                return `<span class="tile-number ${colorClass}">${winds[parseInt(num) - 1]}</span>`;
+            }
+            return `<span class="tile-number">${code}</span>`;
+        }
+
         function renderGameTable() {
             const container = document.getElementById("player-tiles");
             container.innerHTML = "";
@@ -533,23 +569,6 @@
             document.getElementById("tiles-left").textContent = mahjongGame.deck.length;
 
             updateTurnIndicator();
-        }
-
-        function createTileHtml(code) {
-            const num = code[0], type = code[1];
-            if (type === 'm') {
-                const chineseNums = {'1':'一','2':'二','3':'三','4':'四','5':'五','6':'六','7':'七','8':'八','9':'九'};
-                return `<span class="tile-number tile-red">${chineseNums[num] || num}</span><span class="tile-suit tile-red">萬</span>`;
-            } else if (type === 'p') {
-                return `<div class="mahjong-dot-container"><div class="m-dot"></div></div><span class="tile-suit tile-blue" style="font-size:0.55rem;">${num}筒</span>`;
-            } else if (type === 's') {
-                return `<div class="mahjong-bamboo-container"><div class="m-stick"></div></div><span class="tile-suit tile-green" style="font-size:0.55rem;">${num}條</span>`;
-            } else if (type === 'z') {
-                if (num === '7') return `<div class="mahjong-white-board"></div>`;
-                const winds = ['東', '南', '西', '北', '中', '發', '白'];
-                return `<span class="tile-number tile-dark">${winds[parseInt(num) - 1]}</span>`;
-            }
-            return `<span class="tile-number">${code}</span>`;
         }
 
         window.playerDrawAndPlay = function() {
@@ -593,7 +612,7 @@
             if (aiHand && aiHand.length > 0) {
                 const aiDisc = aiHand.pop();
                 mahjongGame.discards[aiIdx].push(aiDisc);
-                currentTurnPlayer = (aiIdx + 1) % 4;
+                currentTurnPlayer = (currentTurnPlayer + 1) % 4;
                 renderGameTable();
                 if (currentTurnPlayer !== 0) {
                     setTimeout(() => aiTurnAction(currentTurnPlayer), 1000);
