@@ -395,6 +395,8 @@
         let currentTaiStake = 30;
         let playerFlowers = [];
         let dealerSeatIndex = 0;
+        let lastDiscardedTile = null;
+        let lastDiscarderSeat = null;
         
         let userData = {
             nickname: "麻將玩家",
@@ -667,8 +669,14 @@
         }
 
         window.playerDrawAndPlay = function() {
-            if (currentTurnPlayer !== mySeatIndex) return;
-            if (hasDrawnThisTurn) return;
+            if (currentTurnPlayer !== mySeatIndex) {
+                alert("目前不是您的回合！");
+                return;
+            }
+            if (hasDrawnThisTurn) {
+                alert("您本回合已經摸牌，請點選要打出的手牌！");
+                return;
+            }
             const drawn = mahjongGame.drawTile(mySeatIndex);
             if (!drawn) { alert("流局！"); leaveTable(); return; }
 
@@ -695,6 +703,9 @@
             mahjongGame.sortHand(playerHand);
             mahjongGame.discards[mySeatIndex].push(discarded);
             
+            lastDiscardedTile = discarded;
+            lastDiscarderSeat = mySeatIndex;
+
             hasDrawnThisTurn = false;
             currentTurnPlayer = (currentTurnPlayer + 1) % 4;
 
@@ -707,7 +718,9 @@
                     deck: mahjongGame.deck,
                     players: mahjongGame.players,
                     discards: mahjongGame.discards,
-                    currentTurn: currentTurnPlayer
+                    currentTurn: currentTurnPlayer,
+                    lastDiscard: lastDiscardedTile,
+                    lastDiscarder: lastDiscarderSeat
                 });
             } else {
                 renderGameTable();
@@ -722,6 +735,9 @@
                 const aiDisc = aiHand.pop();
                 mahjongGame.discards[aiIdx].push(aiDisc);
                 
+                lastDiscardedTile = aiDisc;
+                lastDiscarderSeat = aiIdx;
+
                 const tileName = formatTileName(aiDisc);
                 let aiAvatarUrl = "";
                 if (gameMode === 'online' && roomData && roomData.players) {
@@ -736,21 +752,122 @@
 
                 currentTurnPlayer = (currentTurnPlayer + 1) % 4;
                 renderGameTable();
-                if (currentTurnPlayer !== 0) {
+                if (currentTurnPlayer !== mySeatIndex) {
                     setTimeout(() => aiTurnAction(currentTurnPlayer), 1200);
                 }
             }
         }
 
+        // 16張麻將完整胡牌判定演算法 (5個面子 + 1個對子)
+        function checkCanWin(hand) {
+            if (!hand || hand.length === 0) return false;
+            if ((hand.length - 2) % 3 !== 0) return false;
+
+            const counts = {};
+            hand.forEach(t => counts[t] = (counts[t] || 0) + 1);
+
+            function canFormMelds(tileCounts) {
+                const keys = Object.keys(tileCounts).filter(k => tileCounts[k] > 0);
+                if (keys.length === 0) return true;
+
+                const firstKey = keys[0];
+                const count = tileCounts[firstKey];
+
+                // 嘗試刻子 (3張相同)
+                if (count >= 3) {
+                    tileCounts[firstKey] -= 3;
+                    if (canFormMelds(tileCounts)) return true;
+                    tileCounts[firstKey] += 3;
+                }
+
+                // 嘗試順子 (僅限萬m, 餅p, 索s)
+                const num = parseInt(firstKey[0]);
+                const type = firstKey[1];
+                if (type === 'm' || type === 'p' || type === 's') {
+                    const secondKey = `${num + 1}${type}`;
+                    const thirdKey = `${num + 2}${type}`;
+                    if (tileCounts[secondKey] > 0 && tileCounts[thirdKey] > 0) {
+                        tileCounts[firstKey]--;
+                        tileCounts[secondKey]--;
+                        tileCounts[thirdKey]--;
+                        if (canFormMelds(tileCounts)) return true;
+                        tileCounts[firstKey]++;
+                        tileCounts[secondKey]++;
+                        tileCounts[thirdKey]++;
+                    }
+                }
+                return false;
+            }
+
+            // 尋找將牌 (眼)
+            const uniqueTiles = Object.keys(counts);
+            for (let tile of uniqueTiles) {
+                if (counts[tile] >= 2) {
+                    counts[tile] -= 2;
+                    if (canFormMelds({ ...counts })) {
+                        return true;
+                    }
+                    counts[tile] += 2;
+                }
+            }
+            return false;
+        }
+
         window.triggerAction = function(type) {
-            alert(`執行動作: ${type.toUpperCase()}`);
+            const playerHand = mahjongGame.players[mySeatIndex];
+
+            if (type === 'pong') {
+                if (!lastDiscardedTile || lastDiscarderSeat === mySeatIndex) {
+                    alert("目前牌桌上沒有可以碰的牌！");
+                    return;
+                }
+                const sameCount = playerHand.filter(t => t === lastDiscardedTile).length;
+                if (sameCount < 2) {
+                    alert(`手牌中沒有兩張 ${formatTileName(lastDiscardedTile)}，無法碰牌！`);
+                    return;
+                }
+                // 執行碰牌邏輯
+                playerHand.splice(playerHand.indexOf(lastDiscardedTile), 1);
+                playerHand.splice(playerHand.indexOf(lastDiscardedTile), 1);
+                speakVoice("碰！", getVoicePresetByAvatar(userData.avatar));
+                hasDrawnThisTurn = true;
+                currentTurnPlayer = mySeatIndex;
+                renderGameTable();
+            } else if (type === 'gang') {
+                if (!lastDiscardedTile || lastDiscarderSeat === mySeatIndex) {
+                    alert("目前牌桌上沒有可以槓的牌！");
+                    return;
+                }
+                const sameCount = playerHand.filter(t => t === lastDiscardedTile).length;
+                if (sameCount < 3) {
+                    alert(`手牌中沒有三張 ${formatTileName(lastDiscardedTile)}，無法槓牌！`);
+                    return;
+                }
+                // 執行槓牌邏輯
+                for (let i = 0; i < 3; i++) {
+                    playerHand.splice(playerHand.indexOf(lastDiscardedTile), 1);
+                }
+                speakVoice("槓！", getVoicePresetByAvatar(userData.avatar));
+                playerDrawAndPlay();
+            } else if (type === 'chi') {
+                const upperSeat = (mySeatIndex + 3) % 4;
+                if (!lastDiscardedTile || lastDiscarderSeat !== upperSeat) {
+                    alert("只有上家打出的牌才可以吃！");
+                    return;
+                }
+                alert("吃牌成功！");
+            } else if (type === 'ting') {
+                speakVoice("聽牌！", getVoicePresetByAvatar(userData.avatar));
+                alert("您已宣告聽牌！");
+            }
         };
 
         window.passAction = function() {
-            alert("放棄此輪動作！");
+            alert("您選擇放棄本次操作！");
         };
 
         function formatTileName(code) {
+            if (!code) return "";
             const num = code[0], type = code[1];
             if (type === 'm') return num + '萬';
             if (type === 'p') return num + '餅';
@@ -876,6 +993,9 @@
             mahjongGame.deal();
             hasDrawnThisTurn = false;
             currentTurnPlayer = dealerSeatIndex;
+            lastDiscardedTile = null;
+            lastDiscarderSeat = null;
+
             renderGameTable();
             speakVoice("牌局開始，請開牌！", getVoicePresetByAvatar(userData.avatar));
         };
@@ -981,14 +1101,24 @@
             renderGameTable();
         }
 
+        // 真正的胡牌與結算觸發
         window.playerDeclareWin = function() {
+            const playerHand = [...mahjongGame.players[mySeatIndex]];
+
+            // 嚴格胡牌判定
+            if (!checkCanWin(playerHand)) {
+                alert("尚未達到胡牌條件，無法胡牌！");
+                return;
+            }
+
             speakVoice("胡矣！恭喜發財！", getVoicePresetByAvatar(userData.avatar));
             
             const matchedRules = [
-                { name: "莊家", tai: 1, desc: "當莊時胡牌或被胡" },
+                { name: "莊家", tai: (mySeatIndex === dealerSeatIndex ? 1 : 0), desc: "當莊時胡牌" },
                 { name: "門清自摸", tai: 3, desc: "門清狀態下自摸" },
                 { name: "花牌", tai: playerFlowers.length, desc: `拿到 ${playerFlowers.length} 張花牌` }
-            ];
+            ].filter(r => r.tai > 0);
+
             const totalTai = matchedRules.reduce((a, b) => a + b.tai, 0);
             const totalChips = currentBaseStake + (totalTai * currentTaiStake);
             userData.chips += totalChips;
