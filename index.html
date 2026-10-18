@@ -35,7 +35,7 @@
         .tile-blue { color: #2563eb !important; }
         .tile-dark { color: #0f172a !important; }
 
-        /* 筒子面板與圖騰精細化 (確保內部完全不溢出) */
+        /* 筒子面板與圖騰精細化 */
         .mahjong-dot-container {
             width: 36px; height: 54px; background: #f8fafc; border: 2px solid #cbd5e1; border-radius: 6px;
             display: flex; flex-direction: column; align-items: center; justify-content: space-between; padding: 4px 2px;
@@ -406,7 +406,7 @@
         }
 
         // =========================================================================
-        // 嚴格對照標準圖解的排版邏輯（全面採用置中與安全內距，絕不溢出遮蔽）
+        // 嚴格對照標準圖解的排版邏輯（已修正一索寬度比例，防止變形）
         // =========================================================================
         function createTileHtml(code) {
             const num = code[0], type = code[1];
@@ -416,7 +416,7 @@
                 const chineseNums = {'1':'一','2':'二','3':'三','4':'四','5':'五','6':'六','7':'七','8':'八','9':'九'};
                 return `<span class="tile-number tile-blue">${chineseNums[num] || num}</span><span class="tile-suit tile-red">萬</span>`;
             } 
-            // 2. 筒子 (DOTS) - 安全排版，確保所有圓點在容器內完整顯示
+            // 2. 筒子 (DOTS)
             else if (type === 'p') {
                 const n = parseInt(num);
                 let dotsHtml = '';
@@ -441,11 +441,11 @@
                 }
                 return `<div class="mahjong-dot-container">${dotsHtml}</div>`;
             } 
-            // 3. 索子 (BAMBOO) - 安全排版
+            // 3. 索子 (BAMBOO) - 修正一索比例，確保呈現正確紅中鳥造型
             else if (type === 's') {
                 const n = parseInt(num);
                 if (n === 1) {
-                    return `<div class="mahjong-bamboo-container" style="justify-content:center;background:#fff1f2;"><div style="width:12px;height:22px;background:#dc2626;border-radius:4px;box-shadow:0 1px 3px rgba(0,0,0,0.3);display:flex;align-items:center;justify-content:center;margin:auto;"><div style="width:3px;height:10px;background:#ffffff;border-radius:2px;"></div></div></div>`;
+                    return `<div class="mahjong-bamboo-container" style="justify-content:center;background:#fff1f2;"><div style="width:16px;height:24px;background:#dc2626;border-radius:4px;box-shadow:0 1px 3px rgba(0,0,0,0.3);display:flex;align-items:center;justify-content:center;margin:auto;"><div style="width:4px;height:14px;background:#ffffff;border-radius:2px;"></div></div></div>`;
                 } else if (n === 2) {
                     return `<div class="mahjong-bamboo-container" style="justify-content:space-around;"><div class="m-stick"></div><div class="m-stick"></div></div>`;
                 } else if (n === 3) {
