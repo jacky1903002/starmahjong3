@@ -9,10 +9,10 @@
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&family=M+PLUS+Rounded+1c:wght@700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&family=M+PLUS+Rounded+1c:wght@700;900&family=Noto+Serif+TC:wght@900&display=swap" rel="stylesheet">
     <style>
         .mahjong-tile-real {
-            width: 52px; height: 82px;
+            width: 50px; height: 80px;
             background: linear-gradient(135deg, #ffffff 0%, #fffbeb 50%, #fef3c7 100%);
             border: 3px solid #d97706; border-bottom: 6px solid #b45309; border-radius: 10px;
             box-shadow: 0 4px 10px rgba(0,0,0,0.4), inset 0 2px 3px rgba(255,255,255,0.9);
@@ -21,60 +21,34 @@
             margin: 0 1px; cursor: pointer; flex-shrink: 0;
         }
         @media (min-width: 640px) {
-            .mahjong-tile-real { width: 64px; height: 100px; border: 3.5px solid #f59e0b; border-bottom: 7px solid #d97706; border-radius: 12px; margin: 0 2px; }
+            .mahjong-tile-real { width: 62px; height: 98px; border: 3.5px solid #f59e0b; border-bottom: 7px solid #d97706; border-radius: 12px; margin: 0 2px; }
         }
         .mahjong-tile-real:hover, .mahjong-tile-real:active {
             transform: translateY(-8px) scale(1.05); box-shadow: 0 12px 20px rgba(245, 158, 11, 0.7); border-color: #fbbf24;
         }
-        .tile-number { font-size: 1.5rem; font-weight: 900; line-height: 1.1; }
-        @media (min-width: 640px) { .tile-number { font-size: 1.9rem; } }
-        .tile-suit { font-size: 0.85rem; font-weight: 900; margin-top: 1px; }
-        @media (min-width: 640px) { .tile-suit { font-size: 1rem; } }
         .tile-red { color: #dc2626 !important; }
         .tile-green { color: #16a34a !important; }
         .tile-blue { color: #2563eb !important; }
         .tile-dark { color: #0f172a !important; }
 
-        /* 筒子面板與圖騰精細化 */
-        .mahjong-dot-container {
-            width: 36px; height: 54px; background: #f8fafc; border: 2px solid #cbd5e1; border-radius: 6px;
-            display: flex; flex-direction: column; align-items: center; justify-content: space-between; padding: 4px 2px;
-            box-shadow: inset 0 1px 3px rgba(0,0,0,0.1); box-sizing: border-box; overflow: hidden;
+        .mahjong-panel-box {
+            width: 35px; height: 52px; background: #fffcf8; border: 2px solid #fed7aa; border-radius: 6px;
+            display: flex; flex-direction: column; align-items: center; justify-content: space-between; padding: 2px 1px;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.08); box-sizing: border-box; overflow: hidden;
         }
-        @media (min-width: 640px) { .mahjong-dot-container { width: 44px; height: 66px; padding: 5px 3px; } }
-        .m-dot { width: 7px; height: 7px; border-radius: 50%; background: #dc2626; box-shadow: 0 1px 2px rgba(0,0,0,0.2); flex-shrink: 0; }
-        @media (min-width: 640px) { .m-dot { width: 9px; height: 9px; } }
-        .m-dot.green { background: #16a34a; } 
-        .m-dot.blue { background: #2563eb; }
-
-        /* 條子面板與竹節精細化 */
-        .mahjong-bamboo-container {
-            width: 36px; height: 54px; background: #f0fdf4; border: 2px solid #bbf7d0; border-radius: 6px;
-            display: flex; flex-direction: column; align-items: center; justify-content: space-between; padding: 4px 2px;
-            box-shadow: inset 0 1px 3px rgba(0,0,0,0.1); box-sizing: border-box; overflow: hidden;
-        }
-        @media (min-width: 640px) { .mahjong-bamboo-container { width: 44px; height: 66px; padding: 5px 3px; } }
-        .m-stick { width: 5px; height: 11px; background: #16a34a; border-radius: 2px; box-shadow: 0 1px 2px rgba(0,0,0,0.2); flex-shrink: 0; }
-        @media (min-width: 640px) { .m-stick { width: 6px; height: 14px; } }
-        .m-stick.red { background: #dc2626; }
-        .m-stick.blue { background: #2563eb; }
-
-        .mahjong-white-board {
-            width: 30px; height: 46px; background: #ffffff; border: 2.5px solid #2563eb; border-radius: 6px;
-        }
-        @media (min-width: 640px) { .mahjong-white-board { width: 38px; height: 56px; } }
+        @media (min-width: 640px) { .mahjong-panel-box { width: 42px; height: 64px; padding: 3px 2px; } }
 
         .avatar-box-giant {
             width: 65px; height: 65px; border-radius: 50%; border: 3px solid #f59e0b;
             box-shadow: 0 0 15px rgba(245, 158, 11, 0.8); overflow: hidden; background-color: #1e293b; flex-shrink: 0;
         }
-        @media (min-width: 640px) { .avatar-box-giant { width: 100px; height: 100px; border: 4px solid #f59e0b; } }
+        @media (min-width: 640px) { .avatar-box-giant { width: 95px; height: 95px; border: 4px solid #f59e0b; } }
         .avatar-box-giant img { width: 100%; height: 100%; object-fit: cover; object-position: center top; transform: scale(1.35); }
 
         .avatar-player-box {
             width: 45px; height: 45px; border-radius: 50%; border: 3px solid #10b981; overflow: hidden; flex-shrink: 0; cursor: pointer;
         }
-        @media (min-width: 640px) { .avatar-player-box { width: 70px; height: 70px; } }
+        @media (min-width: 640px) { .avatar-player-box { width: 65px; height: 65px; } }
         .avatar-player-box img { width: 100%; height: 100%; object-fit: cover; object-position: center top; transform: scale(1.35); }
 
         .turn-active-glow {
@@ -238,7 +212,7 @@
                         <span>剩牌: <span id="tiles-left" class="text-white">56</span>張</span>
                     </div>
                     <div class="text-sm sm:text-lg font-black text-amber-200 my-0.5 animate-pulse" id="game-status-text">牌局開始！</div>
-                    <div class="w-full bg-slate-900/90 h-32 rounded-xl p-2 border border-amber-500/40 flex flex-wrap gap-1.5 justify-center items-start overflow-y-auto" id="discards-river">
+                    <div class="w-full bg-slate-900/90 h-28 rounded-xl p-2 border border-amber-500/40 flex flex-wrap gap-1.5 justify-center items-start overflow-y-auto" id="discards-river">
                         <span class="text-[11px] text-slate-400">尚無打出之牌</span>
                     </div>
                 </div>
@@ -250,8 +224,10 @@
                 </div>
             </div>
 
-            <!-- 動作按鈕 -->
-            <div id="action-buttons-container" class="absolute bottom-36 left-1/2 transform -translate-x-1/2 flex space-x-2 z-30"></div>
+            <!-- 花牌展示區 -->
+            <div id="flower-area" class="flex items-center justify-center space-x-2 bg-slate-950/70 py-1 px-3 rounded-xl border border-amber-500/30 mx-auto max-w-2xl text-xs text-amber-300 font-bold z-20">
+                <span>🌸 補花區：</span><div id="flower-tiles-list" class="flex space-x-1">無</div>
+            </div>
 
             <!-- 下方玩家手牌 -->
             <div id="avatar-box-0" class="p-2 rounded-2xl shadow-2xl z-20 relative flex flex-col sm:flex-row items-center justify-between border-2 border-amber-500/50 bg-slate-950/95 w-full gap-2">
@@ -271,6 +247,26 @@
                     <button onclick="leaveTable()" class="bg-slate-800 text-slate-300 text-xs font-black px-3 py-2 rounded-xl">大廳</button>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <!-- 胡牌結算彈跳 Modal -->
+    <div id="win-modal" class="fixed inset-0 bg-slate-950/85 hidden items-center justify-center z-50 p-4 backdrop-blur-md">
+        <div class="bg-white p-6 sm:p-8 rounded-3xl shadow-2xl w-full max-w-md border-4 border-amber-400 text-center space-y-4">
+            <div class="w-20 h-20 bg-gradient-to-r from-red-600 to-orange-500 text-white rounded-3xl flex items-center justify-center mx-auto text-4xl shadow-lg animate-bounce">
+                <i class="fa-solid fa-trophy"></i>
+            </div>
+            <h2 class="text-3xl font-black text-slate-900 tracking-tight">恭喜胡牌！</h2>
+            <div class="bg-amber-50 p-4 rounded-2xl border-2 border-amber-200 space-y-2 text-sm font-bold text-slate-800 text-left">
+                <div class="flex justify-between"><span>胡牌牌型：</span><span class="text-red-600 font-black" id="win-type-text">平胡 / 門清</span></div>
+                <div class="flex justify-between"><span>台數計算：</span><span class="text-blue-600 font-black" id="win-tai-text">3 台</span></div>
+                <div class="flex justify-between"><span>底台設定：</span><span id="win-stake-text">100 / 30</span></div>
+                <hr class="border-amber-200">
+                <div class="flex justify-between text-base"><span>總贏得金額：</span><span class="text-emerald-600 font-black text-lg" id="win-total-chips">+ $12,500</span></div>
+            </div>
+            <button onclick="closeWinModal()" class="w-full bg-gradient-to-r from-amber-500 to-orange-500 text-white font-black py-3.5 rounded-2xl shadow-lg text-base">
+                確認回到大廳
+            </button>
         </div>
     </div>
 
@@ -317,6 +313,9 @@
         let hasDrawnThisTurn = false;
         let currentTurnPlayer = 0;
         let currentVoicePreset = 'auto';
+        let currentBaseStake = 100;
+        let currentTaiStake = 30;
+        let playerFlowers = [];
         
         let userData = {
             nickname: "麻將新手",
@@ -406,97 +405,137 @@
         }
 
         // =========================================================================
-        // 嚴格對照標準圖解的排版邏輯（一索重構成傳統竹枝貓頭鷹圖騰）
+        // SVG 牌面產生器群組 (完全比照標準圖解)
         // =========================================================================
+        function createWanSvg(numStr) {
+            const numCharMap = {'1':'一','2':'二','3':'三','4':'四','5':'伍','6':'六','7':'七','8':'八','9':'九'};
+            const topChar = numCharMap[numStr] || numStr;
+            return `
+            <svg viewBox="0 0 100 140" style="width:100%;height:100%;max-height:52px;display:block;margin:auto;">
+                <text x="50" y="52" font-family="'Noto Serif TC', serif" font-weight="900" font-size="46" fill="#0f172a" text-anchor="middle" dominant-baseline="central">${topChar}</text>
+                <text x="50" y="104" font-family="'Noto Serif TC', serif" font-weight="900" font-size="42" fill="#dc2626" text-anchor="middle" dominant-baseline="central">萬</text>
+            </svg>`;
+        }
+
+        function createBambooStickSvg(color = '#16a34a') {
+            return `
+            <svg viewBox="0 0 16 36" style="width:11px;height:24px;flex-shrink:0;">
+                <rect x="3" y="1" width="10" height="34" rx="5" fill="${color}" stroke="#ffffff" stroke-width="1.5" />
+                <line x1="3" y1="12" x2="13" y2="12" stroke="#ffffff" stroke-width="1.5" />
+                <line x1="3" y1="24" x2="13" y2="24" stroke="#ffffff" stroke-width="1.5" />
+                <circle cx="8" cy="6" r="1.5" fill="#ffffff" />
+                <circle cx="8" cy="18" r="1.5" fill="#ffffff" />
+                <circle cx="8" cy="30" r="1.5" fill="#ffffff" />
+            </svg>`;
+        }
+
+        function createDotBallSvg(colorType = 'green') {
+            const mainColor = colorType === 'red' ? '#dc2626' : (colorType === 'blue' ? '#2563eb' : '#0f766e');
+            return `
+            <svg viewBox="0 0 100 100" style="width:12px;height:12px;flex-shrink:0;">
+                <circle cx="50" cy="50" r="46" fill="${mainColor}" stroke="#ffffff" stroke-width="4" />
+                <path d="M 50 10 Q 30 30 10 50 Q 30 70 50 90 Q 70 70 90 50 Q 70 30 50 10 Z" fill="#ffffff" />
+                <circle cx="50" cy="50" r="14" fill="${mainColor}" />
+                <circle cx="50" cy="50" r="5" fill="#ffffff" />
+            </svg>`;
+        }
+
+        function createOneDotSvg() {
+            return `
+            <svg viewBox="0 0 100 100" style="width:30px;height:30px;margin:auto;">
+                <circle cx="50" cy="50" r="48" fill="#0f766e" stroke="#ffffff" stroke-width="3" />
+                <circle cx="50" cy="50" r="38" fill="none" stroke="#ffffff" stroke-width="3" stroke-dasharray="6,3" />
+                <circle cx="50" cy="50" r="26" fill="#dc2626" stroke="#ffffff" stroke-width="3" />
+                <path d="M 50 24 L 50 76 M 24 50 L 76 50 M 32 32 L 68 68 M 32 68 L 68 32" stroke="#ffffff" stroke-width="3" />
+                <circle cx="50" cy="50" r="8" fill="#ffffff" />
+            </svg>`;
+        }
+
+        // 字牌 (中、發、白、東、南、西、北) 完美比照 SVG 標準圖解
+        function createHonorSvg(typeNum) {
+            if (typeNum === '5') { // 紅中
+                return `
+                <svg viewBox="0 0 100 130" style="width:100%;height:100%;max-height:52px;margin:auto;">
+                    <text x="50" y="68" font-family="'Noto Serif TC', serif" font-weight="900" font-size="70" fill="#dc2626" text-anchor="middle" dominant-baseline="central">中</text>
+                </svg>`;
+            } else if (typeNum === '6') { // 青發
+                return `
+                <svg viewBox="0 0 100 130" style="width:100%;height:100%;max-height:52px;margin:auto;">
+                    <text x="50" y="68" font-family="'Noto Serif TC', serif" font-weight="900" font-size="64" fill="#16a34a" text-anchor="middle" dominant-baseline="central">發</text>
+                </svg>`;
+            } else if (typeNum === '7') { // 白板 (精緻雕刻邊框)
+                return `
+                <div style="width:28px;height:42px;border:3px solid #0f172a;border-radius:4px;display:flex;flex-direction:column;justify-content:space-between;padding:3px;margin:auto;background:#fff;">
+                    <div style="display:flex;justify-content:space-between;"><div style="width:4px;height:4px;background:#0f172a;"></div><div style="width:4px;height:4px;background:#0f172a;"></div></div>
+                    <div style="display:flex;justify-content:space-between;"><div style="width:4px;height:4px;background:#0f172a;"></div><div style="width:4px;height:4px;background:#0f172a;"></div></div>
+                </div>`;
+            } else { // 風牌 東南西北
+                const windMap = {'1':'東','2':'南','3':'西','4':'北'};
+                const wChar = windMap[typeNum] || '東';
+                return `
+                <svg viewBox="0 0 100 130" style="width:100%;height:100%;max-height:52px;margin:auto;">
+                    <text x="50" y="68" font-family="'Noto Serif TC', serif" font-weight="900" font-size="65" fill="#0f172a" text-anchor="middle" dominant-baseline="central">${wChar}</text>
+                </svg>`;
+            }
+        }
+
+        // 花牌 (梅蘭竹菊、春夏秋冬) 完美比照標準圖解
+        function createFlowerSvg(flowerCode) {
+            const map = {
+                '1m': {num:'1', name:'梅', color:'#dc2626', icon:'🌸'},
+                '2m': {num:'2', name:'蘭', color:'#dc2626', icon:'🌿'},
+                '3m': {num:'3', name:'竹', color:'#dc2626', icon:'🎋'},
+                '4m': {num:'4', name:'菊', color:'#dc2626', icon:'🌼'},
+                '1s': {num:'1', name:'春', color:'#dc2626', icon:'🌱'},
+                '2s': {num:'2', name:'夏', color:'#dc2626', icon:'☀️'},
+                '3s': {num:'3', name:'秋', color:'#dc2626', icon:'🍁'},
+                '4s': {num:'4', name:'冬', color:'#dc2626', icon:'❄️'}
+            };
+            const f = map[flowerCode] || {num:'1', name:'梅', color:'#dc2626', icon:'🌸'};
+            return `
+            <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;width:100%;">
+                <div style="display:flex;justify-content:space-between;width:100%;padding:0 4px;font-size:10px;font-weight:900;">
+                    <span style="color:#0f172a;">${f.name}</span><span style="color:${f.color};">${f.num}</span>
+                </div>
+                <div style="font-size:18px;margin:2px 0;">${f.icon}</div>
+            </div>`;
+        }
+
         function createTileHtml(code) {
             const num = code[0], type = code[1];
-            
-            // 1. 萬子 (SYMBOLS)
             if (type === 'm') {
-                const chineseNums = {'1':'一','2':'二','3':'三','4':'四','5':'五','6':'六','7':'七','8':'八','9':'九'};
-                return `<span class="tile-number tile-blue">${chineseNums[num] || num}</span><span class="tile-suit tile-red">萬</span>`;
-            } 
-            // 2. 筒子 (DOTS)
-            else if (type === 'p') {
+                return `<div class="mahjong-panel-box">${createWanSvg(num)}</div>`;
+            } else if (type === 'p') {
                 const n = parseInt(num);
                 let dotsHtml = '';
-                if (n === 1) {
-                    dotsHtml = `<div style="width:28px;height:28px;border-radius:50%;border:3px solid #dc2626;display:flex;align-items:center;justify-content:center;background:#0d9488;box-shadow:inset 0 1px 3px rgba(0,0,0,0.3);margin:auto;"><div style="width:9px;height:9px;border-radius:50%;background:#ffffff;"></div></div>`;
-                } else if (n === 2) {
-                    dotsHtml = `<div style="display:flex;flex-direction:column;justify-content:space-between;align-items:center;height:100%;py-1;"><div class="m-dot green" style="width:11px;height:11px;border:2px solid #fff;"></div><div class="m-dot blue" style="width:11px;height:11px;border:2px solid #fff;"></div></div>`;
-                } else if (n === 3) {
-                    dotsHtml = `<div style="display:flex;flex-direction:column;justify-content:space-between;align-items:center;height:100%;width:100%;position:relative;"><div class="m-dot blue" style="align-self:flex-start;"></div><div class="m-dot red" style="align-self:center;"></div><div class="m-dot green" style="align-self:flex-end;"></div></div>`;
-                } else if (n === 4) {
-                    dotsHtml = `<div style="display:flex;flex-direction:column;justify-content:space-between;height:100%;width:100%;"><div style="display:flex;justify-content:space-between;"><div class="m-dot green"></div><div class="m-dot blue"></div></div><div style="display:flex;justify-content:space-between;"><div class="m-dot green"></div><div class="m-dot blue"></div></div></div>`;
-                } else if (n === 5) {
-                    dotsHtml = `<div style="display:flex;flex-direction:column;justify-content:space-between;height:100%;width:100%;"><div style="display:flex;justify-content:space-between;"><div class="m-dot green"></div><div class="m-dot blue"></div></div><div style="display:flex;justify-content:center;"><div class="m-dot red"></div></div><div style="display:flex;justify-content:space-between;"><div class="m-dot blue"></div><div class="m-dot green"></div></div></div>`;
-                } else if (n === 6) {
-                    dotsHtml = `<div style="display:flex;flex-direction:column;justify-content:space-between;height:100%;width:100%;"><div style="display:flex;justify-content:space-around;"><div class="m-dot green"></div><div class="m-dot green"></div><div class="m-dot green"></div></div><div style="display:flex;justify-content:space-around;"><div class="m-dot red"></div><div class="m-dot red"></div><div class="m-dot red"></div></div></div>`;
-                } else if (n === 7) {
-                    dotsHtml = `<div style="display:flex;flex-direction:column;justify-content:space-between;height:100%;width:100%;"><div style="display:flex;justify-content:space-around;"><div class="m-dot green" style="width:7px;height:7px;"></div><div class="m-dot green" style="width:7px;height:7px;"></div><div class="m-dot green" style="width:7px;height:7px;"></div></div><div style="display:flex;justify-content:space-around;"><div class="m-dot red" style="width:7px;height:7px;"></div><div class="m-dot red" style="width:7px;height:7px;"></div><div class="m-dot red" style="width:7px;height:7px;"></div></div></div>`;
-                } else if (n === 8) {
-                    dotsHtml = `<div style="display:flex;flex-direction:column;justify-content:space-between;height:100%;width:100%;"><div style="display:flex;justify-content:space-between;"><div class="m-dot blue"></div><div class="m-dot blue"></div></div><div style="display:flex;justify-content:space-between;"><div class="m-dot blue"></div><div class="m-dot blue"></div></div><div style="display:flex;justify-content:space-between;"><div class="m-dot blue"></div><div class="m-dot blue"></div></div><div style="display:flex;justify-content:space-between;"><div class="m-dot blue"></div><div class="m-dot blue"></div></div></div>`;
-                } else if (n === 9) {
-                    dotsHtml = `<div style="display:flex;justify-content:space-between;height:100%;width:100%;"><div style="display:flex;flex-direction:column;justify-content:space-between;"><div class="m-dot green"></div><div class="m-dot green"></div><div class="m-dot green"></div></div><div style="display:flex;flex-direction:column;justify-content:space-between;"><div class="m-dot red"></div><div class="m-dot red"></div><div class="m-dot red"></div></div><div style="display:flex;flex-direction:column;justify-content:space-between;"><div class="m-dot blue"></div><div class="m-dot blue"></div><div class="m-dot blue"></div></div></div>`;
-                }
-                return `<div class="mahjong-dot-container">${dotsHtml}</div>`;
-            } 
-            // 3. 索子 (BAMBOO) - 一索完全比照傳統「竹枝棲鳥／貓頭鷹」SVG線條繪製
-            else if (type === 's') {
+                if (n === 1) dotsHtml = createOneDotSvg();
+                else if (n === 2) dotsHtml = `<div style="display:flex;flex-direction:column;justify-content:space-between;align-items:center;height:100%;">${createDotBallSvg('green')}${createDotBallSvg('green')}</div>`;
+                else if (n === 3) dotsHtml = `<div style="display:flex;flex-direction:column;justify-content:space-between;align-items:center;height:100%;width:100%;"><div style="align-self:flex-start;">${createDotBallSvg('green')}</div><div style="align-self:center;">${createDotBallSvg('red')}</div><div style="align-self:flex-end;">${createDotBallSvg('green')}</div></div>`;
+                else if (n === 4) dotsHtml = `<div style="display:flex;flex-direction:column;justify-content:space-between;height:100%;width:100%;"><div style="display:flex;justify-content:space-between;">${createDotBallSvg('green')}${createDotBallSvg('green')}</div><div style="display:flex;justify-content:space-between;">${createDotBallSvg('green')}${createDotBallSvg('green')}</div></div>`;
+                else if (n === 5) dotsHtml = `<div style="display:flex;flex-direction:column;justify-content:space-between;height:100%;width:100%;"><div style="display:flex;justify-content:space-between;">${createDotBallSvg('green')}${createDotBallSvg('green')}</div><div style="display:flex;justify-content:center;">${createDotBallSvg('red')}</div><div style="display:flex;justify-content:space-between;">${createDotBallSvg('green')}${createDotBallSvg('green')}</div></div>`;
+                else if (n === 6) dotsHtml = `<div style="display:flex;flex-direction:column;justify-content:space-between;height:100%;width:100%;"><div style="display:flex;justify-content:space-around;width:100%;">${createDotBallSvg('green')}${createDotBallSvg('green')}</div><div style="display:flex;justify-content:space-around;width:100%;">${createDotBallSvg('red')}${createDotBallSvg('red')}</div><div style="display:flex;justify-content:space-around;width:100%;">${createDotBallSvg('red')}${createDotBallSvg('red')}</div></div>`;
+                else if (n === 7) dotsHtml = `<div style="display:flex;flex-direction:column;justify-content:space-between;height:100%;width:100%;"><div style="display:flex;justify-content:space-around;width:100%;align-self:flex-start;">${createDotBallSvg('green')}${createDotBallSvg('green')}${createDotBallSvg('green')}</div><div style="display:flex;justify-content:space-between;width:100%;">${createDotBallSvg('red')}${createDotBallSvg('red')}</div><div style="display:flex;justify-content:space-between;width:100%;">${createDotBallSvg('red')}${createDotBallSvg('red')}</div></div>`;
+                else if (n === 8) dotsHtml = `<div style="display:flex;flex-direction:column;justify-content:space-between;height:100%;width:100%;"><div style="display:flex;justify-content:space-between;">${createDotBallSvg('green')}${createDotBallSvg('green')}</div><div style="display:flex;justify-content:space-between;">${createDotBallSvg('green')}${createDotBallSvg('green')}</div><div style="display:flex;justify-content:space-between;">${createDotBallSvg('green')}${createDotBallSvg('green')}</div><div style="display:flex;justify-content:space-between;">${createDotBallSvg('green')}${createDotBallSvg('green')}</div></div>`;
+                else if (n === 9) dotsHtml = `<div style="display:flex;justify-content:space-between;height:100%;width:100%;"><div style="display:flex;flex-direction:column;justify-content:space-between;height:100%;">${createDotBallSvg('green')}${createDotBallSvg('green')}${createDotBallSvg('green')}</div><div style="display:flex;flex-direction:column;justify-content:space-between;height:100%;">${createDotBallSvg('red')}${createDotBallSvg('red')}${createDotBallSvg('red')}</div><div style="display:flex;flex-direction:column;justify-content:space-between;height:100%;">${createDotBallSvg('green')}${createDotBallSvg('green')}${createDotBallSvg('green')}</div></div>`;
+                return `<div class="mahjong-panel-box">${dotsHtml}</div>`;
+            } else if (type === 's') {
                 const n = parseInt(num);
+                let bambooHtml = '';
                 if (n === 1) {
-                    return `
-                    <div class="mahjong-bamboo-container" style="justify-content:center;background:#fffaf0;padding:2px;">
-                        <svg viewBox="0 0 100 150" style="width:100%;height:100%;max-height:50px;">
-                            <!-- 上方紅色鳥頭/羽角與眼睛 -->
-                            <path d="M 25 32 Q 40 45 68 18 Q 55 52 64 52" fill="none" stroke="#dc2626" stroke-width="4.5" stroke-linecap="round" />
-                            <circle cx="50" cy="48" r="9" fill="none" stroke="#dc2626" stroke-width="4.5" />
-                            <circle cx="50" cy="48" r="2.5" fill="#dc2626" />
-                            <!-- 鳥腹三個圓點與胸身弧線 -->
-                            <circle cx="39" cy="66" r="3" fill="none" stroke="#dc2626" stroke-width="3" />
-                            <circle cx="39" cy="78" r="3" fill="none" stroke="#dc2626" stroke-width="3" />
-                            <circle cx="39" cy="90" r="3" fill="none" stroke="#dc2626" stroke-width="3" />
-                            <path d="M 37 54 C 31 66 31 84 28 98" fill="none" stroke="#dc2626" stroke-width="4" stroke-linecap="round" />
-                            <path d="M 52 58 C 68 62 67 85 42 88" fill="none" stroke="#dc2626" stroke-width="3.5" stroke-linecap="round" />
-                            <path d="M 54 66 C 63 68 62 82 46 84" fill="none" stroke="#dc2626" stroke-width="3" stroke-linecap="round" />
-                            <path d="M 55 74 C 60 75 59 80 50 81" fill="none" stroke="#dc2626" stroke-width="2.5" stroke-linecap="round" />
-
-                            <!-- 下方深綠色竹枝幹與葉脈 -->
-                            <path d="M 20 105 C 40 100 70 85 92 58 M 92 58 C 88 52 82 56 78 62" fill="none" stroke="#166534" stroke-width="4.5" stroke-linecap="round" />
-                            <path d="M 28 102 C 22 112 18 118 18 122" fill="none" stroke="#166534" stroke-width="3" stroke-linecap="round" />
-                            <path d="M 33 100 C 28 112 25 120 25 124" fill="none" stroke="#166534" stroke-width="3" stroke-linecap="round" />
-                            <path d="M 38 98 C 36 112 34 121 34 125" fill="none" stroke="#166534" stroke-width="3" stroke-linecap="round" />
-                            <path d="M 44 95 C 45 110 46 120 46 125" fill="none" stroke="#166534" stroke-width="3" stroke-linecap="round" />
-                            <path d="M 52 91 C 56 106 58 118 58 123" fill="none" stroke="#166534" stroke-width="3" stroke-linecap="round" />
-                            <path d="M 51 88 C 45 105 50 128 72 140" fill="none" stroke="#166534" stroke-width="4" stroke-linecap="round" />
-                        </svg>
-                    </div>`;
-                } else if (n === 2) {
-                    return `<div class="mahjong-bamboo-container" style="justify-content:space-around;"><div class="m-stick"></div><div class="m-stick"></div></div>`;
-                } else if (n === 3) {
-                    return `<div class="mahjong-bamboo-container" style="justify-content:space-between;"><div style="display:flex;justify-content:space-between;width:100%;"><div class="m-stick green"></div><div class="m-stick green"></div></div><div class="m-stick red"></div></div>`;
-                } else if (n === 4) {
-                    return `<div class="mahjong-bamboo-container" style="flex-direction:row;justify-content:space-around;align-items:center;"><div style="display:flex;flex-direction:column;justify-content:space-between;height:80%;"><div class="m-stick"></div><div class="m-stick"></div></div><div style="display:flex;flex-direction:column;justify-content:space-between;height:80%;"><div class="m-stick"></div><div class="m-stick"></div></div></div>`;
-                } else if (n === 5) {
-                    return `<div class="mahjong-bamboo-container" style="justify-content:space-between;"><div style="display:flex;justify-content:space-between;width:100%;"><div class="m-stick"></div><div class="m-stick"></div></div><div class="m-stick red" style="margin:auto;"></div><div style="display:flex;justify-content:space-between;width:100%;"><div class="m-stick"></div><div class="m-stick"></div></div></div>`;
-                } else if (n === 6) {
-                    return `<div class="mahjong-bamboo-container" style="justify-content:space-around;"><div style="display:flex;justify-content:space-between;width:100%;"><div class="m-stick"></div><div class="m-stick"></div><div class="m-stick"></div></div><div style="display:flex;justify-content:space-between;width:100%;"><div class="m-stick"></div><div class="m-stick"></div><div class="m-stick"></div></div></div>`;
-                } else if (n === 7) {
-                    return `<div class="mahjong-bamboo-container" style="justify-content:space-between;"><div class="m-stick red" style="margin:auto;"></div><div style="display:flex;justify-content:space-between;width:100%;"><div style="display:flex;flex-direction:column;justify-content:space-between;height:100%;"><div class="m-stick"></div><div class="m-stick"></div></div><div style="display:flex;flex-direction:column;justify-content:space-between;height:100%;"><div class="m-stick"></div><div class="m-stick"></div></div><div style="display:flex;flex-direction:column;justify-content:space-between;height:100%;"><div class="m-stick"></div><div class="m-stick"></div></div></div></div>`;
-                } else if (n === 8) {
-                    return `<div class="mahjong-bamboo-container" style="flex-direction:row;justify-content:space-around;align-items:center;"><div style="display:flex;flex-direction:column;justify-content:space-between;height:100%;"><div class="m-stick"></div><div class="m-stick"></div><div class="m-stick"></div><div class="m-stick"></div></div><div style="display:flex;flex-direction:column;justify-content:space-between;height:100%;"><div class="m-stick"></div><div class="m-stick"></div><div class="m-stick"></div><div class="m-stick"></div></div></div>`;
-                } else if (n === 9) {
-                    return `<div class="mahjong-bamboo-container" style="flex-direction:row;justify-content:space-between;align-items:center;"><div style="display:flex;flex-direction:column;justify-content:space-between;height:100%;"><div class="m-stick red"></div><div class="m-stick red"></div><div class="m-stick red"></div></div><div style="display:flex;flex-direction:column;justify-content:space-between;height:100%;"><div class="m-stick green"></div><div class="m-stick green"></div><div class="m-stick green"></div></div><div style="display:flex;flex-direction:column;justify-content:space-between;height:100%;"><div class="m-stick blue"></div><div class="m-stick blue"></div><div class="m-stick blue"></div></div></div>`;
-                }
-            } 
-            // 4. 字牌 (WINDS & DRAGONS)
-            else if (type === 'z') {
-                if (num === '7') return `<div class="mahjong-white-board"></div>`;
-                const winds = ['東', '南', '西', '北', '中', '發', '白'];
-                let colorClass = 'tile-dark';
-                if (num === '5') colorClass = 'tile-red';
-                else if (num === '6') colorClass = 'tile-green';
-                return `<span class="tile-number ${colorClass}">${winds[parseInt(num) - 1]}</span>`;
+                    return `<div class="mahjong-panel-box" style="justify-content:center;background:#fffaf0;"><svg viewBox="0 0 100 150" style="width:100%;height:100%;max-height:48px;"><path d="M 25 32 Q 40 45 68 18 Q 55 52 64 52" fill="none" stroke="#dc2626" stroke-width="4.5" stroke-linecap="round" /><circle cx="50" cy="48" r="9" fill="none" stroke="#dc2626" stroke-width="4.5" /><circle cx="50" cy="48" r="2.5" fill="#dc2626" /><path d="M 20 105 C 40 100 70 85 92 58" fill="none" stroke="#166534" stroke-width="4.5" stroke-linecap="round" /></svg></div>`;
+                } else if (n === 2) bambooHtml = `<div style="display:flex;flex-direction:column;justify-content:space-between;height:100%;align-items:center;">${createBambooStickSvg('#16a34a')}${createBambooStickSvg('#16a34a')}</div>`;
+                else if (n === 3) bambooHtml = `<div style="display:flex;flex-direction:column;justify-content:space-between;height:100%;width:100%;align-items:center;"><div style="margin-top:1px;">${createBambooStickSvg('#dc2626')}</div><div style="display:flex;justify-content:space-between;width:100%;margin-bottom:1px;">${createBambooStickSvg('#16a34a')}${createBambooStickSvg('#16a34a')}</div></div>`;
+                else if (n === 4) bambooHtml = `<div style="display:flex;flex-direction:column;justify-content:space-between;height:100%;width:100%;"><div style="display:flex;justify-content:space-between;width:100%;">${createBambooStickSvg('#16a34a')}${createBambooStickSvg('#16a34a')}</div><div style="display:flex;justify-content:space-between;width:100%;">${createBambooStickSvg('#16a34a')}${createBambooStickSvg('#16a34a')}</div></div>`;
+                else if (n === 5) bambooHtml = `<div style="display:flex;flex-direction:column;justify-content:space-between;height:100%;width:100%;"><div style="display:flex;justify-content:space-between;width:100%;">${createBambooStickSvg('#16a34a')}${createBambooStickSvg('#16a34a')}</div><div style="display:flex;justify-content:center;width:100%;">${createBambooStickSvg('#dc2626')}</div><div style="display:flex;justify-content:space-between;width:100%;">${createBambooStickSvg('#16a34a')}${createBambooStickSvg('#16a34a')}</div></div>`;
+                else if (n === 6) bambooHtml = `<div style="display:flex;flex-direction:column;justify-content:space-between;height:100%;width:100%;"><div style="display:flex;justify-content:space-around;width:100%;">${createBambooStickSvg('#16a34a')}${createBambooStickSvg('#16a34a')}${createBambooStickSvg('#16a34a')}</div><div style="display:flex;justify-content:space-around;width:100%;">${createBambooStickSvg('#16a34a')}${createBambooStickSvg('#16a34a')}${createBambooStickSvg('#16a34a')}</div></div>`;
+                else if (n === 7) bambooHtml = `<div style="display:flex;flex-direction:column;justify-content:space-between;height:100%;width:100%;align-items:center;"><div style="transform:scale(0.85);">${createBambooStickSvg('#dc2626')}</div><div style="display:flex;justify-content:space-between;width:100%;"><div style="display:flex;flex-direction:column;justify-content:space-between;height:100%;">${createBambooStickSvg('#16a34a')}${createBambooStickSvg('#16a34a')}</div><div style="display:flex;flex-direction:column;justify-content:space-between;height:100%;">${createBambooStickSvg('#16a34a')}${createBambooStickSvg('#16a34a')}</div><div style="display:flex;flex-direction:column;justify-content:space-between;height:100%;">${createBambooStickSvg('#16a34a')}${createBambooStickSvg('#16a34a')}</div></div></div>`;
+                else if (n === 8) bambooHtml = `<div style="display:flex;flex-direction:column;justify-content:space-around;height:100%;width:100%;"><div style="display:flex;justify-content:space-around;width:100%;">${createBambooStickSvg('#16a34a')}${createBambooStickSvg('#16a34a')}${createBambooStickSvg('#16a34a')}${createBambooStickSvg('#16a34a')}</div><div style="display:flex;justify-content:space-around;width:100%;">${createBambooStickSvg('#16a34a')}${createBambooStickSvg('#16a34a')}${createBambooStickSvg('#16a34a')}${createBambooStickSvg('#16a34a')}</div></div>`;
+                else if (n === 9) bambooHtml = `<div style="display:flex;justify-content:space-between;height:100%;width:100%;"><div style="display:flex;flex-direction:column;justify-content:space-between;height:100%;">${createBambooStickSvg('#16a34a')}${createBambooStickSvg('#16a34a')}${createBambooStickSvg('#16a34a')}</div><div style="display:flex;flex-direction:column;justify-content:space-between;height:100%;">${createBambooStickSvg('#dc2626')}${createBambooStickSvg('#dc2626')}${createBambooStickSvg('#dc2626')}</div><div style="display:flex;flex-direction:column;justify-content:space-between;height:100%;">${createBambooStickSvg('#16a34a')}${createBambooStickSvg('#16a34a')}${createBambooStickSvg('#16a34a')}</div></div>`;
+                return `<div class="mahjong-panel-box" style="background:#f0fdf4;border-color:#bbf7d0;">${bambooHtml}</div>`;
+            } else if (type === 'z') {
+                return `<div class="mahjong-panel-box">${createHonorSvg(num)}</div>`;
+            } else if (type === 'f') {
+                return `<div class="mahjong-panel-box" style="background:#fff1f2;border-color:#fecdd3;">${createFlowerSvg(code)}</div>`;
             }
             return `<span class="tile-number">${code}</span>`;
         }
@@ -514,6 +553,14 @@
                 container.appendChild(tileDiv);
             });
 
+            // 渲染補花區
+            const flowerListDiv = document.getElementById("flower-tiles-list");
+            if (playerFlowers.length > 0) {
+                flowerListDiv.innerHTML = playerFlowers.map(f => `<div style="width:28px;height:42px;background:#fff;border:1px solid #fecdd3;border-radius:4px;display:flex;align-items:center;justify-content:center;">${createTileHtml(f)}</div>`).join('');
+            } else {
+                flowerListDiv.innerHTML = '<span class="text-slate-400">無</span>';
+            }
+
             const topSeat = (mySeatIndex + 2) % 4;
             document.getElementById("ai-top-tiles").innerHTML = mahjongGame.players[topSeat].map(() => `<div class="w-4 h-6 bg-amber-100 rounded border border-slate-400"></div>`).join('');
             document.getElementById("tiles-left").textContent = mahjongGame.deck.length;
@@ -526,6 +573,18 @@
             if (hasDrawnThisTurn) return;
             const drawn = mahjongGame.drawTile(mySeatIndex);
             if (!drawn) { alert("流局！"); leaveTable(); return; }
+
+            // 自動檢查摸到的是不是花牌
+            if (drawn[1] === 'f') {
+                playerFlowers.push(drawn);
+                speakVoice("補花！", getVoicePresetByAvatar(userData.avatar));
+                // 再補一張牌
+                const nextDrawn = mahjongGame.drawTile(mySeatIndex);
+                if (nextDrawn) mahjongGame.players[mySeatIndex].push(nextDrawn);
+            } else {
+                mahjongGame.players[mySeatIndex].push(drawn);
+            }
+
             hasDrawnThisTurn = true;
             mahjongGame.sortHand(mahjongGame.players[mySeatIndex]);
             renderGameTable();
@@ -589,16 +648,14 @@
 
         function formatTileName(code) {
             const num = code[0], type = code[1];
-            const wanMap = {'1':'一萬','2':'二萬','3':'三萬','4':'四萬','5':'五萬','6':'六萬','7':'七萬','8':'八萬','9':'九萬'};
-            const tongMap = {'1':'一餅','2':'二餅','3':'三餅','4':'四餅','5':'五餅','6':'六餅','7':'七餅','8':'八餅','9':'九餅'};
-            const tiaoMap = {'1':'一索','2':'二索','3':'三索','4':'四索','5':'五索','6':'六索','7':'七索','8':'八索','9':'九索'};
-            if (type === 'm') return wanMap[code] || (num + '萬');
-            if (type === 'p') return tongMap[code] || (num + '餅');
-            if (type === 's') return tiaoMap[code] || (num + '索');
+            if (type === 'm') return num + '萬';
+            if (type === 'p') return num + '餅';
+            if (type === 's') return num + '索';
             if (type === 'z') {
                 const winds = ['東風', '南風', '西風', '北風', '紅中', '青發', '白板'];
                 return winds[parseInt(num) - 1] || code;
             }
+            if (type === 'f') return '花牌';
             return code;
         }
 
@@ -693,6 +750,8 @@
         };
 
         window.startTable = function(base, tai) {
+            currentBaseStake = base;
+            currentTaiStake = tai;
             document.getElementById("ai-table-view").classList.add("hidden");
             document.getElementById("game-view").classList.remove("hidden");
             document.getElementById("table-stakes-info").textContent = `對戰底台: ${base}/${tai}`;
@@ -704,6 +763,7 @@
             document.getElementById("avatar-img-2").src = AVATAR_LIST[2];
             document.getElementById("avatar-img-3").src = AVATAR_LIST[3];
 
+            playerFlowers = [];
             mahjongGame.deal();
             hasDrawnThisTurn = false;
             currentTurnPlayer = 0;
@@ -808,9 +868,28 @@
             renderGameTable();
         }
 
+        // 胡牌與結算畫面
         window.playerDeclareWin = function() {
             speakVoice("胡矣！恭喜發財！", getVoicePresetByAvatar(userData.avatar));
-            alert("🎉 恭喜胡牌！");
+            
+            // 計算台數與金額
+            const taiCount = 3 + playerFlowers.length; // 預設底台 3 台 + 補花台數
+            const totalChips = currentBaseStake + (taiCount * currentTaiStake);
+            userData.chips += totalChips;
+            updateUI();
+
+            document.getElementById("win-type-text").textContent = `門清 / 自摸 (${playerFlowers.length}朵花)`;
+            document.getElementById("win-tai-text").textContent = `${taiCount} 台`;
+            document.getElementById("win-stake-text").textContent = `${currentBaseStake} / ${currentTaiStake}`;
+            document.getElementById("win-total-chips").textContent = `+ $${totalChips.toLocaleString()}`;
+
+            document.getElementById("win-modal").classList.remove("hidden");
+            document.getElementById("win-modal").classList.add("flex");
+        };
+
+        window.closeWinModal = function() {
+            document.getElementById("win-modal").classList.remove("flex");
+            document.getElementById("win-modal").classList.add("hidden");
             leaveTable();
         };
 
